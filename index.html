@@ -14,6 +14,10 @@
         .color-input input[type="color"] { width: 50px; margin-right: 10px; }
         .color-input input[type="text"] { flex-grow: 1; }
         .ad-item { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
+        .image-upload { margin-top: 10px; }
+        .image-upload input[type="file"] { display: inline-block; width: auto; }
+        .image-upload button { display: inline-block; margin-left: 10px; }
+        .image-preview { max-width: 200px; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
@@ -120,8 +124,13 @@
         <label for="appEmail">App Email:</label>
         <input type="email" id="appEmail" name="constantData.appEmail" value="">
 
-        <label for="appLogo">App Logo:</label>
-        <input type="file" id="appLogo" name="constantData.appLogo" accept="image/*">
+        <div class="image-upload">
+            <label for="appLogo">App Logo:</label>
+            <input type="file" id="appLogo" accept="image/*">
+            <button type="button" id="uploadAppLogo">Upload App Logo</button>
+            <img id="appLogoPreview" src="" alt="App Logo Preview" class="image-preview">
+            <input type="hidden" name="constantData.appLogo" id="appLogoHidden">
+        </div>
 
         <label for="appCompany">App Company:</label>
         <input type="text" id="appCompany" name="constantData.appCompany" value="https://wityysaver.s3.ap-south-1.amazonaws.com/geetika_1.png">
@@ -129,9 +138,13 @@
         <label for="appWebsite">App Website:</label>
         <input type="url" id="appWebsite" name="constantData.appWebsite" value="">
 
-        <label for="appContact">App Contact:</label>
-        <input type="file" id="appContact" name="constantData.appContact" accept="image/*">
-        <input type="hidden" name="constantData.appContact" value="https://wityysaver.s3.ap-south-1.amazonaws.com/geetika_udpated_animation.gif">
+        <div class="image-upload">
+            <label for="appContact">App Contact:</label>
+            <input type="file" id="appContact" accept="image/*">
+            <button type="button" id="uploadAppContact">Upload App Contact</button>
+            <img id="appContactPreview" src="" alt="App Contact Preview" class="image-preview">
+            <input type="hidden" name="constantData.appContact" id="appContactHidden">
+        </div>
 
         <label for="facebookLink">Facebook Link:</label>
         <input type="url" id="facebookLink" name="constantData.facebookLink" value="https://www.geetikabuilders.in/gk/index.html">
@@ -245,17 +258,57 @@ https://example.com/images/ad2/img2.jpg</textarea>
 
         <button type="submit">Submit</button>
     </form>
-
     <script>
         // Sync color inputs
         document.querySelectorAll('.color-input').forEach(container => {
-            const colorInput = container.querySelector('input[type="color"]');
-            const textInput = container.querySelector('input[type="text"]');
-            colorInput.addEventListener('input', () => textInput.value = colorInput.value);
-            textInput.addEventListener('input', () => colorInput.value = textInput.value);
-        });
+        const colorInput = container.querySelector('input[type="color"]');
+        const textInput = container.querySelector('input[type="text"]');
+        colorInput.addEventListener('input', () => textInput.value = colorInput.value);
+        textInput.addEventListener('input', () => colorInput.value = textInput.value);
+    });
 
-        document.getElementById('updateForm').addEventListener('submit', function(e) {
+    function uploadImage(fileInput, previewImg, hiddenInput, uploadButton) {
+        const file = fileInput.files[0];
+        if (file) {
+            uploadButton.textContent = 'Uploading...';
+            uploadButton.disabled = true;
+
+            convertToBase64(file)
+                .then(base64 => {
+                    previewImg.src = base64;
+                    previewImg.style.display = 'block';
+                    hiddenInput.value = base64;
+                    uploadButton.textContent = 'Upload Complete';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    uploadButton.textContent = 'Upload Failed';
+                })
+                .finally(() => {
+                    uploadButton.disabled = false;
+                });
+        }
+    }
+
+    document.getElementById('uploadAppLogo').addEventListener('click', function() {
+        uploadImage(
+            document.getElementById('appLogo'),
+            document.getElementById('appLogoPreview'),
+            document.getElementById('appLogoHidden'),
+            this
+        );
+    });
+
+    document.getElementById('uploadAppContact').addEventListener('click', function() {
+        uploadImage(
+            document.getElementById('appContact'),
+            document.getElementById('appContactPreview'),
+            document.getElementById('appContactHidden'),
+            this
+        );
+    });
+
+    document.getElementById('updateForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
         const formData = new FormData(this);
@@ -290,9 +343,6 @@ https://example.com/images/ad2/img2.jpg</textarea>
                         current[keys[i]] = value === 'true';
                     } else if (['constantData.headerHeight', 'constantData.appUpdateVersionCode', 'list_price_size'].includes(key)) {
                         current[keys[i]] = parseInt(value);
-                    } else if (['constantData.appLogo', 'constantData.appContact'].includes(key)) {
-                        // Handle file uploads separately
-                        continue;
                     } else {
                         current[keys[i]] = value;
                     }
@@ -303,36 +353,18 @@ https://example.com/images/ad2/img2.jpg</textarea>
             }
         }
 
-        // Handle file uploads
-        const fileUpload = async (file, fieldName) => {
-            if (file) {
-                const base64 = await convertToBase64(file);
-                const keys = fieldName.split('.');
-                let current = jsonData;
-                for (let i = 0; i < keys.length - 1; i++) {
-                    current = current[keys[i]];
-                }
-                current[keys[keys.length - 1]] = base64;
-            }
-        };
-
-        Promise.all([
-            fileUpload(document.getElementById('appLogo').files[0], 'constantData.appLogo'),
-            fileUpload(document.getElementById('appContact').files[0], 'constantData.appContact')
-        ]).then(() => {
-            console.log(JSON.stringify(jsonData, null, 2));
-            
-            fetch('https://propertify.onrender.com/api/colors/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(jsonData)
-            })
-            .then(response => response.json())
-            .then(data => console.log('Success:', data))
-            .catch((error) => console.error('Error:', error));
-        });
+        console.log(JSON.stringify(jsonData, null, 2));
+        
+        fetch('https://propertify.onrender.com/api/colors/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => console.log('Success:', data))
+        .catch((error) => console.error('Error:', error));
     });
 
     function convertToBase64(file) {
