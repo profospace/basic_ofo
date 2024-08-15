@@ -13,6 +13,7 @@
         .color-input { display: flex; align-items: center; }
         .color-input input[type="color"] { width: 50px; margin-right: 10px; }
         .color-input input[type="text"] { flex-grow: 1; }
+        .ad-item { border: 1px solid #ccc; padding: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -20,12 +21,12 @@
     <form id="updateForm">
         <h2>Header</h2>
         <div class="color-input">
-            <input type="color" id="headerStartColor" value="#126077">
-            <input type="text" name="header.startColor" value="#126077">
+            <input type="color" id="headerStartColor" value="#ffffff">
+            <input type="text" name="header.startColor" value="#ffffff">
         </div>
         <div class="color-input">
-            <input type="color" id="headerEndColor" value="#126077">
-            <input type="text" name="header.endColor" value="#126077">
+            <input type="color" id="headerEndColor" value="#ffffff">
+            <input type="text" name="header.endColor" value="#ffffff">
         </div>
 
         <h2>Button</h2>
@@ -60,14 +61,14 @@
 
         <h2>List Background</h2>
         <div class="color-input">
-            <input type="color" id="listBgColor" value="#e1faeb">
-            <input type="text" name="listbackground.backgroundColor" value="#e1faeb">
+            <input type="color" id="listBgColor" value="#ededed">
+            <input type="text" name="listbackground.backgroundColor" value="#ededed">
         </div>
 
         <h2>Search Filter</h2>
         <div class="color-input">
-            <input type="color" id="searchFilterBgColor" value="#eeeeee">
-            <input type="text" name="search_filter.backgroundColor" value="#eeeeee">
+            <input type="color" id="searchFilterBgColor" value="#000000">
+            <input type="text" name="search_filter.backgroundColor" value="#000000">
         </div>
 
         <h2>Other Settings</h2>
@@ -102,58 +103,59 @@
         </select>
 
         <label for="headerHeight">Header Height:</label>
-        <input type="number" id="headerHeight" name="constantData.headerHeight" value="450">
+        <input type="number" id="headerHeight" name="constantData.headerHeight" value="400">
 
         <label for="appPackageName">App Package Name:</label>
-        <input type="text" id="appPackageName" name="constantData.appPackageName">
+        <input type="text" id="appPackageName" name="constantData.appPackageName" value="">
 
         <label for="defaultLanguage">Default Language:</label>
-        <input type="text" id="defaultLanguage" name="constantData.defaultLanguage">
+        <input type="text" id="defaultLanguage" name="constantData.defaultLanguage" value="">
 
         <label for="currencyCode">Currency Code:</label>
-        <input type="text" id="currencyCode" name="constantData.currencyCode">
+        <input type="text" id="currencyCode" name="constantData.currencyCode" value="">
 
         <label for="appName">App Name:</label>
-        <input type="text" id="appName" name="constantData.appName">
+        <input type="text" id="appName" name="constantData.appName" value="">
 
         <label for="appEmail">App Email:</label>
-        <input type="email" id="appEmail" name="constantData.appEmail">
+        <input type="email" id="appEmail" name="constantData.appEmail" value="">
 
         <label for="appLogo">App Logo:</label>
         <input type="file" id="appLogo" name="constantData.appLogo" accept="image/*">
 
         <label for="appCompany">App Company:</label>
-        <input type="text" id="appCompany" name="constantData.appCompany">
+        <input type="text" id="appCompany" name="constantData.appCompany" value="https://wityysaver.s3.ap-south-1.amazonaws.com/geetika_1.png">
 
         <label for="appWebsite">App Website:</label>
-        <input type="url" id="appWebsite" name="constantData.appWebsite">
+        <input type="url" id="appWebsite" name="constantData.appWebsite" value="">
 
         <label for="appContact">App Contact:</label>
         <input type="file" id="appContact" name="constantData.appContact" accept="image/*">
+        <input type="hidden" name="constantData.appContact" value="https://wityysaver.s3.ap-south-1.amazonaws.com/geetika_udpated_animation.gif">
 
         <label for="facebookLink">Facebook Link:</label>
-        <input type="url" id="facebookLink" name="constantData.facebookLink">
+        <input type="url" id="facebookLink" name="constantData.facebookLink" value="https://www.geetikabuilders.in/gk/index.html">
 
         <label for="twitterLink">Twitter Link:</label>
-        <input type="url" id="twitterLink" name="constantData.twitterLink">
+        <input type="url" id="twitterLink" name="constantData.twitterLink" value="">
 
         <label for="instagramLink">Instagram Link:</label>
-        <input type="url" id="instagramLink" name="constantData.instagramLink">
+        <input type="url" id="instagramLink" name="constantData.instagramLink" value="">
 
         <label for="youtubeLink">YouTube Link:</label>
-        <input type="url" id="youtubeLink" name="constantData.youtubeLink">
+        <input type="url" id="youtubeLink" name="constantData.youtubeLink" value="">
 
         <label for="googlePlayLink">Google Play Link:</label>
-        <input type="url" id="googlePlayLink" name="constantData.googlePlayLink">
+        <input type="url" id="googlePlayLink" name="constantData.googlePlayLink" value="">
 
         <label for="appleStoreLink">Apple Store Link:</label>
-        <input type="url" id="appleStoreLink" name="constantData.appleStoreLink">
+        <input type="url" id="appleStoreLink" name="constantData.appleStoreLink" value="">
 
         <label for="appVersion">App Version:</label>
-        <input type="text" id="appVersion" name="constantData.appVersion">
+        <input type="text" id="appVersion" name="constantData.appVersion" value="">
 
         <label for="appUpdateHideShow">App Update Hide/Show:</label>
-        <input type="text" id="appUpdateHideShow" name="constantData.appUpdateHideShow">
+        <input type="text" id="appUpdateHideShow" name="constantData.appUpdateHideShow" value="">
 
         <label for="appUpdateVersionCode">App Update Version Code:</label>
         <input type="number" id="appUpdateVersionCode" name="constantData.appUpdateVersionCode" value="0">
@@ -162,10 +164,10 @@
         <textarea id="appUpdateDesc" name="constantData.appUpdateDesc" rows="3"></textarea>
 
         <label for="appUpdateLink">App Update Link:</label>
-        <input type="url" id="appUpdateLink" name="constantData.appUpdateLink">
+        <input type="url" id="appUpdateLink" name="constantData.appUpdateLink" value="">
 
         <label for="appUpdateCancelOption">App Update Cancel Option:</label>
-        <input type="text" id="appUpdateCancelOption" name="constantData.appUpdateCancelOption">
+        <input type="text" id="appUpdateCancelOption" name="constantData.appUpdateCancelOption" value="">
 
         <div class="color-input">
             <input type="color" id="priceColor" value="#000000">
@@ -202,6 +204,45 @@
             <option value="false" selected>No</option>
         </select>
 
+        <h2>Ads</h2>
+        <div id="adsContainer">
+            <div class="ad-item">
+                <h3>Ad 1</h3>
+                <label for="ad1Name">Name:</label>
+                <input type="text" id="ad1Name" name="ads[0].name" value="Ad1">
+                
+                <label for="ad1PageLink">Page Link:</label>
+                <input type="url" id="ad1PageLink" name="ads[0].pagelink" value="https://example.com/ad1">
+                
+                <label for="ad1ImageLinks">Image Links (one per line):</label>
+                <textarea id="ad1ImageLinks" name="ads[0].imagelinks" rows="2">https://example.com/images/ad1/img1.jpg
+https://example.com/images/ad1/img2.jpg</textarea>
+                
+                <label for="ad1Contact">Contact Info (one per line):</label>
+                <textarea id="ad1Contact" name="ads[0].contact" rows="2">contact1@example.com
+123-456-7890</textarea>
+            </div>
+            
+            <div class="ad-item">
+                <h3>Ad 2</h3>
+                <label for="ad2Name">Name:</label>
+                <input type="text" id="ad2Name" name="ads[1].name" value="Ad2">
+                
+                <label for="ad2PageLink">Page Link:</label>
+                <input type="url" id="ad2PageLink" name="ads[1].pagelink" value="https://example.com/ad2">
+                
+                <label for="ad2ImageLinks">Image Links (one per line):</label>
+                <textarea id="ad2ImageLinks" name="ads[1].imagelinks" rows="2">https://example.com/images/ad2/img1.jpg
+https://example.com/images/ad2/img2.jpg</textarea>
+                
+                <label for="ad2Contact">Contact Info (one per line):</label>
+                <textarea id="ad2Contact" name="ads[1].contact" rows="2">contact2@example.com
+098-765-4321</textarea>
+            </div>
+        </div>
+        
+        <button type="button" id="addAdButton">Add Another Ad</button>
+
         <button type="submit">Submit</button>
     </form>
 
@@ -215,79 +256,116 @@
         });
 
         document.getElementById('updateForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const jsonData = {};
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const jsonData = {};
 
-            for (let [key, value] of formData.entries()) {
-                if (key === 'constantData.homeUrls') {
-                    value = value.split('\n').map(url => url.trim()).filter(url => url);
-                } else if (key === 'constantData.homePageLayoutOrder') {
-                    value = value.split(',').map(num => parseInt(num.trim()));
-                }
-
-                const keys = key.split('.');
-                let current = jsonData;
-                for (let i = 0; i < keys.length; i++) {
-                    if (i === keys.length - 1) {
-                        if (['constantData.isPropertyUpload', 'constantData.isStrokeFilter', 'constantData.isMaterialElevation', 'constantData.isCallDirect', 'constantData.shadowOnImage'].includes(key)) {
-                            current[keys[i]] = value === 'true';
-                        } else if (['constantData.headerHeight', 'constantData.appUpdateVersionCode', 'list_price_size'].includes(key)) {
-                            current[keys[i]] = parseInt(value);
-                        } else if (['constantData.appLogo', 'constantData.appContact'].includes(key)) {
-                            // Handle file uploads separately
-                            continue;
-                        } else {
-                            current[keys[i]] = value;
-                        }
+        for (let [key, value] of formData.entries()) {
+            if (key === 'constantData.homeUrls') {
+                value = value.split('\n').map(url => url.trim()).filter(url => url);
+            } else if (key === 'constantData.homePageLayoutOrder') {
+                value = value.split(',').map(num => parseInt(num.trim()));
+            } else if (key.startsWith('ads[')) {
+                // Handle ads data
+                const matches = key.match(/ads\[(\d+)\]\.(\w+)/);
+                if (matches) {
+                    const [, index, property] = matches;
+                    if (!jsonData.ads) jsonData.ads = [];
+                    if (!jsonData.ads[index]) jsonData.ads[index] = {};
+                    if (property === 'imagelinks' || property === 'contact') {
+                        jsonData.ads[index][property] = value.split('\n').map(item => item.trim()).filter(item => item);
                     } else {
-                        current[keys[i]] = current[keys[i]] || {};
-                        current = current[keys[i]];
+                        jsonData.ads[index][property] = value;
                     }
                 }
+                continue;
             }
 
-            // Handle file uploads
-            const fileUpload = async (file, fieldName) => {
-                if (file) {
-                    const base64 = await convertToBase64(file);
-                    const keys = fieldName.split('.');
-                    let current = jsonData;
-                    for (let i = 0; i < keys.length - 1; i++) {
-                        current = current[keys[i]];
+            const keys = key.split('.');
+            let current = jsonData;
+            for (let i = 0; i < keys.length; i++) {
+                if (i === keys.length - 1) {
+                    if (['constantData.isPropertyUpload', 'constantData.isStrokeFilter', 'constantData.isMaterialElevation', 'constantData.isCallDirect', 'constantData.shadowOnImage'].includes(key)) {
+                        current[keys[i]] = value === 'true';
+                    } else if (['constantData.headerHeight', 'constantData.appUpdateVersionCode', 'list_price_size'].includes(key)) {
+                        current[keys[i]] = parseInt(value);
+                    } else if (['constantData.appLogo', 'constantData.appContact'].includes(key)) {
+                        // Handle file uploads separately
+                        continue;
+                    } else {
+                        current[keys[i]] = value;
                     }
-                    current[keys[keys.length - 1]] = base64;
+                } else {
+                    current[keys[i]] = current[keys[i]] || {};
+                    current = current[keys[i]];
                 }
-            };
-
-            Promise.all([
-                fileUpload(document.getElementById('appLogo').files[0], 'constantData.appLogo'),
-                fileUpload(document.getElementById('appContact').files[0], 'constantData.appContact')
-            ]).then(() => {
-                console.log(JSON.stringify(jsonData, null, 2));
-                
-                fetch('https://propertify.onrender.com/api/colors/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(jsonData)
-                })
-                .then(response => response.json())
-                .then(data => console.log('Success:', data))
-                .catch((error) => console.error('Error:', error));
-            });
-        });
-
-        function convertToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
+            }
         }
-    </script>
+
+        // Handle file uploads
+        const fileUpload = async (file, fieldName) => {
+            if (file) {
+                const base64 = await convertToBase64(file);
+                const keys = fieldName.split('.');
+                let current = jsonData;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    current = current[keys[i]];
+                }
+                current[keys[keys.length - 1]] = base64;
+            }
+        };
+
+        Promise.all([
+            fileUpload(document.getElementById('appLogo').files[0], 'constantData.appLogo'),
+            fileUpload(document.getElementById('appContact').files[0], 'constantData.appContact')
+        ]).then(() => {
+            console.log(JSON.stringify(jsonData, null, 2));
+            
+            fetch('https://propertify.onrender.com/api/colors/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+        });
+    });
+
+    function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    // Add functionality to add more ad items dynamically
+    let adCount = 2;
+    document.getElementById('addAdButton').addEventListener('click', function() {
+        adCount++;
+        const newAdItem = document.createElement('div');
+        newAdItem.className = 'ad-item';
+        newAdItem.innerHTML = `
+            <h3>Ad ${adCount}</h3>
+            <label for="ad${adCount}Name">Name:</label>
+            <input type="text" id="ad${adCount}Name" name="ads[${adCount-1}].name" value="Ad${adCount}">
+            
+            <label for="ad${adCount}PageLink">Page Link:</label>
+            <input type="url" id="ad${adCount}PageLink" name="ads[${adCount-1}].pagelink" value="">
+            
+            <label for="ad${adCount}ImageLinks">Image Links (one per line):</label>
+            <textarea id="ad${adCount}ImageLinks" name="ads[${adCount-1}].imagelinks" rows="2"></textarea>
+            
+            <label for="ad${adCount}Contact">Contact Info (one per line):</label>
+            <textarea id="ad${adCount}Contact" name="ads[${adCount-1}].contact" rows="2"></textarea>
+        `;
+        document.getElementById('adsContainer').appendChild(newAdItem);
+    });
+</script>
 </body>
 </html>
