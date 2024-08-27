@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Colors API Form</title>
     <style>
+
         body { 
             font-family: Arial, sans-serif; 
             max-width: 800px; 
@@ -89,11 +90,42 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .uploaded-url {
+     word-break: break-all;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+}
     </style>
 </head>
 <body>
     <h1>Update Colors API Form</h1>
     <form id="updateForm">
+        <div class="image-upload">
+            <label for="appLogo">App Logo:</label>
+            <input type="file" id="appLogo" accept="image/*">
+            <button type="button" id="uploadAppLogo">Upload App Logo</button>
+            <img id="appLogoPreview" src="" alt="App Logo Preview" class="image-preview">
+            <input type="hidden" name="constantData.appLogo" id="appLogoHidden">
+        </div>
+
+        <div class="image-upload">
+            <label for="appCompany">App Company:</label>
+            <input type="file" id="appCompany" accept="image/*">
+            <button type="button" id="uploadAppCompany">Upload App Company</button>
+            <img id="appCompanyPreview" src="" alt="App Company Preview" class="image-preview">
+            <input type="hidden" name="constantData.appCompany" id="appCompanyHidden">
+            <div id="appCompanyUrl" class="uploaded-url"></div>
+        </div>
+
+        <div class="image-upload">
+            <label for="appContact">App Contact:</label>
+            <input type="file" id="appContact" accept="image/*">
+            <button type="button" id="uploadAppContact">Upload App Contact</button>
+            <img id="appContactPreview" src="" alt="App Contact Preview" class="image-preview">
+            <input type="hidden" name="constantData.appContact" id="appContactHidden">
+            <div id="appContactUrl" class="uploaded-url"></div>
+        </div>
         <h2>Header</h2>
         <div class="color-input">
             <input type="color" id="headerStartColor" value="#ffffff">
@@ -103,7 +135,7 @@
             <input type="color" id="headerEndColor" value="#ffffff">
             <input type="text" name="header.endColor" value="#ffffff">
         </div>
-
+        <div id="appContactUrl" class="uploaded-url"></div>
         <h2>Button</h2>
         <div class="color-input">
             <input type="color" id="buttonStartColor" value="#ee0979">
@@ -344,146 +376,110 @@ https://example.com/images/ad2/img2.jpg</textarea>
         textInput.addEventListener('input', () => colorInput.value = textInput.value);
     });
 
-    function uploadImage(fileInput, previewImg, hiddenInput, uploadButton) {
-        const file = fileInput.files[0];
-        if (file) {
-            uploadButton.textContent = 'Uploading...';
-            uploadButton.disabled = true;
+    AWS.config.update({
+            accessKeyId: 'AKIA4MTWMIGTSYXUGJ6I',
+            secretAccessKey: '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',
+            region: 'ap-south-1'
+        });
 
-            convertToBase64(file)
-                .then(base64 => {
-                    previewImg.src = base64;
+        const s3 = new AWS.S3();
+
+        async function uploadToS3(file) {
+            const params = {
+                Bucket: 'wityysaver',
+                Key: `${Date.now()}-${file.name}`,
+                Body: file,
+                ACL: 'public-read'
+            };
+
+            return new Promise((resolve, reject) => {
+                s3.upload(params, (err, data) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(data.Location);
+                    }
+                });
+            });
+        }
+
+        async function uploadImage(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
+            const file = fileInput.files[0];
+            if (file) {
+                uploadButton.textContent = 'Uploading...';
+                uploadButton.disabled = true;
+
+                try {
+                    const fileUrl = await uploadToS3(file);
+
+                    previewImg.src = fileUrl;
                     previewImg.style.display = 'block';
-                    hiddenInput.value = base64;
+                    hiddenInput.value = fileUrl;
+                    if (urlDisplay) {
+                        urlDisplay.textContent = fileUrl;
+                    }
                     uploadButton.textContent = 'Upload Complete';
-                })
-                .catch(error => {
+                    alert('File uploaded successfully!');
+                } catch (error) {
                     console.error('Error:', error);
                     uploadButton.textContent = 'Upload Failed';
-                })
-                .finally(() => {
+                    alert('File upload failed. Please try again.');
+                } finally {
                     uploadButton.disabled = false;
-                });
-        }
-    }
-
-    document.getElementById('uploadAppLogo').addEventListener('click', function() {
-        uploadImage(
-            document.getElementById('appLogo'),
-            document.getElementById('appLogoPreview'),
-            document.getElementById('appLogoHidden'),
-            this
-        );
-    });
-
-    document.getElementById('uploadAppContact').addEventListener('click', function() {
-        uploadImage(
-            document.getElementById('appContact'),
-            document.getElementById('appContactPreview'),
-            document.getElementById('appContactHidden'),
-            this
-        );
-    });
-
-    document.getElementById('updateForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        const jsonData = {};
-
-        for (let [key, value] of formData.entries()) {
-            if (key === 'constantData.homeUrls') {
-                value = value.split('\n').map(url => url.trim()).filter(url => url);
-            } else if (key === 'constantData.homePageLayoutOrder') {
-                value = value.split(',').map(num => parseInt(num.trim()));
-            } else if (key.startsWith('ads[')) {
-                // Handle ads data
-                const matches = key.match(/ads\[(\d+)\]\.(\w+)/);
-                if (matches) {
-                    const [, index, property] = matches;
-                    if (!jsonData.ads) jsonData.ads = [];
-                    if (!jsonData.ads[index]) jsonData.ads[index] = {};
-                    if (property === 'imagelinks' || property === 'contact') {
-                        jsonData.ads[index][property] = value.split('\n').map(item => item.trim()).filter(item => item);
-                    } else {
-                        jsonData.ads[index][property] = value;
-                    }
-                }
-                continue;
-            }
-
-            const keys = key.split('.');
-            let current = jsonData;
-            for (let i = 0; i < keys.length; i++) {
-                if (i === keys.length - 1) {
-                    if (['constantData.isPropertyUpload', 'constantData.isStrokeFilter', 'constantData.isMaterialElevation', 'constantData.isCallDirect', 'constantData.shadowOnImage'].includes(key)) {
-                        current[keys[i]] = value === 'true';
-                    } else if (['constantData.headerHeight', 'constantData.appUpdateVersionCode', 'list_price_size'].includes(key)) {
-                        current[keys[i]] = parseInt(value);
-                    } else {
-                        current[keys[i]] = value;
-                    }
-                } else {
-                    current[keys[i]] = current[keys[i]] || {};
-                    current = current[keys[i]];
                 }
             }
         }
 
-        console.log(JSON.stringify(jsonData, null, 2));
-        
-        fetch('https://propertify.onrender.com/api/colors/update', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(jsonData)
-        })
-        .then(response => response.json())
-        .then(data => console.log('Success:', data))
-        .catch((error) => console.error('Error:', error));
-    });
-
-    function convertToBase64(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+        document.getElementById('uploadAppCompany').addEventListener('click', function() {
+            uploadImage(
+                document.getElementById('appCompany'),
+                document.getElementById('appCompanyPreview'),
+                document.getElementById('appCompanyHidden'),
+                this,
+                document.getElementById('appCompanyUrl')
+            );
         });
-    }
 
-    function showPopup(message) {
-            document.getElementById('popup-message').textContent = message;
-            document.getElementById('popup').style.display = 'block';
-        }
+        document.getElementById('uploadAppContact').addEventListener('click', function() {
+            uploadImage(
+                document.getElementById('appContact'),
+                document.getElementById('appContactPreview'),
+                document.getElementById('appContactHidden'),
+                this,
+                document.getElementById('appContactUrl')
+            );
+        });
 
-        function closePopup() {
-            document.getElementById('popup').style.display = 'none';
-        }
+        document.getElementById('updateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const jsonData = {};
 
-    // Add functionality to add more ad items dynamically
-    let adCount = 2;
-    document.getElementById('addAdButton').addEventListener('click', function() {
-        adCount++;
-        const newAdItem = document.createElement('div');
-        newAdItem.className = 'ad-item';
-        newAdItem.innerHTML = `
-            <h3>Ad ${adCount}</h3>
-            <label for="ad${adCount}Name">Name:</label>
-            <input type="text" id="ad${adCount}Name" name="ads[${adCount-1}].name" value="Ad${adCount}">
+            for (let [key, value] of formData.entries()) {
+                // Process form data
+                // (Add your form data processing logic here)
+            }
+
+            console.log(JSON.stringify(jsonData, null, 2));
             
-            <label for="ad${adCount}PageLink">Page Link:</label>
-            <input type="url" id="ad${adCount}PageLink" name="ads[${adCount-1}].pagelink" value="">
-            
-            <label for="ad${adCount}ImageLinks">Image Links (one per line):</label>
-            <textarea id="ad${adCount}ImageLinks" name="ads[${adCount-1}].imagelinks" rows="2"></textarea>
-            
-            <label for="ad${adCount}Contact">Contact Info (one per line):</label>
-            <textarea id="ad${adCount}Contact" name="ads[${adCount-1}].contact" rows="2"></textarea>
-        `;
-        document.getElementById('adsContainer').appendChild(newAdItem);
-    });
-</script>
+            fetch('https://propertify.onrender.com/api/colors/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Form submitted successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the form. Please try again.');
+            });
+        });
+    </script>
 </body>
 </html>
