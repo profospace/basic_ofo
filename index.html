@@ -366,6 +366,50 @@
             
             <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
             <script>
+
+async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
+            const file = fileInput.files[0];
+            if (file) {
+                uploadButton.textContent = 'Uploading...';
+                uploadButton.disabled = true;
+
+                try {
+                    const fileUrl = await uploadToS3(file);
+
+                    previewImg.src = fileUrl;
+                    previewImg.style.display = 'block';
+                    hiddenInput.value = fileUrl;
+                    if (urlDisplay) {
+                        urlDisplay.textContent = fileUrl;
+                    }
+                    uploadButton.textContent = 'Upload Complete';
+                    showPopup('File uploaded successfully!');
+                } catch (error) {
+                    console.error('Error:', error);
+                    uploadButton.textContent = 'Upload Failed';
+                    showPopup('File upload failed. Please try again.');
+                } finally {
+                    uploadButton.disabled = false;
+                }
+            }
+        }
+
+        // Set up event listeners for each image upload section
+        ['AppLogo', 'AppCompany', 'AppContact'].forEach(section => {
+            const uploadButton = document.getElementById(`upload${section}`);
+            const fetchButton = document.getElementById(`fetchImages${section}`);
+            const selectElement = document.getElementById(`existingImages${section}`);
+            const fileInput = document.getElementById(section.toLowerCase());
+            const previewImg = document.getElementById(`${section.toLowerCase()}Preview`);
+            const hiddenInput = document.getElementById(`${section.toLowerCase()}Hidden`);
+            const urlDisplay = document.getElementById(`${section.toLowerCase()}Url`);
+
+            uploadButton.addEventListener('click', () => handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay));
+            fetchButton.addEventListener('click', () => handleFetchImages(fetchButton, selectElement));
+            selectElement.addEventListener('change', () => handleImageSelection(selectElement, previewImg, hiddenInput));
+        });
+
+
                 // Sync color inputs
                 document.querySelectorAll('.color-input').forEach(container => {
                     const colorInput = container.querySelector('input[type="color"]');
