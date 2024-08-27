@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Colors API Form</title>
     <style>
-
         body { 
             font-family: Arial, sans-serif; 
             max-width: 800px; 
@@ -91,11 +90,19 @@
             cursor: pointer;
         }
         .uploaded-url {
-     word-break: break-all;
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #666;
-}
+            word-break: break-all;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .image-selection {
+            margin-top: 10px;
+        }
+        .image-selection select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +114,12 @@
             <button type="button" id="uploadAppLogo">Upload App Logo</button>
             <img id="appLogoPreview" src="" alt="App Logo Preview" class="image-preview">
             <input type="hidden" name="constantData.appLogo" id="appLogoHidden">
+            <div class="image-selection">
+                <button type="button" id="fetchImagesAppLogo">Fetch Existing Images</button>
+                <select id="existingImagesAppLogo" style="display: none;">
+                    <option value="">Select an existing image</option>
+                </select>
+            </div>
         </div>
 
         <div class="image-upload">
@@ -116,6 +129,12 @@
             <img id="appCompanyPreview" src="" alt="App Company Preview" class="image-preview">
             <input type="hidden" name="constantData.appCompany" id="appCompanyHidden">
             <div id="appCompanyUrl" class="uploaded-url"></div>
+            <div class="image-selection">
+                <button type="button" id="fetchImagesAppCompany">Fetch Existing Images</button>
+                <select id="existingImagesAppCompany" style="display: none;">
+                    <option value="">Select an existing image</option>
+                </select>
+            </div>
         </div>
 
         <div class="image-upload">
@@ -125,7 +144,14 @@
             <img id="appContactPreview" src="" alt="App Contact Preview" class="image-preview">
             <input type="hidden" name="constantData.appContact" id="appContactHidden">
             <div id="appContactUrl" class="uploaded-url"></div>
+            <div class="image-selection">
+                <button type="button" id="fetchImagesAppContact">Fetch Existing Images</button>
+                <select id="existingImagesAppContact" style="display: none;">
+                    <option value="">Select an existing image</option>
+                </select>
+            </div>
         </div>
+
         <h2>Header</h2>
         <div class="color-input">
             <input type="color" id="headerStartColor" value="#ffffff">
@@ -135,7 +161,7 @@
             <input type="color" id="headerEndColor" value="#ffffff">
             <input type="text" name="header.endColor" value="#ffffff">
         </div>
-        <div id="appContactUrl" class="uploaded-url"></div>
+
         <h2>Button</h2>
         <div class="color-input">
             <input type="color" id="buttonStartColor" value="#ee0979">
@@ -227,27 +253,8 @@
         <label for="appEmail">App Email:</label>
         <input type="email" id="appEmail" name="constantData.appEmail" value="">
 
-        <div class="image-upload">
-            <label for="appLogo">App Logo:</label>
-            <input type="file" id="appLogo" accept="image/*">
-            <button type="button" id="uploadAppLogo">Upload App Logo</button>
-            <img id="appLogoPreview" src="" alt="App Logo Preview" class="image-preview">
-            <input type="hidden" name="constantData.appLogo" id="appLogoHidden">
-        </div>
-
-        <label for="appCompany">App Company:</label>
-        <input type="text" id="appCompany" name="constantData.appCompany" value="https://wityysaver.s3.ap-south-1.amazonaws.com/geetika_1.png">
-
         <label for="appWebsite">App Website:</label>
         <input type="url" id="appWebsite" name="constantData.appWebsite" value="">
-
-        <div class="image-upload">
-            <label for="appContact">App Contact:</label>
-            <input type="file" id="appContact" accept="image/*">
-            <button type="button" id="uploadAppContact">Upload App Contact</button>
-            <img id="appContactPreview" src="" alt="App Contact Preview" class="image-preview">
-            <input type="hidden" name="constantData.appContact" id="appContactHidden">
-        </div>
 
         <label for="facebookLink">Facebook Link:</label>
         <input type="url" id="facebookLink" name="constantData.facebookLink" value="https://www.geetikabuilders.in/gk/index.html">
@@ -325,161 +332,249 @@
             <div class="ad-item">
                 <h3>Ad 1</h3>
                 <label for="ad1Name">Name:</label>
-                <input type="text" id="ad1Name" name="ads[0].name" value="Ad1">
-                
-                <label for="ad1PageLink">Page Link:</label>
-                <input type="url" id="ad1PageLink" name="ads[0].pagelink" value="https://example.com/ad1">
-                
-                <label for="ad1ImageLinks">Image Links (one per line):</label>
-                <textarea id="ad1ImageLinks" name="ads[0].imagelinks" rows="2">https://example.com/images/ad1/img1.jpg
-https://example.com/images/ad1/img2.jpg</textarea>
-                
-                <label for="ad1Contact">Contact Info (one per line):</label>
-                <textarea id="ad1Contact" name="ads[0].contact" rows="2">contact1@example.com
-123-456-7890</textarea>
+                <input type="text" id="ad1Name" name="ads <h2>Ads</h2>
+                <div id="adsContainer">
+                    <div class="ad-item">
+                        <h3>Ad 1</h3>
+                        <label for="ad1Name">Name:</label>
+                        <input type="text" id="ad1Name" name="ads[0].name" value="Ad1">
+            
+                        <label for="ad1PageLink">Page Link:</label>
+                        <input type="url" id="ad1PageLink" name="ads[0].pagelink" value="https://example.com/ad1">
+            
+                        <label for="ad1ImageLinks">Image Links (one per line):</label>
+                        <textarea id="ad1ImageLinks" name="ads[0].imagelinks" rows="2">https://example.com/images/ad1/img1.jpg
+            https://example.com/images/ad1/img2.jpg</textarea>
+            
+                        <label for="ad1Contact">Contact Info (one per line):</label>
+                        <textarea id="ad1Contact" name="ads[0].contact" rows="2">contact1@example.com
+            123-456-7890</textarea>
+                    </div>
+                </div>
+            
+                <button type="button" id="addAdButton">Add Another Ad</button>
+            
+                <button type="submit">Submit</button>
+            </form>
+            
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-button" onclick="closePopup()">&times;</span>
+                    <p id="popup-message"></p>
+                </div>
             </div>
             
-            <div class="ad-item">
-                <h3>Ad 2</h3>
-                <label for="ad2Name">Name:</label>
-                <input type="text" id="ad2Name" name="ads[1].name" value="Ad2">
-                
-                <label for="ad2PageLink">Page Link:</label>
-                <input type="url" id="ad2PageLink" name="ads[1].pagelink" value="https://example.com/ad2">
-                
-                <label for="ad2ImageLinks">Image Links (one per line):</label>
-                <textarea id="ad2ImageLinks" name="ads[1].imagelinks" rows="2">https://example.com/images/ad2/img1.jpg
-https://example.com/images/ad2/img2.jpg</textarea>
-                
-                <label for="ad2Contact">Contact Info (one per line):</label>
-                <textarea id="ad2Contact" name="ads[1].contact" rows="2">contact2@example.com
-098-765-4321</textarea>
-            </div>
-        </div>
-        
-        <button type="button" id="addAdButton">Add Another Ad</button>
-
-        <button type="submit">Submit</button>
-    </form>
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <span class="close-button" onclick="closePopup()">&times;</span>
-            <p id="popup-message"></p>
-        </div>
-    </div>
-    <script>
-        // Sync color inputs
-        document.querySelectorAll('.color-input').forEach(container => {
-        const colorInput = container.querySelector('input[type="color"]');
-        const textInput = container.querySelector('input[type="text"]');
-        colorInput.addEventListener('input', () => textInput.value = colorInput.value);
-        textInput.addEventListener('input', () => colorInput.value = textInput.value);
-    });
-
-    AWS.config.update({
-            accessKeyId: 'AKIA4MTWMIGTSYXUGJ6I',
-            secretAccessKey: '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',
-            region: 'ap-south-1'
-        });
-
-        const s3 = new AWS.S3();
-
-        async function uploadToS3(file) {
-            const params = {
-                Bucket: 'wityysaver',
-                Key: `${Date.now()}-${file.name}`,
-                Body: file,
-                ACL: 'public-read'
-            };
-
-            return new Promise((resolve, reject) => {
-                s3.upload(params, (err, data) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(data.Location);
-                    }
+            <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
+            <script>
+                // Sync color inputs
+                document.querySelectorAll('.color-input').forEach(container => {
+                    const colorInput = container.querySelector('input[type="color"]');
+                    const textInput = container.querySelector('input[type="text"]');
+                    colorInput.addEventListener('input', () => textInput.value = colorInput.value);
+                    textInput.addEventListener('input', () => colorInput.value = textInput.value);
                 });
-            });
-        }
-
-        async function uploadImage(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
-            const file = fileInput.files[0];
-            if (file) {
-                uploadButton.textContent = 'Uploading...';
-                uploadButton.disabled = true;
-
-                try {
-                    const fileUrl = await uploadToS3(file);
-
-                    previewImg.src = fileUrl;
-                    previewImg.style.display = 'block';
-                    hiddenInput.value = fileUrl;
-                    if (urlDisplay) {
-                        urlDisplay.textContent = fileUrl;
-                    }
-                    uploadButton.textContent = 'Upload Complete';
-                    alert('File uploaded successfully!');
-                } catch (error) {
-                    console.error('Error:', error);
-                    uploadButton.textContent = 'Upload Failed';
-                    alert('File upload failed. Please try again.');
-                } finally {
-                    uploadButton.disabled = false;
+            
+                AWS.config.update({
+                    accessKeyId: 'AKIA4MTWMIGTSYXUGJ6I',
+                    secretAccessKey: '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',
+                    region: 'ap-south-1'
+                });
+            
+                const s3 = new AWS.S3();
+            
+                async function uploadToS3(file) {
+                    const params = {
+                        Bucket: 'wityysaver',
+                        Key: `${Date.now()}-${file.name}`,
+                        Body: file,
+                        ACL: 'public-read'
+                    };
+            
+                    return new Promise((resolve, reject) => {
+                        s3.upload(params, (err, data) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(data.Location);
+                            }
+                        });
+                    });
                 }
-            }
-        }
-
-        document.getElementById('uploadAppCompany').addEventListener('click', function() {
-            uploadImage(
-                document.getElementById('appCompany'),
-                document.getElementById('appCompanyPreview'),
-                document.getElementById('appCompanyHidden'),
-                this,
-                document.getElementById('appCompanyUrl')
-            );
-        });
-
-        document.getElementById('uploadAppContact').addEventListener('click', function() {
-            uploadImage(
-                document.getElementById('appContact'),
-                document.getElementById('appContactPreview'),
-                document.getElementById('appContactHidden'),
-                this,
-                document.getElementById('appContactUrl')
-            );
-        });
-
-        document.getElementById('updateForm').addEventListener('submit', function(e) {
-            e.preventDefault();
             
-            const formData = new FormData(this);
-            const jsonData = {};
-
-            for (let [key, value] of formData.entries()) {
-                // Process form data
-                // (Add your form data processing logic here)
-            }
-
-            console.log(JSON.stringify(jsonData, null, 2));
+                async function uploadImage(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
+                    const file = fileInput.files[0];
+                    if (file) {
+                        uploadButton.textContent = 'Uploading...';
+                        uploadButton.disabled = true;
             
-            fetch('https://propertify.onrender.com/api/colors/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(jsonData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                alert('Form submitted successfully!');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form. Please try again.');
-            });
-        });
-    </script>
-</body>
-</html>
+                        try {
+                            const fileUrl = await uploadToS3(file);
+            
+                            previewImg.src = fileUrl;
+                            previewImg.style.display = 'block';
+                            hiddenInput.value = fileUrl;
+                            if (urlDisplay) {
+                                urlDisplay.textContent = fileUrl;
+                            }
+                            uploadButton.textContent = 'Upload Complete';
+                            alert('File uploaded successfully!');
+                        } catch (error) {
+                            console.error('Error:', error);
+                            uploadButton.textContent = 'Upload Failed';
+                            alert('File upload failed. Please try again.');
+                        } finally {
+                            uploadButton.disabled = false;
+                        }
+                    }
+                }
+            
+                // Function to fetch images from S3 bucket
+                async function fetchImagesFromS3() {
+                    const params = {
+                        Bucket: 'wityysaver',
+                        Prefix: '' // You can specify a prefix if images are in a specific folder
+                    };
+            
+                    return new Promise((resolve, reject) => {
+                        s3.listObjectsV2(params, (err, data) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                const imageUrls = data.Contents
+                                    .filter(item => item.Key.match(/\.(jpg|jpeg|png|gif)$/i))
+                                    .map(item => `https://${params.Bucket}.s3.amazonaws.com/${item.Key}`);
+                                resolve(imageUrls);
+                            }
+                        });
+                    });
+                }
+            
+                // Function to handle fetching and populating image select
+                async function handleFetchImages(fetchButton, selectElement) {
+                    try {
+                        fetchButton.disabled = true;
+                        fetchButton.textContent = 'Fetching...';
+                        const imageUrls = await fetchImagesFromS3();
+                        selectElement.innerHTML = '<option value="">Select an existing image</option>';
+                        imageUrls.forEach(url => {
+                            const option = document.createElement('option');
+                            option.value = url;
+                            option.textContent = url.split('/').pop(); // Display only the filename
+                            selectElement.appendChild(option);
+                        });
+                        selectElement.style.display = 'block';
+                    } catch (error) {
+                        console.error('Error fetching images:', error);
+                        alert('Failed to fetch images. Please try again.');
+                    } finally {
+                        fetchButton.disabled = false;
+                        fetchButton.textContent = 'Fetch Existing Images';
+                    }
+                }
+            
+                // Function to handle image selection
+                function handleImageSelection(selectElement, previewImg, hiddenInput) {
+                    const selectedUrl = selectElement.value;
+                    if (selectedUrl) {
+                        previewImg.src = selectedUrl;
+                        previewImg.style.display = 'block';
+                        hiddenInput.value = selectedUrl;
+                    }
+                }
+            
+                // Set up event listeners for each image upload section
+                ['AppLogo', 'AppCompany', 'AppContact'].forEach(section => {
+                    const uploadButton = document.getElementById(`upload${section}`);
+                    const fetchButton = document.getElementById(`fetchImages${section}`);
+                    const selectElement = document.getElementById(`existingImages${section}`);
+                    const fileInput = document.getElementById(section.toLowerCase());
+                    const previewImg = document.getElementById(`${section.toLowerCase()}Preview`);
+                    const hiddenInput = document.getElementById(`${section.toLowerCase()}Hidden`);
+                    const urlDisplay = document.getElementById(`${section.toLowerCase()}Url`);
+            
+                    uploadButton.addEventListener('click', () => uploadImage(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay));
+                    fetchButton.addEventListener('click', () => handleFetchImages(fetchButton, selectElement));
+                    selectElement.addEventListener('change', () => handleImageSelection(selectElement, previewImg, hiddenInput));
+                });
+            
+                // Add Ad button functionality
+                let adCount = 1;
+                document.getElementById('addAdButton').addEventListener('click', function() {
+                    adCount++;
+                    const newAdHtml = `
+                        <div class="ad-item">
+                            <h3>Ad ${adCount}</h3>
+                            <label for="ad${adCount}Name">Name:</label>
+                            <input type="text" id="ad${adCount}Name" name="ads[${adCount-1}].name" value="Ad${adCount}">
+            
+                            <label for="ad${adCount}PageLink">Page Link:</label>
+                            <input type="url" id="ad${adCount}PageLink" name="ads[${adCount-1}].pagelink" value="">
+            
+                            <label for="ad${adCount}ImageLinks">Image Links (one per line):</label>
+                            <textarea id="ad${adCount}ImageLinks" name="ads[${adCount-1}].imagelinks" rows="2"></textarea>
+            
+                            <label for="ad${adCount}Contact">Contact Info (one per line):</label>
+                            <textarea id="ad${adCount}Contact" name="ads[${adCount-1}].contact" rows="2"></textarea>
+                        </div>
+                    `;
+                    document.getElementById('adsContainer').insertAdjacentHTML('beforeend', newAdHtml);
+                });
+            
+                document.getElementById('updateForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+            
+                    const formData = new FormData(this);
+                    const jsonData = {};
+            
+                    for (let [key, value] of formData.entries()) {
+                        if (key.includes('.')) {
+                            const [parent, child] = key.split('.');
+                            if (!jsonData[parent]) jsonData[parent] = {};
+                            jsonData[parent][child] = value;
+                        } else if (key.includes('[')) {
+                            const [arrayName, index, property] = key.match(/([^\[]+)\[(\d+)\]\.(.+)/).slice(1);
+                            if (!jsonData[arrayName]) jsonData[arrayName] = [];
+                            if (!jsonData[arrayName][index]) jsonData[arrayName][index] = {};
+                            jsonData[arrayName][index][property] = value;
+                        } else {
+                            jsonData[key] = value;
+                        }
+                    }
+            
+                    // Handle arrays like imagelinks and contact
+                    jsonData.ads.forEach(ad => {
+                        if (ad.imagelinks) ad.imagelinks = ad.imagelinks.split('\n').filter(Boolean);
+                        if (ad.contact) ad.contact = ad.contact.split('\n').filter(Boolean);
+                    });
+            
+                    console.log(JSON.stringify(jsonData, null, 2));
+            
+                    fetch('https://propertify.onrender.com/api/colors/update', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(jsonData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        alert('Form submitted successfully!');
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert('An error occurred while submitting the form. Please try again.');
+                    });
+                });
+            
+                function showPopup(message) {
+                    document.getElementById('popup-message').textContent = message;
+                    document.getElementById('popup').style.display = 'block';
+                }
+            
+                function closePopup() {
+                    document.getElementById('popup').style.display = 'none';
+                }
+            </script>
+            </body>
+            </html>
