@@ -368,31 +368,31 @@
             <script>
 
 async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
-            const file = fileInput.files[0];
-            if (file) {
-                uploadButton.textContent = 'Uploading...';
-                uploadButton.disabled = true;
+        const file = fileInput.files[0];
+        if (file) {
+            uploadButton.textContent = 'Uploading...';
+            uploadButton.disabled = true;
 
-                try {
-                    const fileUrl = await uploadToS3(file);
+            try {
+                const fileUrl = await uploadToS3(file);
 
-                    previewImg.src = fileUrl;
-                    previewImg.style.display = 'block';
-                    hiddenInput.value = fileUrl;
-                    if (urlDisplay) {
-                        urlDisplay.textContent = fileUrl;
-                    }
-                    uploadButton.textContent = 'Upload Complete';
-                    showPopup('File uploaded successfully!');
-                } catch (error) {
-                    console.error('Error:', error);
-                    uploadButton.textContent = 'Upload Failed';
-                    showPopup('File upload failed. Please try again.');
-                } finally {
-                    uploadButton.disabled = false;
+                previewImg.src = fileUrl;
+                previewImg.style.display = 'block';
+                hiddenInput.value = fileUrl;
+                if (urlDisplay) {
+                    urlDisplay.textContent = fileUrl;
                 }
+                uploadButton.textContent = 'Upload Complete';
+                showPopup('File uploaded successfully!');
+            } catch (error) {
+                console.error('Error:', error);
+                uploadButton.textContent = 'Upload Failed';
+                showPopup('File upload failed. Please try again.');
+            } finally {
+                uploadButton.disabled = false;
             }
         }
+    }
 
         // Set up event listeners for each image upload section
         ['AppLogo', 'AppCompany', 'AppContact'].forEach(section => {
@@ -410,40 +410,46 @@ async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButto
         });
 
 
-                // Sync color inputs
-                document.querySelectorAll('.color-input').forEach(container => {
-                    const colorInput = container.querySelector('input[type="color"]');
-                    const textInput = container.querySelector('input[type="text"]');
-                    colorInput.addEventListener('input', () => textInput.value = colorInput.value);
-                    textInput.addEventListener('input', () => colorInput.value = textInput.value);
-                });
+        document.querySelectorAll('.color-input').forEach(container => {
+        const colorInput = container.querySelector('input[type="color"]');
+        const textInput = container.querySelector('input[type="text"]');
+        colorInput.addEventListener('input', () => textInput.value = colorInput.value);
+        textInput.addEventListener('input', () => colorInput.value = textInput.value);
+    });
+
+    // Configure AWS SDK
+    AWS.config.update({
+        region: 'ap-south-1',
+        credentials: new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: 'YOUR_IDENTITY_POOL_ID' // Replace with your Cognito Identity Pool ID
+        })
+    });
+
+    const s3 = new AWS.S3({
+        apiVersion: '2006-03-01',
+        params: {Bucket: 'wityysaver'}
+    });
             
-                AWS.config.update({
-                    accessKeyId: 'AKIA4MTWMIGTSYXUGJ6I',
-                    secretAccessKey: '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',
-                    region: 'ap-south-1'
-                });
-            
-                const s3 = new AWS.S3();
             
                 async function uploadToS3(file) {
-                    const params = {
-                        Bucket: 'wityysaver',
-                        Key: `${Date.now()}-${file.name}`,
-                        Body: file,
-                        ACL: 'public-read'
-                    };
-            
-                    return new Promise((resolve, reject) => {
-                        s3.upload(params, (err, data) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                resolve(data.Location);
-                            }
-                        });
-                    });
+        const params = {
+            Bucket: 'wityysaver',
+            Key: `${Date.now()}-${file.name}`,
+            Body: file,
+            ACL: 'public-read'
+        };
+
+        return new Promise((resolve, reject) => {
+            s3.upload(params, (err, data) => {
+                if (err) {
+                    console.error("Error", err);
+                    reject(err);
+                } else {
+                    resolve(data.Location);
                 }
+            });
+        });
+    }
             
                 async function uploadImage(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
                     const file = fileInput.files[0];
