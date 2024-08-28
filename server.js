@@ -7,7 +7,6 @@ bodyParser = require('body-parser');
 const uuid = require('uuid'); // Import the uuid library
 const AWS = require('aws-sdk');
 const multer = require('multer');
-const app = express();
 const cors = require('cors'); // Import the cors middleware
 const PORT = process.env.PORT || 3000;
 
