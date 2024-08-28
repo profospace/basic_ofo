@@ -2,10 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 bodyParser = require('body-parser');
-const uuid = require('uuid'); // Import the uuid library
 const AWS = require('aws-sdk');
-const multer = require('multer');
-const cors = require('cors'); // Import the cors middleware
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
