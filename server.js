@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const amplitude = require('@amplitude/analytics-node');
-const axios = require('axios');
 bodyParser = require('body-parser');
 const uuid = require('uuid'); // Import the uuid library
 const AWS = require('aws-sdk');
