@@ -418,39 +418,37 @@ async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButto
     });
 
     // Configure AWS SDK
-    AWS.config.update({
+  // Configure AWS SDK
+  AWS.config.update({
         region: 'ap-south-1',
-        credentials: new AWS.CognitoIdentityCredentials({
-            IdentityPoolId: 'YOUR_IDENTITY_POOL_ID' // Replace with your Cognito Identity Pool ID
+        credentials: new AWS.Credentials({
+            accessKeyId: 'YOUR_ACCESS_KEY_ID', // Replace with your IAM user's access key ID
+            secretAccessKey: 'YOUR_SECRET_ACCESS_KEY' // Replace with your IAM user's secret access key
         })
     });
 
-    const s3 = new AWS.S3({
-        apiVersion: '2006-03-01',
-        params: {Bucket: 'wityysaver'}
-    });
-            
-            
-                async function uploadToS3(file) {
-        const params = {
-            Bucket: 'wityysaver',
-            Key: `${Date.now()}-${file.name}`,
-            Body: file,
-            ACL: 'public-read'
-        };
 
-        return new Promise((resolve, reject) => {
-            s3.upload(params, (err, data) => {
-                if (err) {
-                    console.error("Error", err);
-                    reject(err);
-                } else {
-                    resolve(data.Location);
-                }
-            });
+
+    async function uploadToS3(file) {
+        const response = await fetch(`/api/get-upload-url?fileName=${file.name}&fileType=${file.type}`);
+        const { signedRequest, url } = await response.json();
+
+        await fetch(signedRequest, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type }
         });
+
+        return url;
+    }
+
+    async function fetchImagesFromS3() {
+        const response = await fetch('/api/list-images');
+        return await response.json();
     }
             
+            
+     
                 async function uploadImage(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
                     const file = fileInput.files[0];
                     if (file) {
@@ -479,26 +477,7 @@ async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButto
                 }
             
                 // Function to fetch images from S3 bucket
-                async function fetchImagesFromS3() {
-                    const params = {
-                        Bucket: 'wityysaver',
-                        Prefix: '' // You can specify a prefix if images are in a specific folder
-                    };
-            
-                    return new Promise((resolve, reject) => {
-                        s3.listObjectsV2(params, (err, data) => {
-                            if (err) {
-                                reject(err);
-                            } else {
-                                const imageUrls = data.Contents
-                                    .filter(item => item.Key.match(/\.(jpg|jpeg|png|gif)$/i))
-                                    .map(item => `https://${params.Bucket}.s3.amazonaws.com/${item.Key}`);
-                                resolve(imageUrls);
-                            }
-                        });
-                    });
-                }
-            
+     
                 // Function to handle fetching and populating image select
                 async function handleFetchImages(fetchButton, selectElement) {
                     try {
