@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS S3 Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        #imageGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .imageItem {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .imageItem img {
+            max-width: 100%;
+            height: auto;
+        }
+        .imageUrl, .imageInfo {
+            word-break: break-all;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+        #uploadSection {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #uploadedImageInfo {
+            margin-top: 10px;
+            text-align: left;
+            display: none;
+        }
+        #progressBarContainer {
+            width: 100%;
+            background-color: #f0f0f0;
+            padding: 3px;
+            border-radius: 3px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
+            margin-top: 10px;
+        }
+        #progressBar {
+            width: 0;
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 3px;
+            transition: width 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <h1>AWS S3 Image Gallery</h1>
+    
+    <div id="uploadSection">
+        <h2>Upload New Image</h2>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="uploadImage()">Upload</button>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+        <div id="uploadedImageInfo"></div>
+    </div>
+
+    <h2>Existing Images</h2>
+    <div id="imageGrid"></div>
+
+    <script>
+        async function fetchImagesFromS3() {
+            try {
+                const response = await fetch('/api/list-images');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch images');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching images:', error);
+                return [];
+            }
+        }
+
+        async function loadImages() {
+            const imageGrid = document.getElementById('imageGrid');
+            const images = await fetchImagesFromS3();
+            
+            imageGrid.innerHTML = ''; // Clear existing images
+            
+            images.forEach((imageInfo, index) => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'imageItem';
+
+                const img = document.createElement('img');
+                img.src = imageInfo.url;
+                img.alt = `AWS S3 Image ${index + 1}`;
+
+                const urlText = document.createElement('p');
+                urlText.className = 'imageUrl';
+                urlText.textContent = imageInfo.url;
+
+                const infoText = document.createElement('p');
+                infoText.className = 'imageInfo';
+                infoText.textContent = `Last modified: ${new Date(imageInfo.lastModified).toLocaleString()}
+                                        Size: ${(imageInfo.size / 1024 / 1024).toFixed(2)} MB`;
+
+                imageItem.appendChild(img);
+                imageItem.appendChild(urlText);
+                imageItem.appendChild(infoText);
+                imageGrid.appendChild(imageItem);
+            });
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file to upload');
+                return;
+            }
+
+            const progressBar = document.getElementById('progressBar');
+            const uploadedImageInfo = document.getElementById('uploadedImageInfo');
+            uploadedImageInfo.style.display = 'none';
+            progressBar.style.width = '0%';
+
+            try {
+                // Get a signed URL for uploading
+                const response = await fetch(`/api/get-upload-url?fileName=${file.name}&fileType=${file.type}`);
+                const { signedRequest, url } = await response.json();
+
+                // Upload the file to S3 with progress tracking
+                await new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('PUT', signedRequest);
+                    xhr.setRequestHeader('Content-Type', file.type);
+
+                    xhr.upload.onprogress = (event) => {
+                        if (event.lengthComputable) {
+                            const percentComplete = (event.loaded / event.total) * 100;
+                            progressBar.style.width = percentComplete + '%';
+                        }
+                    };
+
+                    xhr.onload = () => {
+                        if (xhr.status === 200) {
+                            resolve();
+                        } else {
+                            reject(new Error('Upload failed'));
+                        }
+                    };
+
+                    xhr.onerror = () => reject(new Error('Upload failed'));
+                    xhr.send(file);
+                });
+
+                // Display the uploaded image info
+                uploadedImageInfo.innerHTML = `
+                    <h3>Uploaded Image Information:</h3>
+                    <p>File Name: ${file.name}</p>
+                    <p>File Type: ${file.type}</p>
+                    <p>File Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                    <p>URL: ${url}</p>
+                `;
+                uploadedImageInfo.style.display = 'block';
+
+                // Reload the image grid
+                await loadImages();
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadImages);
+    </script>
+</body>
+</html>

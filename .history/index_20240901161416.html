@@ -496,7 +496,10 @@
                     fetchButton.textContent = 'Fetch Existing Images';
                 }
             }
- 
+            document.getElementById('viewGalleryButton').addEventListener('click', function() {
+    window.open('aws-image-gallery.html', '_blank');
+});
+
             function selectImage(url, containerId) {
                 const section = containerId.replace('PreviewContainer', '');
                 const previewImg = document.getElementById(`${section}Preview`);

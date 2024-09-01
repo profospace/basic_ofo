@@ -269,9 +269,6 @@
             <input type="color" id="listTitleBgColor" value="#f2f2f2">
             <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
         </div>
-        <button type="button" id="viewGalleryButton">View AWS Image Gallery</button>
-
-
 
         <h2>List Background</h2>
         <div class="color-input">
@@ -445,10 +442,6 @@
     </div>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        (function() {
-    try {
-        console.log('Script started');
-
         document.addEventListener('DOMContentLoaded', function () {
             console.log('DOM fully loaded and parsed=========>>>');
             async function fetchImagesFromS3() {
@@ -496,7 +489,7 @@
                     fetchButton.textContent = 'Fetch Existing Images';
                 }
             }
- 
+
             function selectImage(url, containerId) {
                 const section = containerId.replace('PreviewContainer', '');
                 const previewImg = document.getElementById(`${section}Preview`);
@@ -615,11 +608,6 @@
             });
         });
 
-        console.log('Event listener added');
-    } catch (error) {
-        console.error('Error in script:', error);
-    }
-})();
 
         document.getElementById('updateForm').addEventListener('submit', async function (e) {
             e.preventDefault();

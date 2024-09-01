@@ -1,24 +1,11 @@
 const express = require('express');
 const path = require('path');
+
 const AWS = require('aws-sdk');
 const cors = require('cors');
 require('dotenv').config();
-
-const PORT = process.env.PORT || 1007;
+const PORT = process.env.PORT || 1002;
 const app = express();
-
-// CORS middleware
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:1007'); // Replace with your frontend URL if different
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
-});
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
@@ -36,7 +23,11 @@ if (!awsConfig.accessKeyId || !awsConfig.secretAccessKey) {
     process.exit(1);
 }
 
-AWS.config.update(awsConfig);
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: 'ap-south-1'
+});
 
 const s3 = new AWS.S3();
 
@@ -47,6 +38,7 @@ app.get('/aws-image-gallery.html', (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 
 app.get('/api/get-upload-url', (req, res) => {
     const fileName = req.query.fileName;
@@ -91,13 +83,9 @@ app.get('/api/list-images', (req, res) => {
     });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(err.status || 500).json({
-        message: err.message,
-        error: process.env.NODE_ENV === 'production' ? {} : err
-    });
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {

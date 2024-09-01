@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS S3 Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        #imageGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .imageItem {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+        .imageItem img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .imageIndex {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2px 6px;
+            font-size: 0.8em;
+            border-radius: 3px;
+        }
+        .imageUrl {
+            word-break: break-all;
+            font-size: 0.7em;
+            margin-top: 5px;
+        }
+        #uploadSection {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #uploadedImageUrl {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>AWS S3 Image Gallery</h1>
+    
+    <div id="uploadSection">
+        <h2>Upload New Image</h2>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="uploadImage()">Upload</button>
+        <div id="uploadedImageUrl"></div>
+    </div>
+
+    <h2>Existing Images</h2>
+    <div id="imageGrid"></div>
+
+    <script>
+        async function fetchImagesFromS3() {
+            try {
+                const response = await fetch('/api/list-images');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch images');
+                }
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching images:', error);
+                return [];
+            }
+        }
+
+        async function loadImages() {
+            const imageGrid = document.getElementById('imageGrid');
+            const images = await fetchImagesFromS3();
+            
+            imageGrid.innerHTML = ''; // Clear existing images
+            
+            images.forEach((imageUrl, index) => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'imageItem';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = `AWS S3 Image ${index + 1}`;
+
+                const indexSpan = document.createElement('span');
+                indexSpan.className = 'imageIndex';
+                indexSpan.textContent = index + 1;
+
+                const urlText = document.createElement('p');
+                urlText.className = 'imageUrl';
+                urlText.textContent = imageUrl;
+
+                imageItem.appendChild(indexSpan);
+                imageItem.appendChild(img);
+                imageItem.appendChild(urlText);
+                imageGrid.appendChild(imageItem);
+            });
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file to upload');
+                return;
+            }
+
+            try {
+                // Get a signed URL for uploading
+                const response = await fetch(`/api/get-upload-url?fileName=${file.name}&fileType=${file.type}`);
+                const { signedRequest, url } = await response.json();
+
+                // Upload the file to S3
+                await fetch(signedRequest, {
+                    method: 'PUT',
+                    body: file,
+                    headers: { 'Content-Type': file.type }
+                });
+
+                // Display the uploaded image URL
+                const uploadedImageUrl = document.getElementById('uploadedImageUrl');
+                uploadedImageUrl.textContent = `Uploaded Image URL: ${url}`;
+
+                // Reload the image grid
+                await loadImages();
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadImages);
+    </script>
+</body>
+</html>

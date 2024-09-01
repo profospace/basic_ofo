@@ -203,7 +203,7 @@
                 <div id="appLogoPreviewContainer" class="image-preview-container"></div>
             </div>
         </div>
-
+        
         <div class="image-upload">
             <label for="appCompany">App Company:</label>
             <input type="file" id="appCompany" accept="image/*">
@@ -216,7 +216,7 @@
                 <div id="appCompanyPreviewContainer" class="image-preview-container"></div>
             </div>
         </div>
-
+        
         <div class="image-upload">
             <label for="appContact">App Contact:</label>
             <input type="file" id="appContact" accept="image/*">
@@ -228,7 +228,7 @@
                 <button type="button" id="fetchImagesAppContact">Fetch Existing Images</button>
                 <div id="appContactPreviewContainer" class="image-preview-container"></div>
             </div>
-        </div>
+            </div>
 
         <h2>Header</h2>
         <div class="color-input">
@@ -269,9 +269,6 @@
             <input type="color" id="listTitleBgColor" value="#f2f2f2">
             <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
         </div>
-        <button type="button" id="viewGalleryButton">View AWS Image Gallery</button>
-
-
 
         <h2>List Background</h2>
         <div class="color-input">
@@ -445,181 +442,173 @@
     </div>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        (function() {
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
+
+    async function fetchImagesFromS3() {
     try {
-        console.log('Script started');
+        const response = await fetch('/api/list-images');
+        if (!response.ok) {
+            throw new Error('Failed to fetch images');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching images:', error);
+        showPopup('Failed to fetch images. Please try again.');
+        return [];
+    }
+}
 
-        document.addEventListener('DOMContentLoaded', function () {
-            console.log('DOM fully loaded and parsed=========>>>');
-            async function fetchImagesFromS3() {
-                try {
-                    const response = await fetch('/api/list-images');
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch images');
-                    }
-                    return await response.json();
-                } catch (error) {
-                    console.error('Error fetching images:', error);
-                    showPopup('Failed to fetch images. Please try again.');
-                    return [];
-                }
-            }
+    async function handleFetchImages(fetchButton, previewContainer) {
+        fetchButton.disabled = true;
+        fetchButton.textContent = 'Fetching...';
 
-            async function handleFetchImages(fetchButton, previewContainer) {
-                fetchButton.disabled = true;
-                fetchButton.textContent = 'Fetching...';
+        try {
+            const imageUrls = await fetchImagesFromS3();
+            previewContainer.innerHTML = '';
 
-                try {
-                    const imageUrls = await fetchImagesFromS3();
-                    previewContainer.innerHTML = '';
-
-                    imageUrls.forEach((url, index) => {
-                        const img = document.createElement('img');
-                        img.src = url;
-                        img.alt = `Image ${index + 1}`;
-                        img.style.width = '100px';
-                        img.style.height = '100px';
-                        img.style.objectFit = 'cover';
-                        img.style.margin = '5px';
-                        img.style.cursor = 'pointer';
-                        img.onclick = () => selectImage(url, previewContainer.id);
-                        previewContainer.appendChild(img);
-                    });
-
-                    previewContainer.style.display = 'flex';
-                    previewContainer.style.flexWrap = 'wrap';
-                } catch (error) {
-                    console.error('Error handling image fetch:', error);
-                    showPopup('Failed to handle image fetch. Please try again.');
-                } finally {
-                    fetchButton.disabled = false;
-                    fetchButton.textContent = 'Fetch Existing Images';
-                }
-            }
- 
-            function selectImage(url, containerId) {
-                const section = containerId.replace('PreviewContainer', '');
-                const previewImg = document.getElementById(`${section}Preview`);
-                const hiddenInput = document.getElementById(`${section}Hidden`);
-                const urlDisplay = document.getElementById(`${section}Url`);
-
-                previewImg.src = url;
-                previewImg.style.display = 'block';
-                hiddenInput.value = url;
-                if (urlDisplay) {
-                    urlDisplay.textContent = url;
-                    urlDisplay.style.display = 'block';
-                }
-
-                showPopup('Image selected successfully!');
-            }
-
-            async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
-                console.log('handleImageUpload called');
-                const file = fileInput.files[0];
-                if (file) {
-                    console.log('File selected:', file.name);
-                    uploadButton.textContent = 'Uploading...';
-                    uploadButton.disabled = true;
-
-                    try {
-                        const formData = new FormData();
-                        formData.append('file', file);
-
-                        const response = await fetch('/api/upload', {
-                            method: 'POST',
-                            body: formData
-                        });
-
-                        if (!response.ok) {
-                            throw new Error('Upload failed');
-                        }
-
-                        const data = await response.json();
-                        const fileUrl = data.url;
-
-                        console.log('File uploaded successfully:', fileUrl);
-                        previewImg.src = fileUrl;
-                        previewImg.style.display = 'block';
-                        hiddenInput.value = fileUrl;
-                        if (urlDisplay) {
-                            urlDisplay.textContent = fileUrl;
-                            urlDisplay.style.display = 'block';
-                        }
-                        uploadButton.textContent = 'Upload Complete';
-                        showPopup('File uploaded successfully!');
-                    } catch (error) {
-                        console.error('Upload error:', error);
-                        uploadButton.textContent = 'Upload Failed';
-                        showPopup('File upload failed. Please try again.');
-                    } finally {
-                        uploadButton.disabled = false;
-                    }
-                } else {
-                    console.log('No file selected');
-                    showPopup('Please select a file to upload.');
-                }
-            }
-
-            async function uploadToS3(file) {
-                console.log('Uploading to S3:', file.name);
-                const response = await fetch(`/api/get-upload-url?fileName=${file.name}&fileType=${file.type}`);
-                const { signedRequest, url } = await response.json();
-
-                await fetch(signedRequest, {
-                    method: 'PUT',
-                    body: file,
-                    headers: { 'Content-Type': file.type }
-                });
-
-                return url;
-            }
-
-            function showPopup(message) {
-                console.log('Showing popup:', message);
-                const popup = document.getElementById('popup');
-                const popupMessage = document.getElementById('popup-message');
-                popupMessage.textContent = message;
-                popup.style.display = 'block';
-
-                setTimeout(() => {
-                    popup.style.display = 'none';
-                }, 3000);
-            }
-
-            ['AppLogo', 'AppCompany', 'AppContact'].forEach(section => {
-                const uploadButton = document.getElementById(`upload${section}`);
-                const fetchButton = document.getElementById(`fetchImages${section}`);
-                const fileInput = document.getElementById(section.toLowerCase());
-                const previewImg = document.getElementById(`${section.toLowerCase()}Preview`);
-                const hiddenInput = document.getElementById(`${section.toLowerCase()}Hidden`);
-                const urlDisplay = document.getElementById(`${section.toLowerCase()}Url`);
-                const previewContainer = document.getElementById(`${section.toLowerCase()}PreviewContainer`);
-
-                if (uploadButton && fileInput && previewImg && hiddenInput && fetchButton && previewContainer) {
-                    console.log(`Setting up event listeners for ${section}`);
-                    uploadButton.addEventListener('click', () => {
-                        fileInput.click(); // Trigger file input when upload button is clicked
-                    });
-                    fileInput.addEventListener('change', () => {
-                        console.log(`${section} file selected`);
-                        handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay);
-                    });
-                    fetchButton.addEventListener('click', () => {
-                        console.log(`${section} fetch button clicked`);
-                        handleFetchImages(fetchButton, previewContainer);
-                    });
-                } else {
-                    console.error(`Missing elements for ${section}`);
-                }
+            imageUrls.forEach((url, index) => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = `Image ${index + 1}`;
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.objectFit = 'cover';
+                img.style.margin = '5px';
+                img.style.cursor = 'pointer';
+                img.onclick = () => selectImage(url, previewContainer.id);
+                previewContainer.appendChild(img);
             });
+
+            previewContainer.style.display = 'flex';
+            previewContainer.style.flexWrap = 'wrap';
+        } catch (error) {
+            console.error('Error handling image fetch:', error);
+            showPopup('Failed to handle image fetch. Please try again.');
+        } finally {
+            fetchButton.disabled = false;
+            fetchButton.textContent = 'Fetch Existing Images';
+        }
+    }
+
+    function selectImage(url, containerId) {
+        const section = containerId.replace('PreviewContainer', '');
+        const previewImg = document.getElementById(`${section}Preview`);
+        const hiddenInput = document.getElementById(`${section}Hidden`);
+        const urlDisplay = document.getElementById(`${section}Url`);
+
+        previewImg.src = url;
+        previewImg.style.display = 'block';
+        hiddenInput.value = url;
+        if (urlDisplay) {
+            urlDisplay.textContent = url;
+            urlDisplay.style.display = 'block';
+        }
+
+        showPopup('Image selected successfully!');
+    }
+
+    async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
+    console.log('handleImageUpload called');
+    const file = fileInput.files[0];
+    if (file) {
+        console.log('File selected:', file.name);
+        uploadButton.textContent = 'Uploading...';
+        uploadButton.disabled = true;
+
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Upload failed');
+            }
+
+            const data = await response.json();
+            const fileUrl = data.url;
+
+            console.log('File uploaded successfully:', fileUrl);
+            previewImg.src = fileUrl;
+            previewImg.style.display = 'block';
+            hiddenInput.value = fileUrl;
+            if (urlDisplay) {
+                urlDisplay.textContent = fileUrl;
+                urlDisplay.style.display = 'block';
+            }
+            uploadButton.textContent = 'Upload Complete';
+            showPopup('File uploaded successfully!');
+        } catch (error) {
+            console.error('Upload error:', error);
+            uploadButton.textContent = 'Upload Failed';
+            showPopup('File upload failed. Please try again.');
+        } finally {
+            uploadButton.disabled = false;
+        }
+    } else {
+        console.log('No file selected');
+        showPopup('Please select a file to upload.');
+    }
+}
+
+    async function uploadToS3(file) {
+        console.log('Uploading to S3:', file.name);
+        const response = await fetch(`/api/get-upload-url?fileName=${file.name}&fileType=${file.type}`);
+        const { signedRequest, url } = await response.json();
+
+        await fetch(signedRequest, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type }
         });
 
-        console.log('Event listener added');
-    } catch (error) {
-        console.error('Error in script:', error);
+        return url;
     }
-})();
+
+    function showPopup(message) {
+        console.log('Showing popup:', message);
+        const popup = document.getElementById('popup');
+        const popupMessage = document.getElementById('popup-message');
+        popupMessage.textContent = message;
+        popup.style.display = 'block';
+
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 3000);
+    }
+
+    ['AppLogo', 'AppCompany', 'AppContact'].forEach(section => {
+    const uploadButton = document.getElementById(`upload${section}`);
+    const fetchButton = document.getElementById(`fetchImages${section}`);
+    const fileInput = document.getElementById(section.toLowerCase());
+    const previewImg = document.getElementById(`${section.toLowerCase()}Preview`);
+    const hiddenInput = document.getElementById(`${section.toLowerCase()}Hidden`);
+    const urlDisplay = document.getElementById(`${section.toLowerCase()}Url`);
+    const previewContainer = document.getElementById(`${section.toLowerCase()}PreviewContainer`);
+
+    if (uploadButton && fileInput && previewImg && hiddenInput && fetchButton && previewContainer) {
+        console.log(`Setting up event listeners for ${section}`);
+        uploadButton.addEventListener('click', () => {
+            fileInput.click(); // Trigger file input when upload button is clicked
+        });
+        fileInput.addEventListener('change', () => {
+            console.log(`${section} file selected`);
+            handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay);
+        });
+        fetchButton.addEventListener('click', () => {
+            console.log(`${section} fetch button clicked`);
+            handleFetchImages(fetchButton, previewContainer);
+        });
+    } else {
+        console.error(`Missing elements for ${section}`);
+    }
+});
+});
+       
 
         document.getElementById('updateForm').addEventListener('submit', async function (e) {
             e.preventDefault();

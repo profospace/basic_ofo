@@ -4,12 +4,12 @@ const AWS = require('aws-sdk');
 const cors = require('cors');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 1007;
+const PORT = process.env.PORT || 1002;
 const app = express();
 
 // CORS middleware
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:1007'); // Replace with your frontend URL if different
+    res.header('Access-Control-Allow-Origin', 'http://localhost:1002'); // Replace with your frontend URL if different
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');

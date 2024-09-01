@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS S3 Image Gallery</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        #imageGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .imageItem {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .imageItem img {
+            max-width: 100%;
+            height: auto;
+        }
+        .imageUrl {
+            word-break: break-all;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+        #uploadSection {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #uploadedImageUrl {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>AWS S3 Image Gallery</h1>
+    
+    <div id="uploadSection">
+        <h2>Upload New Image</h2>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button onclick="uploadImage()">Upload</button>
+        <div id="uploadedImageUrl"></div>
+    </div>
+
+    <h2>Existing Images</h2>
+    <div id="imageGrid"></div>
+
+    <script>
+        // Configure AWS SDK
+        AWS.config.update({
+            region: 'ap-south-1',
+            credentials: new AWS.CognitoIdentityCredentials({
+                IdentityPoolId: 'YOUR_IDENTITY_POOL_ID' // Replace with your Cognito Identity Pool ID
+            })
+        });
+
+        const s3 = new AWS.S3({
+            apiVersion: '2006-03-01',
+            params: {Bucket: 'wityysaver'}
+        });
+
+        async function fetchImagesFromS3() {
+            try {
+                const data = await s3.listObjectsV2({ Prefix: '' }).promise();
+                return data.Contents
+                    .filter(item => /\.(jpg|jpeg|png|gif)$/i.test(item.Key))
+                    .map(item => `https://${s3.config.params.Bucket}.s3.amazonaws.com/${item.Key}`);
+            } catch (error) {
+                console.error('Error fetching images:', error);
+                return [];
+            }
+        }
+
+        async function loadImages() {
+            const imageGrid = document.getElementById('imageGrid');
+            const images = await fetchImagesFromS3();
+            
+            imageGrid.innerHTML = ''; // Clear existing images
+            
+            images.forEach(imageUrl => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'imageItem';
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = 'AWS S3 Image';
+
+                const urlText = document.createElement('p');
+                urlText.className = 'imageUrl';
+                urlText.textContent = imageUrl;
+
+                imageItem.appendChild(img);
+                imageItem.appendChild(urlText);
+                imageGrid.appendChild(imageItem);
+            });
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('imageUpload');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file to upload');
+                return;
+            }
+
+            try {
+                const params = {
+                    Bucket: 'wityysaver',
+                    Key: `uploads/${Date.now()}-${file.name}`,
+                    Body: file,
+                    ACL: 'public-read'
+                };
+
+                const { Location } = await s3.upload(params).promise();
+
+                // Display the uploaded image URL
+                const uploadedImageUrl = document.getElementById('uploadedImageUrl');
+                uploadedImageUrl.textContent = `Uploaded Image URL: ${Location}`;
+
+                // Reload the image grid
+                await loadImages();
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Failed to upload image');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadImages);
+    </script>
+</body>
+</html>

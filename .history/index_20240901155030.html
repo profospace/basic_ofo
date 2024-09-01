@@ -269,9 +269,6 @@
             <input type="color" id="listTitleBgColor" value="#f2f2f2">
             <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
         </div>
-        <button type="button" id="viewGalleryButton">View AWS Image Gallery</button>
-
-
 
         <h2>List Background</h2>
         <div class="color-input">
@@ -496,7 +493,7 @@
                     fetchButton.textContent = 'Fetch Existing Images';
                 }
             }
- 
+
             function selectImage(url, containerId) {
                 const section = containerId.replace('PreviewContainer', '');
                 const previewImg = document.getElementById(`${section}Preview`);

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Colors API Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .color-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .color-input input[type="color"] {
+            width: 50px;
+            margin-right: 10px;
+            padding: 0;
+            height: 30px;
+        }
+
+        .color-input input[type="text"] {
+            flex-grow: 1;
+        }
+
+        .ad-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .image-upload {
+            margin-top: 10px;
+        }
+
+        .image-upload input[type="file"] {
+            display: inline-block;
+            width: auto;
+        }
+
+        .image-upload button {
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .image-preview {
+            max-width: 200px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .uploaded-url {
+            word-break: break-all;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .image-selection {
+            margin-top: 10px;
+        }
+
+        .image-selection select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Update Colors API Form</h1>
+    <form id="updateForm">
+        <div class="image-upload">
+            <label for="appLogo">App Logo:</label>
+            <input type="file" id="appLogo" accept="image/*">
+            <button type="button" id="uploadAppLogo">Upload App Logo</button>
+            <img id="appLogoPreview" src="" alt="App Logo Preview" class="image-preview">
+            <input type="hidden" name="constantData.appLogo" id="appLogoHidden">
+            <div class="image-selection">
+                <button type="button" id="fetchImagesAppLogo">Fetch Existing Images</button>
+                <select id="existingImagesAppLogo" style="display: none;">
+                    <option value="">Select an existing image</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="image-upload">
+            <label for="appCompany">App Company:</label>
+            <input type="file" id="appCompany" accept="image/*">
+            <button type="button" id="uploadAppCompany">Upload App Company</button>
+            <img id="appCompanyPreview" src="" alt="App Company Preview" class="image-preview">
+            <input type="hidden" name="constantData.appCompany" id="appCompanyHidden">
+            <div id="appCompanyUrl" class="uploaded-url"></div>
+            <div class="image-selection">
+                <button type="button" id="fetchImagesAppCompany">Fetch Existing Images</button>
+                <select id="existingImagesAppCompany" style="display: none;">
+                    <option value="">Select an existing image</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="image-upload">
+            <label for="appContact">App Contact:</label>
+            <input type="file" id="appContact" accept="image/*">
+            <button type="button" id="uploadAppContact">Upload App Contact</button>
+            <img id="appContactPreview" src="" alt="App Contact Preview" class="image-preview">
+            <input type="hidden" name="constantData.appContact" id="appContactHidden">
+            <div id="appContactUrl" class="uploaded-url"></div>
+            <div class="image-selection">
+                <button type="button" id="fetchImagesAppContact">Fetch Existing Images</button>
+                <select id="existingImagesAppContact" style="display: none;">
+                    <option value="">Select an existing image</option>
+                </select>
+            </div>
+        </div>
+
+        <h2>Header</h2>
+        <div class="color-input">
+            <input type="color" id="headerStartColor" value="#ffffff">
+            <input type="text" name="header.startColor" value="#ffffff">
+        </div>
+        <div class="color-input">
+            <input type="color" id="headerEndColor" value="#ffffff">
+            <input type="text" name="header.endColor" value="#ffffff">
+        </div>
+
+        <h2>Button</h2>
+        <div class="color-input">
+            <input type="color" id="buttonStartColor" value="#ee0979">
+            <input type="text" name="button.startColor" value="#ee0979">
+        </div>
+        <div class="color-input">
+            <input type="color" id="buttonEndColor" value="#ff6a00">
+            <input type="text" name="button.endColor" value="#ff6a00">
+        </div>
+
+        <h2>Button Background</h2>
+        <div class="color-input">
+            <input type="color" id="buttonBgStartColor" value="#ee0979">
+            <input type="text" name="buttonBackground.startColor" value="#ee0979">
+        </div>
+        <div class="color-input">
+            <input type="color" id="buttonBgEndColor" value="#ff6a00">
+            <input type="text" name="buttonBackground.endColor" value="#ff6a00">
+        </div>
+
+        <h2>List Title Size</h2>
+        <div class="color-input">
+            <input type="color" id="listTitleColor" value="#333333">
+            <input type="text" name="list_title_size.color" value="#333333">
+        </div>
+        <div class="color-input">
+            <input type="color" id="listTitleBgColor" value="#f2f2f2">
+            <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
+        </div>
+
+        <h2>List Background</h2>
+        <div class="color-input">
+            <input type="color" id="listBgColor" value="#ededed">
+            <input type="text" name="listbackground.backgroundColor" value="#ededed">
+        </div>
+
+        <h2>Search Filter</h2>
+        <div class="color-input">
+            <input type="color" id="searchFilterBgColor" value="#000000">
+            <input type="text" name="search_filter.backgroundColor" value="#000000">
+        </div>
+
+        <h2>Other Settings</h2>
+        <label for="listPriceSize">List Price Size:</label>
+        <input type="number" id="listPriceSize" name="list_price_size" value="14">
+
+        <div class="color-input">
+            <input type="color" id="markerColor" value="#e1faeb">
+            <input type="text" name="markerColor" value="#e1faeb">
+        </div>
+
+        <h2>Constant Data</h2>
+        <label for="isPropertyUpload">Is Property Upload:</label>
+        <select id="isPropertyUpload" name="constantData.isPropertyUpload">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+
+        <label for="homeUrls">Home URLs:</label>
+        <textarea id="homeUrls" name="constantData.homeUrls" rows="3"></textarea>
+
+        <label for="isStrokeFilter">Is Stroke Filter:</label>
+        <select id="isStrokeFilter" name="constantData.isStrokeFilter">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+
+        <label for="isMaterialElevation">Is Material Elevation:</label>
+        <select id="isMaterialElevation" name="constantData.isMaterialElevation">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+
+        <label for="headerHeight">Header Height:</label>
+        <input type="number" id="headerHeight" name="constantData.headerHeight" value="400">
+
+        <label for="appPackageName">App Package Name:</label>
+        <input type="text" id="appPackageName" name="constantData.appPackageName" value="">
+
+        <label for="defaultLanguage">Default Language:</label>
+        <input type="text" id="defaultLanguage" name="constantData.defaultLanguage" value="">
+
+        <label for="currencyCode">Currency Code:</label>
+        <input type="text" id="currencyCode" name="constantData.currencyCode" value="">
+
+        <label for="appName">App Name:</label>
+        <input type="text" id="appName" name="constantData.appName" value="">
+
+        <label for="appEmail">App Email:</label>
+        <input type="email" id="appEmail" name="constantData.appEmail" value="">
+
+        <label for="appWebsite">App Website:</label>
+        <input type="url" id="appWebsite" name="constantData.appWebsite" value="">
+
+        <label for="facebookLink">Facebook Link:</label>
+        <input type="url" id="facebookLink" name="constantData.facebookLink"
+            value="https://www.geetikabuilders.in/gk/index.html">
+
+        <label for="twitterLink">Twitter Link:</label>
+        <input type="url" id="twitterLink" name="constantData.twitterLink" value="">
+
+        <label for="instagramLink">Instagram Link:</label>
+        <input type="url" id="instagramLink" name="constantData.instagramLink" value="">
+
+        <label for="youtubeLink">YouTube Link:</label>
+        <input type="url" id="youtubeLink" name="constantData.youtubeLink" value="">
+
+        <label for="googlePlayLink">Google Play Link:</label>
+        <input type="url" id="googlePlayLink" name="constantData.googlePlayLink" value="">
+
+        <label for="appleStoreLink">Apple Store Link:</label>
+        <input type="url" id="appleStoreLink" name="constantData.appleStoreLink" value="">
+
+        <label for="appVersion">App Version:</label>
+        <input type="text" id="appVersion" name="constantData.appVersion" value="">
+
+        <label for="appUpdateHideShow">App Update Hide/Show:</label>
+        <input type="text" id="appUpdateHideShow" name="constantData.appUpdateHideShow" value="">
+
+        <label for="appUpdateVersionCode">App Update Version Code:</label>
+        <input type="number" id="appUpdateVersionCode" name="constantData.appUpdateVersionCode" value="0">
+
+        <label for="appUpdateDesc">App Update Description:</label>
+        <textarea id="appUpdateDesc" name="constantData.appUpdateDesc" rows="3"></textarea>
+
+        <label for="appUpdateLink">App Update Link:</label>
+        <input type="url" id="appUpdateLink" name="constantData.appUpdateLink" value="">
+
+        <label for="appUpdateCancelOption">App Update Cancel Option:</label>
+        <input type="text" id="appUpdateCancelOption" name="constantData.appUpdateCancelOption" value="">
+
+        <div class="color-input">
+            <input type="color" id="priceColor" value="#000000">
+            <input type="text" name="constantData.priceColor" value="#000000">
+        </div>
+
+        <div class="color-input">
+            <input type="color" id="callButtonColor" value="#e1faeb">
+            <input type="text" name="constantData.callButtonColor" value="#e1faeb">
+        </div>
+        <h3>Detail Page Button Color</h3>
+        <div class="color-input">
+            <input type="color" id="detailPageButtonStartColor" value="#e1faeb">
+            <input type="text" name="constantData.DetailPageButtonColor.startColor" value="#e1faeb">
+        </div>
+        <div class="color-input">
+            <input type="color" id="detailPageButtonEndColor" value="#e1faeb">
+            <input type="text" name="constantData.DetailPageButtonColor.endColor" value="#e1faeb">
+        </div>
+        
+        <label for="homePageLayoutOrder">Home Page Layout Order:</label>
+        <input type="text" id="homePageLayoutOrder" name="constantData.homePageLayoutOrder" value="1,3,4,5,6">
+
+        <label for="isCallDirect">Is Call Direct:</label>
+        <select id="isCallDirect" name="constantData.isCallDirect">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+        <label for="shadowOnImage">Shadow On Image:</label>
+        <select id="shadowOnImage" name="constantData.shadowOnImage">
+            <option value="true">Yes</option>
+            <option value="false" selected>No</option>
+        </select>
+
+        <h2>Ads</h2>
+        <div id="adsContainer">
+            <div class="ad-item">
+                <h3>Ad 1</h3>
+                <label for="ad1Name">Name:</label>
+                <input type="text" id="ad1Name" name="ads <h2>Ads</h2>
+                <div id=" adsContainer">
+                <div class="ad-item">
+                    <h3>Ad 1</h3>
+                    <label for="ad1Name">Name:</label>
+                    <input type="text" id="ad1Name" name="ads[0].name" value="Ad1">
+
+                    <label for="ad1PageLink">Page Link:</label>
+                    <input type="url" id="ad1PageLink" name="ads[0].pagelink" value="https://example.com/ad1">
+
+                    <label for="ad1ImageLinks">Image Links (one per line):</label>
+                    <textarea id="ad1ImageLinks" name="ads[0].imagelinks" rows="2">https://example.com/images/ad1/img1.jpg
+            https://example.com/images/ad1/img2.jpg</textarea>
+
+                    <label for="ad1Contact">Contact Info (one per line):</label>
+                    <textarea id="ad1Contact" name="ads[0].contact" rows="2">contact1@example.com
+            123-456-7890</textarea>
+                </div>
+            </div>
+
+            <button type="button" id="addAdButton">Add Another Ad</button>
+
+            <button type="submit">Submit</button>
+    </form>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close-button" onclick="closePopup()">&times;</span>
+            <p id="popup-message"></p>
+        </div>
+    </div>
+    </body>
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+
+    async function uploadToS3(file) {
+        const response = await fetch(`/api/get-upload-url?fileName=${file.name}&fileType=${file.type}`);
+        const { signedRequest, url } = await response.json();
+
+        await fetch(signedRequest, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type }
+        });
+
+        return url;
+    }
+
+    async function handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay) {
+        const file = fileInput.files[0];
+        if (file) {
+            uploadButton.textContent = 'Uploading...';
+            uploadButton.disabled = true;
+
+            try {
+                const fileUrl = await uploadToS3(file);
+
+                previewImg.src = fileUrl;
+                previewImg.style.display = 'block';
+                hiddenInput.value = fileUrl;
+                if (urlDisplay) {
+                    urlDisplay.textContent = fileUrl;
+                }
+                uploadButton.textContent = 'Upload Complete';
+                showPopup('File uploaded successfully!');
+            } catch (error) {
+                console.error('Error:', error);
+                uploadButton.textContent = 'Upload Failed';
+                showPopup('File upload failed. Please try again.');
+            } finally {
+                uploadButton.disabled = false;
+            }
+        }
+    }
+
+    async function fetchImagesFromS3() {
+        const response = await fetch('/api/list-images');
+        return await response.json();
+    }
+
+    async function handleFetchImages(fetchButton, selectElement) {
+        try {
+            fetchButton.disabled = true;
+            fetchButton.textContent = 'Fetching...';
+            const imageUrls = await fetchImagesFromS3();
+            selectElement.innerHTML = '<option value="">Select an existing image</option>';
+            imageUrls.forEach(url => {
+                const option = document.createElement('option');
+                option.value = url;
+                option.textContent = url.split('/').pop(); // Display only the filename
+                selectElement.appendChild(option);
+            });
+            selectElement.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching images:', error);
+            showPopup('Failed to fetch images. Please try again.');
+        } finally {
+            fetchButton.disabled = false;
+            fetchButton.textContent = 'Fetch Existing Images';
+        }
+    }
+
+    function handleImageSelection(selectElement, previewImg, hiddenInput) {
+        const selectedUrl = selectElement.value;
+        if (selectedUrl) {
+            previewImg.src = selectedUrl;
+            previewImg.style.display = 'block';
+            hiddenInput.value = selectedUrl;
+        }
+    }
+
+    // Set up event listeners for each image upload section
+    ['AppLogo', 'AppCompany', 'AppContact'].forEach(section => {
+        const uploadButton = document.getElementById(`upload${section}`);
+        const fetchButton = document.getElementById(`fetchImages${section}`);
+        const selectElement = document.getElementById(`existingImages${section}`);
+        const fileInput = document.getElementById(section.toLowerCase());
+        const previewImg = document.getElementById(`${section.toLowerCase()}Preview`);
+        const hiddenInput = document.getElementById(`${section.toLowerCase()}Hidden`);
+        const urlDisplay = document.getElementById(`${section.toLowerCase()}Url`);
+
+        uploadButton.addEventListener('click', () => handleImageUpload(fileInput, previewImg, hiddenInput, uploadButton, urlDisplay));
+        fetchButton.addEventListener('click', () => handleFetchImages(fetchButton, selectElement));
+        selectElement.addEventListener('change', () => handleImageSelection(selectElement, previewImg, hiddenInput));
+    });
+
+    
+document.getElementById('updateForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    console.log('Form submission started');
+
+    const formData = new FormData(this);
+    const jsonData = {
+        header: {
+            startColor: formData.get('header.startColor') || "#ffffff",
+            endColor: formData.get('header.endColor') || "#ffffff"
+        },
+        button: {
+            startColor: formData.get('button.startColor') || "#ee0979",
+            endColor: formData.get('button.endColor') || "#ff6a00"
+        },
+        buttonBackground: {
+            startColor: formData.get('buttonBackground.startColor') || "#ee0979",
+            endColor: formData.get('buttonBackground.endColor') || "#ff6a00"
+        },
+        list_title_size: {
+            color: formData.get('list_title_size.color') || "#333333",
+            backgroundColor: formData.get('list_title_size.backgroundColor') || "#f2f2f2"
+        },
+        listbackground: {
+            backgroundColor: formData.get('listbackground.backgroundColor') || "#ededed"
+        },
+        search_filter: {
+            backgroundColor: formData.get('search_filter.backgroundColor') || "#000000"
+        },
+        list_price_size: parseInt(formData.get('list_price_size')) || 14,
+        markerColor: formData.get('markerColor') || "#e1faeb",
+        constantData: {
+            isPropertyUpload: formData.get('constantData.isPropertyUpload') === 'true',
+            homeUrls: formData.get('constantData.homeUrls') ? formData.get('constantData.homeUrls').split(',') : [],
+            isStrokeFilter: formData.get('constantData.isStrokeFilter') === 'true',
+            isMaterialElevation: formData.get('constantData.isMaterialElevation') === 'true',
+            headerHeight: parseInt(formData.get('constantData.headerHeight')) || 400,
+            appPackageName: formData.get('constantData.appPackageName') || "",
+            defaultLanguage: formData.get('constantData.defaultLanguage') || "",
+            currencyCode: formData.get('constantData.currencyCode') || "",
+            appName: formData.get('constantData.appName') || "",
+            appEmail: formData.get('constantData.appEmail') || "",
+            appLogo: formData.get('constantData.appLogo') || "",
+            appCompany: formData.get('constantData.appCompany') || "",
+            appWebsite: formData.get('constantData.appWebsite') || "",
+            appContact: formData.get('constantData.appContact') || "",
+            facebookLink: formData.get('constantData.facebookLink') || "",
+            twitterLink: formData.get('constantData.twitterLink') || "",
+            instagramLink: formData.get('constantData.instagramLink') || "",
+            youtubeLink: formData.get('constantData.youtubeLink') || "",
+            googlePlayLink: formData.get('constantData.googlePlayLink') || "",
+            appleStoreLink: formData.get('constantData.appleStoreLink') || "",
+            appVersion: formData.get('constantData.appVersion') || "",
+            appUpdateHideShow: formData.get('constantData.appUpdateHideShow') || "",
+            appUpdateVersionCode: parseInt(formData.get('constantData.appUpdateVersionCode')) || 0,
+            appUpdateDesc: formData.get('constantData.appUpdateDesc') || "",
+            appUpdateLink: formData.get('constantData.appUpdateLink') || "",
+            appUpdateCancelOption: formData.get('constantData.appUpdateCancelOption') || "",
+            priceColor: formData.get('constantData.priceColor') || "#000000",
+            callButtonColor: formData.get('constantData.callButtonColor') || "#e1faeb",
+            DetailPageButtonColor: {
+                startColor: formData.get('constantData.DetailPageButtonColor.startColor') || "#e1faeb",
+                endColor: formData.get('constantData.DetailPageButtonColor.endColor') || "#e1faeb"
+            },
+            isCallDirect: formData.get('constantData.isCallDirect') === 'true',
+            homePageLayoutOrder: formData.get('constantData.homePageLayoutOrder')
+                ? formData.get('constantData.homePageLayoutOrder').split(',').map(Number)
+                : [1, 3, 4, 5, 6],
+            shadowOnImage: formData.get('constantData.shadowOnImage') === 'true'
+        }
+    };
+
+    console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
+
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/colors/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
+        }
+
+        const data = await response.json();
+        console.log('Success:', data);
+        showPopup('Form submitted successfully!');
+    } catch (error) {
+        console.error('Error:', error);
+        showPopup(`An error occurred while submitting the form: ${error.message}`);
+    }
+});
+
+        function showPopup(message) {
+            document.getElementById('popup-message').textContent = message;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
