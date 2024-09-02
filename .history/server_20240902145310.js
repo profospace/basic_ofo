@@ -6,19 +6,20 @@ const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 app.use(fileUpload());
 app.use(cors());
 app.use(express.urlencoded({ extended : true }));
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // AWS Configuration
 const awsConfig = {
-    accessKeyId: 'AKIA4MTWMIGTSYXUGJ6I',
-    secretAccessKey: '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',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: 'ap-south-1'
 };
 
@@ -58,7 +59,18 @@ app.post('/imageUpload', async (req, res) => {
 
      // Upload post image to S3
      try {
-     
+        // const postImageFile = uploadedFile
+        // const postImageParams = {
+        //   Bucket: 'wityysaver',
+        //   Key: `applogo/${uuid.v4()}_${postImageFile.originalname}`,
+        //   Body: fs.createReadStream(postImageFile.path),
+        // };
+        // const postImageUploadResult = await s3.upload(postImageParams).promise();
+
+        // console.log(`===== >>>post image upload result ${postImageUploadResult.Location}`);
+        // console.log(`===== >>>post image upload result ${postImageUploadResult.Key}`);
+
+
 
         const data = await s3.upload(params).promise();
         res.send({
