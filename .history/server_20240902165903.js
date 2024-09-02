@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3009;
 
 app.use(fileUpload());
 app.use(cors());
@@ -30,7 +30,6 @@ if (!awsConfig.accessKeyId || !awsConfig.secretAccessKey) {
 const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: 'ap-south-1'
   });
   
 

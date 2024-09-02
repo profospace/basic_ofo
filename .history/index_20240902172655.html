@@ -511,44 +511,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
     
-            async function loadImages() {
-    const imageGrid = document.getElementById('imageGrid');
-    const images = await fetchImagesFromS3();
+                async function loadImages() {
+                    const imageGrid = document.getElementById('imageGrid');
+                    const images = await fetchImagesFromS3();
 
-    imageGrid.innerHTML = ''; // Clear existing images
+                    imageGrid.innerHTML = ''; // Clear existing images
 
-    images.forEach(imageUrl => {
-        const imageItem = document.createElement('div');
-        imageItem.className = 'imageItem';
+                    images.forEach(imageUrl => {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'imageItem';
 
-        const img = document.createElement('img');
-        img.src = imageUrl;
-        img.alt = 'AWS S3 Image';
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        img.alt = 'AWS S3 Image';
 
-        const urlText = document.createElement('p');
-        urlText.className = 'imageUrl';
-        urlText.textContent = imageUrl;
-        urlText.title = 'Click to copy URL';
-        urlText.style.cursor = 'pointer';
+                        const urlText = document.createElement('p');
+                        urlText.className = 'imageUrl';
+                        urlText.textContent = imageUrl;
 
-        urlText.onclick = function() {
-            navigator.clipboard.writeText(imageUrl).then(() => {
-                // Temporarily change the text to indicate it was copied
-                const originalText = urlText.textContent;
-                urlText.textContent = 'Copied!';
-                setTimeout(() => {
-                    urlText.textContent = originalText;
-                }, 1500);
-            }, (err) => {
-                console.error('Could not copy text: ', err);
-            });
-        };
-
-        imageItem.appendChild(img);
-        imageItem.appendChild(urlText);
-        imageGrid.appendChild(imageItem);
-    });
-}
+                        imageItem.appendChild(img);
+                        imageItem.appendChild(urlText);
+                        imageGrid.appendChild(imageItem);
+                    });
+                }
 
                 async function uploadImage() {
                     const fileInput = document.getElementById('imageUpload');

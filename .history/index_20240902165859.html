@@ -12,18 +12,6 @@
             margin: 0 auto;
             padding: 20px;
         }
-        .imageUrl {
-    background-color: #f0f0f0;
-    padding: 5px;
-    border-radius: 3px;
-    font-size: 0.8em;
-    word-break: break-all;
-    transition: background-color 0.3s ease;
-}
-
-.imageUrl:hover {
-    background-color: #e0e0e0;
-}
 
         .tab {
             overflow: hidden;
@@ -78,7 +66,11 @@
             height: auto;
         }
 
-     
+        .imageUrl {
+            word-break: break-all;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
 
         #uploadSection {
             margin-bottom: 30px;
@@ -456,7 +448,8 @@
         <script>
 
 
-   function openTab(evt, tabName) {
+
+function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -475,6 +468,30 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
+
+    async function loadImages() {
+                    const imageGrid = document.getElementById('imageGrid');
+                    const images = await fetchImagesFromS3();
+
+                    imageGrid.innerHTML = ''; // Clear existing images
+
+                    images.forEach(imageUrl => {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'imageItem';
+
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        img.alt = 'AWS S3 Image';
+
+                        const urlText = document.createElement('p');
+                        urlText.className = 'imageUrl';
+                        urlText.textContent = imageUrl;
+
+                        imageItem.appendChild(img);
+                        imageItem.appendChild(urlText);
+                        imageGrid.appendChild(imageItem);
+                    });
+                }
 
               openTab("ImageGallery");
 
@@ -495,12 +512,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
             // Set the default open tab
             document.getElementById("defaultOpen").click();
-
             openTab("ImageGallery");
         console.log('Default tab opened');
     });
-    document.addEventListener('DOMContentLoaded', loadImages);
-
             
 
             // Add click event listeners to tab buttons
@@ -511,44 +525,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
     
-            async function loadImages() {
-    const imageGrid = document.getElementById('imageGrid');
-    const images = await fetchImagesFromS3();
+                async function loadImages() {
+                    const imageGrid = document.getElementById('imageGrid');
+                    const images = await fetchImagesFromS3();
 
-    imageGrid.innerHTML = ''; // Clear existing images
+                    imageGrid.innerHTML = ''; // Clear existing images
 
-    images.forEach(imageUrl => {
-        const imageItem = document.createElement('div');
-        imageItem.className = 'imageItem';
+                    images.forEach(imageUrl => {
+                        const imageItem = document.createElement('div');
+                        imageItem.className = 'imageItem';
 
-        const img = document.createElement('img');
-        img.src = imageUrl;
-        img.alt = 'AWS S3 Image';
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        img.alt = 'AWS S3 Image';
 
-        const urlText = document.createElement('p');
-        urlText.className = 'imageUrl';
-        urlText.textContent = imageUrl;
-        urlText.title = 'Click to copy URL';
-        urlText.style.cursor = 'pointer';
+                        const urlText = document.createElement('p');
+                        urlText.className = 'imageUrl';
+                        urlText.textContent = imageUrl;
 
-        urlText.onclick = function() {
-            navigator.clipboard.writeText(imageUrl).then(() => {
-                // Temporarily change the text to indicate it was copied
-                const originalText = urlText.textContent;
-                urlText.textContent = 'Copied!';
-                setTimeout(() => {
-                    urlText.textContent = originalText;
-                }, 1500);
-            }, (err) => {
-                console.error('Could not copy text: ', err);
-            });
-        };
-
-        imageItem.appendChild(img);
-        imageItem.appendChild(urlText);
-        imageGrid.appendChild(imageItem);
-    });
-}
+                        imageItem.appendChild(img);
+                        imageItem.appendChild(urlText);
+                        imageGrid.appendChild(imageItem);
+                    });
+                }
 
                 async function uploadImage() {
                     const fileInput = document.getElementById('imageUpload');
@@ -602,29 +601,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
 
-                async function loadImages() {
-                    const imageGrid = document.getElementById('imageGrid');
-                    const images = await fetchImagesFromS3();
-
-                    imageGrid.innerHTML = ''; // Clear existing images
-
-                    images.forEach(imageUrl => {
-                        const imageItem = document.createElement('div');
-                        imageItem.className = 'imageItem';
-
-                        const img = document.createElement('img');
-                        img.src = imageUrl;
-                        img.alt = 'AWS S3 Image';
-
-                        const urlText = document.createElement('p');
-                        urlText.className = 'imageUrl';
-                        urlText.textContent = imageUrl;
-
-                        imageItem.appendChild(img);
-                        imageItem.appendChild(urlText);
-                        imageGrid.appendChild(imageItem);
-                    });
-                }
 
                 async function uploadImage() {
                     const fileInput = document.getElementById('imageUpload');
