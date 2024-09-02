@@ -26,14 +26,8 @@ if (!awsConfig.accessKeyId || !awsConfig.secretAccessKey) {
     process.exit(1);
 }
 
-// AWS.config.update(awsConfig);
-// const s3 = new AWS.S3();
-
-const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  });
-  
+AWS.config.update(awsConfig);
+const s3 = new AWS.S3();
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -63,7 +57,7 @@ app.post('/imageUpload', async (req, res) => {
      if (req.files['post_image']) {
         const postImageFile = req.files['post_image'][0];
         const postImageParams = {
-          Bucket: 'wityysaver',
+          Bucket: process.env.AWS_BUCKET_NAME,
           Key: `applogo/${uuid.v4()}_${postImageFile.originalname}`,
           Body: fs.createReadStream(postImageFile.path),
         };

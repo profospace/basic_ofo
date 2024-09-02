@@ -63,7 +63,7 @@ app.post('/imageUpload', async (req, res) => {
      if (req.files['post_image']) {
         const postImageFile = req.files['post_image'][0];
         const postImageParams = {
-          Bucket: 'wityysaver',
+          Bucket: process.env.AWS_BUCKET_NAME,
           Key: `applogo/${uuid.v4()}_${postImageFile.originalname}`,
           Body: fs.createReadStream(postImageFile.path),
         };
