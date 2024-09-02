@@ -2,16 +2,15 @@ const express = require('express');
 const path = require('path');
 const AWS = require('aws-sdk');
 const cors = require('cors');
-const app = express();
-
 require('dotenv').config();
 const fileUpload = require('express-fileupload');
 
-
-
-
-const PORT = process.env.PORT || 1009;
 app.use(fileUpload());
+
+
+
+const PORT = process.env.PORT || 1005;
+const app = express();
 
 // CORS middleware
 app.use((req, res, next) => {
