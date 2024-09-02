@@ -84,20 +84,25 @@ app.get('/api/get-upload-url', (req, res) => {
 
 app.post('/imageUpload', async (req, res) => {
     AWS.config.update({
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Access key ID
-        secretAccesskey:  process.env.AWS_SECRET_ACCESS_KEY, // Secret access key
-        region:  'ap-south-1'
+        accessKeyId: "ACCESS-KEY", // Access key ID
+        secretAccesskey: "SECRET-ACCESS-KEY", // Secret access key
+        region: "us-east-1" //Region
     })
 
 
     const s3 = new AWS.S3();
+
+    // Binary data base64
     const fileContent  = Buffer.from(req.files.uploadedFileName.data, 'binary');
+
+    // Setting up S3 upload parameters
     const params = {
-        Bucket: 'wityysaver',
-        Key: `${Date.now()}-${fileName}`,
+        Bucket: 'BUKET-NAME',
+        Key: "test.jpg", // File name you want to save as in S3
         Body: fileContent 
     };
 
+    // Uploading files to the bucket
     s3.upload(params, function(err, data) {
         if (err) {
             throw err;

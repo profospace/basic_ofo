@@ -91,13 +91,18 @@ app.post('/imageUpload', async (req, res) => {
 
 
     const s3 = new AWS.S3();
+
+    // Binary data base64
     const fileContent  = Buffer.from(req.files.uploadedFileName.data, 'binary');
+
+    // Setting up S3 upload parameters
     const params = {
         Bucket: 'wityysaver',
         Key: `${Date.now()}-${fileName}`,
         Body: fileContent 
     };
 
+    // Uploading files to the bucket
     s3.upload(params, function(err, data) {
         if (err) {
             throw err;
