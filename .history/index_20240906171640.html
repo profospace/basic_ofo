@@ -423,37 +423,15 @@
             <div id="adsContainer">
                 <div class="ad-item">
                     <h3>Ad 1</h3>
-                    <h3>Ad ${index + 1}</h3>
-                    <label for="ad${index}Name">Name:</label>
-                    <input type="text" id="ad${index}Name" name="ads[${index}].name" value="">
+                    <label for="ad1Name">Name:</label>
+                    <input type="text" id="ad1Name" name="ads[0].name" value="Ad1">
 
-                    <label for="ad${index}Header">Header:</label>
-                    <input type="text" id="ad${index}Header" name="ads[${index}].header" value="">
 
-                    <label for="ad${index}Type">Type:</label>
-                    <select id="ad${index}Type" name="ads[${index}].type" onchange="showAdTypeFields(this)">
-                        <option value="BANNER">Banner</option>
-                        <option value="POPUP">Popup</option>
-                        <option value="INTERSTITIAL">Interstitial</option>
-                    </select>
+                    <label for="ad1Type">Type:</label>
+                    <input type="text" id="ad1Type" name="ads[0].type" value="">
 
-                    <div class="banner-fields" style="display: none;">
-                        <label for="ad${index}Width">Width:</label>
-                        <input type="number" id="ad${index}Width" name="ads[${index}].width" value="">
-                        <label for="ad${index}Height">Height:</label>
-                        <input type="number" id="ad${index}Height" name="ads[${index}].height" value="">
-                    </div>
-
-                    <div class="popup-fields" style="display: none;">
-                        <label for="ad${index}Delay">Delay (ms):</label>
-                        <input type="number" id="ad${index}Delay" name="ads[${index}].delay" value="">
-                    </div>
-
-                    <div class="interstitial-fields" style="display: none;">
-                        <label for="ad${index}Fullscreen">Fullscreen:</label>
-                        <input type="checkbox" id="ad${index}Fullscreen" name="ads[${index}].fullscreen">
-                    </div>
-
+                    <label for="ad1PageLink">Page Link:</label>
+                    <input type="url" id="ad1PageLink" name="ads[0].pagelink" value="https://example.com/ad1">
 
                     <label for="ad1ImageLinks">Image Links (one per line):</label>
                     <textarea id="ad1ImageLinks" name="ads[0].imagelinks" rows="2">https://example.com/images/ad1/img1.jpg
@@ -478,8 +456,12 @@
         </div>
     </div>
 
+
+
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
+
+
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
@@ -517,7 +499,7 @@
                   <label for="ad${adCount}Type">Type:</label>
                 <input type="text" id="ad${adCount}Type" name="ads[${adCount - 1}].type" value="">
 
-
+                
                 <label for="ad${adCount}ImageLinks">Image Links (one per line):</label>
                 <textarea id="ad${adCount}ImageLinks" name="ads[${adCount - 1}].imagelinks" rows="2"></textarea>
 
@@ -988,49 +970,24 @@
 
             adItems.forEach((item, index) => {
                 const nameInput = item.querySelector(`input[name="ads[${index}].name"]`);
-                const typeInput = item.querySelector(`input[name="ads[${index}].type"]`);
                 const pageLinkInput = item.querySelector(`input[name="ads[${index}].pagelink"]`);
                 const imageLinksTextarea = item.querySelector(`textarea[name="ads[${index}].imagelinks"]`);
                 const contactTextarea = item.querySelector(`textarea[name="ads[${index}].contact"]`);
 
                 const ad = {
                     name: nameInput ? nameInput.value.trim() : "",
-                    type: typeInput ? typeInput.value.trim() : "",
                     pagelink: pageLinkInput ? pageLinkInput.value.trim() : "",
                     imagelinks: imageLinksTextarea ? imageLinksTextarea.value : [],
                     contact: contactTextarea ? contactTextarea.value : []
                 };
 
                 // Only include the ad if it has any non-empty fields
-                if (ad.name || ad.type || ad.pagelink || ad.imagelinks.length > 0 || ad.contact.length > 0) {
+                if (ad.name || ad.pagelink || ad.imagelinks.length > 0 || ad.contact.length > 0) {
                     ads.push(ad);
                 }
             });
 
             return ads;
-        }
-
-        function showAdTypeFields(selectElement) {
-            const adItem = selectElement.closest('.ad-item');
-            const bannerFields = adItem.querySelector('.banner-fields');
-            const popupFields = adItem.querySelector('.popup-fields');
-            const interstitialFields = adItem.querySelector('.interstitial-fields');
-
-            bannerFields.style.display = 'none';
-            popupFields.style.display = 'none';
-            interstitialFields.style.display = 'none';
-
-            switch (selectElement.value) {
-                case 'BANNER':
-                    bannerFields.style.display = 'block';
-                    break;
-                case 'POPUP':
-                    popupFields.style.display = 'block';
-                    break;
-                case 'INTERSTITIAL':
-                    interstitialFields.style.display = 'block';
-                    break;
-            }
         }
 
 
