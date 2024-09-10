@@ -54,7 +54,6 @@ app.post('/imageUpload', async (req, res) => {
         Bucket: 'wityysaver',
         Key: fileName,
         Body: uploadedFile.data,
-        ContentType: "image/jpeg",
     };
 
 

@@ -461,8 +461,9 @@
                         <label for="ad${index}Fullscreen">Fullscreen:</label>
                         <input type="checkbox" id="ad${index}Fullscreen" name="ads[${index}].fullscreen">
                     </div>
-                    <label for="ad1Contact">Contact:</label>
-                    <input type="text" id="ad1Contact" name="ads[0].contact" value="">
+                    <label for="ad1Contact">Contact Info (one per line):</label>
+                    <textarea id="ad1Contact" name="ads[0].contact" rows="2">contact1@example.com
+    123-456-7890</textarea>
                 </div>
             </div>
 
@@ -1033,37 +1034,6 @@
                     break;
             }
         }
-
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const addAdButton = document.getElementById('addAdButton');
-            const adsContainer = document.getElementById('adsContainer');
-            let adCount = 1;
-
-            addAdButton.addEventListener('click', function () {
-                adCount++;
-                const newAdHtml = `
-            <div class="ad-item">
-                <h3>Ad ${adCount}</h3>
-                <label for="ad${adCount}Name">Name:</label>
-                <input type="text" id="ad${adCount}Name" name="ads[${adCount - 1}].name" value="">
-
-                <label for="ad${adCount}Type">Type:</label>
-                <input type="text" id="ad${adCount}Type" name="ads[${adCount - 1}].type" value="">
-
-                <label for="ad${adCount}PageLink">Page Link:</label>
-                <input type="url" id="ad${adCount}PageLink" name="ads[${adCount - 1}].pagelink" value="">
-
-                <label for="ad${adCount}ImageLinks">Image Link:</label>
-                <input type="text" id="ad${adCount}ImageLinks" name="ads[${adCount - 1}].imagelinks" value="">
-
-                <label for="ad${adCount}Contact">Contact:</label>
-                <input type="text" id="ad${adCount}Contact" name="ads[${adCount - 1}].contact" value="">
-            </div>
-        `;
-                adsContainer.insertAdjacentHTML('beforeend', newAdHtml);
-            });
-        });
 
 
 
