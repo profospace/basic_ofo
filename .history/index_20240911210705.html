@@ -28,8 +28,8 @@
 
         .tab {
             overflow: hidden;
-            border: 1px solid #d3fb3e;
-            background-color: #000000;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
         }
 
         .tab button {
@@ -477,54 +477,6 @@
         </div>
     </div>
 
-    <div id="separateAdsManagement">
-        <h2>Separate Ads Management</h2>
-        <button type="button" id="addNewAdButton">Add New Ad</button>
-        <button type="button" id="listAdsButton">List All Ads</button>
-        <div id="adsList"></div>
-    </div>
-    
-    <div id="adFormPopup" class="popup">
-        <div class="popup-content">
-            <span class="close-button" onclick="closeAdForm()">&times;</span>
-            <h3>Ad Form</h3>
-            <form id="separateAdForm">
-                <input type="hidden" id="adId" name="adId">
-                <label for="adName">Name:</label>
-                <input type="text" id="adName" name="name" required>
-                <label for="adHeader">Header:</label>
-                <input type="text" id="adHeader" name="header">
-                <label for="adPageLink">Page Link:</label>
-                <input type="url" id="adPageLink" name="pagelink">
-                <label for="adImageLinks">Image Links (comma-separated):</label>
-                <input type="text" id="adImageLinks" name="imagelinks">
-                <label for="adContact">Contact Info (comma-separated):</label>
-                <input type="text" id="adContact" name="contact">
-                <label for="adType">Type:</label>
-                <select id="adType" name="type" onchange="showSeparateAdTypeFields()">
-                    <option value="BANNER">Banner</option>
-                    <option value="POPUP">Popup</option>
-                    <option value="INTERSTITIAL">Interstitial</option>
-                </select>
-                <div id="separateBannerFields" style="display: none;">
-                    <label for="adWidth">Width:</label>
-                    <input type="number" id="adWidth" name="width">
-                    <label for="adHeight">Height:</label>
-                    <input type="number" id="adHeight" name="height">
-                </div>
-                <div id="separatePopupFields" style="display: none;">
-                    <label for="adDelay">Delay (ms):</label>
-                    <input type="number" id="adDelay" name="delay">
-                </div>
-                <div id="separateInterstitialFields" style="display: none;">
-                    <label for="adFullscreen">Fullscreen:</label>
-                    <input type="checkbox" id="adFullscreen" name="fullscreen">
-                </div>
-                <button type="submit">Save Ad</button>
-            </form>
-        </div>
-    </div>
-
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
         function openTab(evt, tabName) {
@@ -545,6 +497,37 @@
         document.getElementById("defaultOpen").click();
 
         document.addEventListener('DOMContentLoaded', function () {
+
+            const addAdButton = document.getElementById('addAdButton');
+            const adsContainer = document.getElementById('adsContainer');
+            let adCount = 1;
+
+            addAdButton.addEventListener('click', function () {
+                adCount++;
+                const newAdHtml = `
+            <div class="ad-item">
+                <h3>Ad ${adCount}</h3>
+                <label for="ad${adCount}Name">Name:</label>
+                <input type="text" id="ad${adCount}Name" name="ads[${adCount - 1}].name" value="Ad${adCount}">
+
+                <label for="ad${adCount}PageLink">Page Link:</label>
+                <input type="url" id="ad${adCount}PageLink" name="ads[${adCount - 1}].pagelink" value="https://example.com/ad${adCount}">
+
+                  <label for="ad${adCount}Type">Type:</label>
+                <input type="text" id="ad${adCount}Type" name="ads[${adCount - 1}].type" value="">
+
+
+                <label for="ad${adCount}ImageLinks">Image Links (one per line):</label>
+                <textarea id="ad${adCount}ImageLinks" name="ads[${adCount - 1}].imagelinks" rows="2"></textarea>
+
+                <label for="ad${adCount}Contact">Contact Info (one per line):</label>
+                <textarea id="ad${adCount}Contact" name="ads[${adCount - 1}].contact" rows="2"></textarea>
+            </div>
+        `;
+                adsContainer.insertAdjacentHTML('beforeend', newAdHtml);
+            });
+
+
             openTab("ImageGallery");
 
             console.log('Script started');
@@ -1081,13 +1064,13 @@
 
 
         document.addEventListener('DOMContentLoaded', function () {
-            const addAdButton = document.getElementById('addAdButton');
-            const adsContainer = document.getElementById('adsContainer');
-            let adCount = 1;
+    const addAdButton = document.getElementById('addAdButton');
+    const adsContainer = document.getElementById('adsContainer');
+    let adCount = 1;
 
-            addAdButton.addEventListener('click', function () {
-                adCount++;
-                const newAdHtml = `
+    addAdButton.addEventListener('click', function () {
+        adCount++;
+        const newAdHtml = `
             <div class="ad-item">
                 <h3>Ad ${adCount}</h3>
                 <label for="ad${adCount}Name">Name:</label>
@@ -1130,9 +1113,9 @@
                 </div>
             </div>
         `;
-                adsContainer.insertAdjacentHTML('beforeend', newAdHtml);
-            });
-        });
+        adsContainer.insertAdjacentHTML('beforeend', newAdHtml);
+    });
+});
 
 
 
@@ -1438,145 +1421,6 @@
         function closePopup() {
             document.getElementById('popup').style.display = 'none';
         }
-
-        function showSeparateAdTypeFields() {
-    const adType = document.getElementById('adType').value;
-    document.getElementById('separateBannerFields').style.display = adType === 'BANNER' ? 'block' : 'none';
-    document.getElementById('separatePopupFields').style.display = adType === 'POPUP' ? 'block' : 'none';
-    document.getElementById('separateInterstitialFields').style.display = adType === 'INTERSTITIAL' ? 'block' : 'none';
-}
-
-// Function to open ad form popup
-function openSeparateAdForm(ad = null) {
-    const form = document.getElementById('separateAdForm');
-    form.reset();
-    if (ad) {
-        // Populate form for editing
-        Object.keys(ad).forEach(key => {
-            const input = form.elements[key];
-            if (input) {
-                if (input.type === 'checkbox') {
-                    input.checked = ad[key];
-                } else if (key === 'type') {
-                    input.value = ad[key].type;
-                } else {
-                    input.value = Array.isArray(ad[key]) ? ad[key].join(', ') : ad[key];
-                }
-            }
-        });
-        document.getElementById('adId').value = ad._id;
-    } else {
-        document.getElementById('adId').value = '';
-    }
-    showSeparateAdTypeFields();
-    document.getElementById('adFormPopup').style.display = 'block';
-}
-
-// Function to close ad form popup
-function closeSeparateAdForm() {
-    document.getElementById('adFormPopup').style.display = 'none';
-}
-
-// Function to add or update an ad
-async function saveSeparateAd(event) {
-    event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
-    const adData = Object.fromEntries(formData.entries());
-    adData.type = { type: adData.type };
-
-    // Add type-specific fields
-    if (adData.type.type === 'BANNER') {
-        adData.type.width = parseInt(adData.width) || 0;
-        adData.type.height = parseInt(adData.height) || 0;
-    } else if (adData.type.type === 'POPUP') {
-        adData.type.delay = parseInt(adData.delay) || 0;
-    } else if (adData.type.type === 'INTERSTITIAL') {
-        adData.type.fullscreen = adData.fullscreen === 'on';
-    }
-
-    // Convert imagelinks and contact to arrays
-    adData.imagelinks = adData.imagelinks.split(',').map(link => link.trim());
-    adData.contact = adData.contact.split(',').map(contact => contact.trim());
-
-    const url = adData.adId
-        ? `https://propertify.onrender.com/api/colors/ads/${adData.adId}`
-        : 'https://propertify.onrender.com/api/colors/ads';
-    const method = adData.adId ? 'PUT' : 'POST';
-
-    try {
-        const response = await fetch(url, {
-            method: method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(adData)
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        console.log('Ad saved successfully:', result);
-        closeSeparateAdForm();
-        listSeparateAds(); // Refresh the ads list
-    } catch (error) {
-        console.error('Error saving ad:', error);
-        alert('Failed to save ad. Please try again.');
-    }
-}
-
-// Function to list all ads
-async function listSeparateAds() {
-    try {
-        const response = await fetch('https://propertify.onrender.com/api/colors/ads');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const ads = await response.json();
-        const adsList = document.getElementById('adsList');
-        adsList.innerHTML = '';
-        ads.forEach(ad => {
-            const adElement = document.createElement('div');
-            adElement.innerHTML = `
-                <h4>${ad.name}</h4>
-                <p>Type: ${ad.type.type}</p>
-                <button onclick="openSeparateAdForm(${JSON.stringify(ad)})">Edit</button>
-                <button onclick="deleteSeparateAd('${ad._id}')">Delete</button>
-            `;
-            adsList.appendChild(adElement);
-        });
-    } catch (error) {
-        console.error('Error listing ads:', error);
-        alert('Failed to list ads. Please try again.');
-    }
-}
-
-// Function to delete an ad
-async function deleteSeparateAd(adId) {
-    if (confirm('Are you sure you want to delete this ad?')) {
-        try {
-            const response = await fetch(`https://propertify.onrender.com/api/colors/ads/${adId}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            console.log('Ad deleted successfully');
-            listSeparateAds(); // Refresh the ads list
-        } catch (error) {
-            console.error('Error deleting ad:', error);
-            alert('Failed to delete ad. Please try again.');
-        }
-    }
-}
-
-// Event listeners
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('addNewAdButton').addEventListener('click', () => openSeparateAdForm());
-    document.getElementById('listAdsButton').addEventListener('click', listSeparateAds);
-    document.getElementById('separateAdForm').addEventListener('submit', saveSeparateAd);
-});
-
     </script>
 </body>
 
