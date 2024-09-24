@@ -118,7 +118,24 @@ app.get('/api/list-options', async (req, res) => {
     }
 });
 
+// Create a new list option
+app.post('/api/list-options/new', async (req, res) => {
+    try {
+        const { listName, options } = req.body;
+        
+        if (!listName || !Array.isArray(options) || options.length === 0) {
+            return res.status(400).json({ message: 'Invalid input. listName and non-empty options array required.' });
+        }
 
+        const newListOption = new ListOptions({ listName, options });
+        const savedListOption = await newListOption.save();
+        
+        res.status(201).json(savedListOption);
+    } catch (error) {
+        console.error('Error creating new list option:', error);
+        res.status(500).json({ message: 'Error creating new list option', error: error.message });
+    }
+});
 
 // Get a specific list option by listName
 app.get('/api/list-options/:listName', async (req, res) => {

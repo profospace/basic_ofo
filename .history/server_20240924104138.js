@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3015;
+const PORT = process.env.PORT || 3012;
 
 app.use(fileUpload());
 app.use(cors());
@@ -14,9 +14,6 @@ app.use(express.urlencoded({ extended : true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-const BASE_URL = 'https://propertify.onrender.com';
-
 
 // AWS Configuration
 const awsConfig = {
@@ -117,8 +114,6 @@ app.get('/api/list-options', async (req, res) => {
         res.status(error.response?.status || 500).json({ message: 'Error fetching list options', error: error.message });
     }
 });
-
-
 
 // Get a specific list option by listName
 app.get('/api/list-options/:listName', async (req, res) => {

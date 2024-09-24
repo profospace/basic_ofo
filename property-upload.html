@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, textarea, select, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        select[multiple] {
+            height: 120px;
+        }
+        #propertyList {
+            margin-top: 20px;
+        }
+        .property-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Property Upload</h1>
+    <form id="propertyForm">
+        <input type="text" name="post_title" placeholder="Property Title" required>
+        <textarea name="post_description" placeholder="Description" required></textarea>
+        
+        <select name="type_name" required>
+            <option value="">Select Property Type</option>
+            <option value="Houses">Houses</option>
+            <option value="Apartments">Apartments</option>
+            <option value="Villas">Villas</option>
+            <option value="Offices">Offices</option>
+            <option value="Shops">Retail Shops</option>
+            <option value="Factories">Factories</option>
+            <option value="Warehouses">Warehouses</option>
+            <option value="Agriland">Agri Land</option>
+            <option value="Commland">Comm Land</option>
+            <option value="ResiPlots">Resi Plots</option>
+            <option value="Banquets">Banquets</option>
+            <option value="Banquets_Room">Banquets Room</option>
+        </select>
+
+        <input type="text" name="user_name" placeholder="Your Name" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="text" name="floor" placeholder="Floor">
+        <input type="text" name="agreement" placeholder="Agreement Type">
+        <input type="text" name="priceUnit" placeholder="Price Unit">
+        <input type="text" name="areaUnit" placeholder="Area Unit">
+        
+        <label for="usp">Unique Selling Points (USP)</label>
+        <select name="usp" id="usp" multiple>
+            <option value="Prime Location">Prime Location</option>
+            <option value="Newly Renovated">Newly Renovated</option>
+            <option value="Panoramic View">Panoramic View</option>
+            <option value="High-end Finishes">High-end Finishes</option>
+            <option value="Energy Efficient">Energy Efficient</option>
+            <option value="Smart Home Features">Smart Home Features</option>
+            <option value="Private Garden">Private Garden</option>
+            <option value="Rooftop Terrace">Rooftop Terrace</option>
+            <option value="Close to Public Transport">Close to Public Transport</option>
+            <option value="Quiet Neighborhood">Quiet Neighborhood</option>
+        </select>
+
+        <input type="text" name="contactList" placeholder="Contact Numbers (comma-separated)">
+        
+        <select name="purpose" required>
+            <option value="">Select Purpose</option>
+            <option value="Buy">Buy</option>
+            <option value="Rent">Rent</option>
+        </select>
+
+        <input type="number" name="bedrooms" placeholder="Number of Bedrooms" required>
+        <input type="number" name="bathrooms" placeholder="Number of Bathrooms" required>
+        <input type="text" name="area" placeholder="Area" required>
+        
+        <select name="furnishing" required>
+            <option value="">Select Furnishing Status</option>
+            <option value="Furnished">Furnished</option>
+            <option value="Semi-Furnished">Semi-Furnished</option>
+            <option value="Unfurnished">Unfurnished</option>
+        </select>
+        
+        <label for="amenities">Amenities</label>
+        <select name="amenities" id="amenities" multiple>
+            <option value="Swimming Pool">Swimming Pool</option>
+            <option value="Gym/Fitness Center">Gym/Fitness Center</option>
+            <option value="Spa/Hot Tub">Spa/Hot Tub</option>
+            <option value="Tennis Court">Tennis Court</option>
+            <option value="Basketball Court">Basketball Court</option>
+            <option value="Playground">Playground</option>
+            <option value="Jogging Track">Jogging Track</option>
+            <option value="Clubhouse">Clubhouse</option>
+            <option value="Community Garden">Community Garden</option>
+            <option value="BBQ Area">BBQ Area</option>
+            <option value="Picnic Area">Picnic Area</option>
+            <option value="Dog Park">Dog Park</option>
+            <option value="Concierge Service">Concierge Service</option>
+            <option value="Security Patrol">Security Patrol</option>
+            <option value="Pet-Friendly Facilities">Pet-Friendly Facilities</option>
+            <option value="Elevator/Lift">Elevator/Lift</option>
+            <option value="Parking (Garage/Open)">Parking (Garage/Open)</option>
+            <option value="Valet Parking">Valet Parking</option>
+            <option value="Guest Parking">Guest Parking</option>
+            <option value="Bike Storage">Bike Storage</option>
+            <option value="On-Site Maintenance">On-Site Maintenance</option>
+            <option value="Parcel Lockers">Parcel Lockers</option>
+            <option value="Business Center">Business Center</option>
+            <option value="Conference/Meeting Rooms">Conference/Meeting Rooms</option>
+            <option value="Rooftop Terrace">Rooftop Terrace</option>
+            <option value="Lounge Area">Lounge Area</option>
+            <option value="Library/Reading Room">Library/Reading Room</option>
+            <option value="Movie Theater">Movie Theater</option>
+            <option value="Game Room">Game Room</option>
+            <option value="Coffee Bar/Refreshments">Coffee Bar/Refreshments</option>
+        </select>
+
+        <input type="number" name="price" placeholder="Price" required>
+        <input type="file" name="post_image" accept="image/*" required>
+        <input type="file" name="floor_plan_image" accept="image/*" required>
+        <input type="file" name="galleryList" accept="image/*" multiple required>
+        <button type="submit">Upload Property</button>
+    </form>
+    <button id="listButton">List Properties</button>
+    <div id="propertyList"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const BASE_URL = 'https://propertify.onrender.com';
+            const propertyForm = document.getElementById('propertyForm');
+            const listButton = document.getElementById('listButton');
+            const propertyList = document.getElementById('propertyList');
+
+            propertyForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                try {
+                    const position = await getCurrentPosition();
+                    const { latitude, longitude } = position.coords;
+
+                    // Add latitude and longitude to the form data
+                    formData.append('latitude', latitude);
+                    formData.append('longitude', longitude);
+                    formData.append('location', JSON.stringify({
+                        type: 'Point',
+                        coordinates: [longitude, latitude]
+                    }));
+
+                    // Convert multiple select values to arrays
+                    formData.set('usp', Array.from(this.usp.selectedOptions).map(option => option.value));
+                    formData.set('amenities', Array.from(this.amenities.selectedOptions).map(option => option.value));
+                    formData.set('contactList', formData.get('contactList').split(',').map(item => Number(item.trim())));
+
+                    const response = await fetch(`${BASE_URL}/api/upload/property`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Property upload failed');
+                    }
+
+                    const result = await response.json();
+                    alert('Property uploaded successfully!'+ result);
+                   // propertyForm.reset();
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to upload property. Please try again.');
+                }
+            });
+
+            listButton.addEventListener('click', async function() {
+                try {
+                    const position = await getCurrentPosition();
+                    const { latitude, longitude } = position.coords;
+
+                    const response = await fetch(`${BASE_URL}/api/properties/filter?latitude=${latitude}&longitude=${longitude}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch properties');
+                    }
+
+                    const properties = await response.json();
+                    displayProperties(properties);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to fetch properties. Please try again.');
+                }
+            });
+
+            function getCurrentPosition() {
+                return new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+            }
+
+            function displayProperties(properties) {
+                propertyList.innerHTML = '';
+                properties.forEach(property => {
+                    const propertyElement = document.createElement('div');
+                    propertyElement.className = 'property-item';
+                    propertyElement.innerHTML = `
+                        <h3>${property.post_title}</h3>
+                        <p>${property.post_description}</p>
+                        <p>Type: ${property.type_name}</p>
+                        <p>Price: ${property.price} ${property.priceUnit}</p>
+                        <p>Area: ${property.area} ${property.areaUnit}</p>
+                        <p>Bedrooms: ${property.bedrooms}</p>
+                        <p>Bathrooms: ${property.bathrooms}</p>
+                        <p>Address: ${property.address}</p>
+                        <p>Furnishing: ${property.furnishing}</p>
+                        <p>USP: ${property.usp.join(', ')}</p>
+                        <p>Amenities: ${property.amenities.join(', ')}</p>
+                        <img src="${property.post_image}" alt="${property.post_title}" style="max-width: 200px;">
+                    `;
+                    propertyList.appendChild(propertyElement);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, textarea, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #propertyList {
+            margin-top: 20px;
+        }
+        .property-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Property Upload</h1>
+    <form id="propertyForm">
+        <input type="text" name="post_title" placeholder="Property Title" required>
+        <textarea name="post_description" placeholder="Description" required></textarea>
+        <input type="text" name="type_name" placeholder="Property Type" required>
+        <input type="text" name="user_name" placeholder="Your Name" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="text" name="floor" placeholder="Floor">
+        <input type="text" name="agreement" placeholder="Agreement Type">
+        <input type="text" name="priceUnit" placeholder="Price Unit">
+        <input type="text" name="areaUnit" placeholder="Area Unit">
+        <input type="text" name="usp" placeholder="USP (comma-separated)">
+        <input type="text" name="contactList" placeholder="Contact Numbers (comma-separated)">
+        <input type="text" name="purpose" placeholder="Purpose (e.g., Rent, Sale)">
+        <input type="number" name="bedrooms" placeholder="Number of Bedrooms" required>
+        <input type="number" name="bathrooms" placeholder="Number of Bathrooms" required>
+        <input type="text" name="area" placeholder="Area" required>
+        <input type="text" name="furnishing" placeholder="Furnishing Status">
+        <input type="text" name="amenities" placeholder="Amenities (comma-separated)">
+        <input type="number" name="price" placeholder="Price" required>
+        <input type="file" name="post_image" accept="image/*" required>
+        <input type="file" name="floor_plan_image" accept="image/*" required>
+        <input type="file" name="galleryList" accept="image/*" multiple required>
+        <button type="submit">Upload Property</button>
+    </form>
+    <button id="listButton">List Properties</button>
+    <div id="propertyList"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const BASE_URL = 'https://propertify.onrender.com';
+            const propertyForm = document.getElementById('propertyForm');
+            const listButton = document.getElementById('listButton');
+            const propertyList = document.getElementById('propertyList');
+
+            propertyForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                
+                try {
+                    const position = await getCurrentPosition();
+                    const { latitude, longitude } = position.coords;
+
+                    // Add latitude and longitude to the form data
+                    formData.append('latitude', latitude);
+                    formData.append('longitude', longitude);
+                    formData.append('location', JSON.stringify({
+                        type: 'Point',
+                        coordinates: [longitude, latitude]
+                    }));
+
+                    // Convert comma-separated strings to arrays
+                    formData.set('usp', formData.get('usp').split(',').map(item => item.trim()));
+                    formData.set('contactList', formData.get('contactList').split(',').map(item => Number(item.trim())));
+                    formData.set('amenities', formData.get('amenities').split(',').map(item => item.trim()));
+
+                    const response = await fetch(`${BASE_URL}/api/upload/property`, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Property upload failed');
+                    }
+
+                    const result = await response.json();
+                    alert('Property uploaded successfully!');
+                    propertyForm.reset();
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to upload property. Please try again.');
+                }
+            });
+
+            listButton.addEventListener('click', async function() {
+                try {
+                    const position = await getCurrentPosition();
+                    const { latitude, longitude } = position.coords;
+
+                    const response = await fetch(`${BASE_URL}/api/properties/filter?latitude=${latitude}&longitude=${longitude}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch properties');
+                    }
+
+                    const properties = await response.json();
+                    displayProperties(properties);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to fetch properties. Please try again.');
+                }
+            });
+
+            function getCurrentPosition() {
+                return new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject);
+                });
+            }
+
+            function displayProperties(properties) {
+                propertyList.innerHTML = '';
+                properties.forEach(property => {
+                    const propertyElement = document.createElement('div');
+                    propertyElement.className = 'property-item';
+                    propertyElement.innerHTML = `
+                        <h3>${property.post_title}</h3>
+                        <p>${property.post_description}</p>
+                        <p>Type: ${property.type_name}</p>
+                        <p>Price: ${property.price} ${property.priceUnit}</p>
+                        <p>Area: ${property.area} ${property.areaUnit}</p>
+                        <p>Bedrooms: ${property.bedrooms}</p>
+                        <p>Bathrooms: ${property.bathrooms}</p>
+                        <p>Address: ${property.address}</p>
+                        <p>Furnishing: ${property.furnishing}</p>
+                        <p>Amenities: ${property.amenities.join(', ')}</p>
+                        <img src="${property.post_image}" alt="${property.post_title}" style="max-width: 200px;">
+                    `;
+                    propertyList.appendChild(propertyElement);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

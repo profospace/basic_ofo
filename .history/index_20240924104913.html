@@ -218,15 +218,13 @@
 </head>
 
 
+
 <div class="tab">
     <button class="tablinks" onclick="openTab(event, 'ImageGallery')" id="defaultOpen">AWS S3 Image Gallery</button>
     <button class="tablinks" onclick="openTab(event, 'UpdateColors')">Update Colors API Form</button>
     <button class="tablinks" onclick="openPropertyUpload()">Property Upload</button>
     <button class="tablinks" onclick="openTab(event, 'ListOptions')">List Options</button>
-    <button class="tablinks" onclick="openTab(event, 'NewListOption')">New List Option</button>
 </div>
-
-
 
 
 
@@ -505,28 +503,6 @@
     </form>
 </div>
 
-<div id="NewListOption" class="tabcontent">
-    <h1>Create New List Option</h1>
-    <form id="newListOptionForm">
-        <label for="newListName">List Name:</label>
-        <input type="text" id="newListName" required>
-        
-        <div id="newOptionsContainer">
-            <div class="option-item">
-                <label for="newImageLink0">Image Link:</label>
-                <input type="text" id="newImageLink0" required>
-                <label for="newTextView0">Text View:</label>
-                <input type="text" id="newTextView0" required>
-                <label for="newLink0">Link:</label>
-                <input type="text" id="newLink0" required>
-            </div>
-        </div>
-        
-        <button type="button" id="addNewOptionButton">Add Another Option</button>
-        <button type="submit">Create New List Option</button>
-    </form>
-</div>
-
 <div id="popup" class="popup">
     <div class="popup-content">
         <span class="close-button" onclick="closePopup()">&times;</span>
@@ -584,120 +560,6 @@
 
 <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
 <script>
-
-    ///////////
-    let newOptionCount = 1;
-
-
-    document.getElementById('newListOptionForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const listName = document.getElementById('newListName').value;
-    const options = [];
-    
-    for (let i = 0; i < newOptionCount; i++) {
-        const imageLink = document.getElementById(`newImageLink${i}`)?.value;
-        const textView = document.getElementById(`newTextView${i}`)?.value;
-        const link = document.getElementById(`newLink${i}`)?.value;
-        
-        if (imageLink && textView && link) {
-            options.push({ imagelink: imageLink, textview: textView, link: link });
-        }
-    }
-    
-    try {
-        const response = await fetch(`${BASE_URL}/api/list-options/add-complete`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ listName, options })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('List option added/updated:', result);
-        showPopup(result.message); // This will show "List updated successfully" or "List created successfully"
-        
-        // Reset the form
-        this.reset();
-        document.getElementById('newOptionsContainer').innerHTML = `
-            <div class="option-item">
-                <label for="newImageLink0">Image Link:</label>
-                <input type="text" id="newImageLink0" required>
-                <label for="newTextView0">Text View:</label>
-                <input type="text" id="newTextView0" required>
-                <label for="newLink0">Link:</label>
-                <input type="text" id="newLink0" required>
-            </div>
-        `;
-        newOptionCount = 1;
-        
-        // Refresh the list of available list options in the dropdown
-        await loadAvailableLists();
-        
-    } catch (error) {
-        console.error('Error adding/updating list option:', error);
-        showPopup('Failed to add/update list option. Please try again.');
-    }
-});
-
-// Function to load available lists
-async function loadAvailableLists() {
-    try {
-        const response = await fetch(`${BASE_URL}/api/list-options`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const lists = await response.json();
-        
-        const listSelector = document.getElementById('listSelector');
-        listSelector.innerHTML = '<option value="">Select a list</option>';
-        lists.forEach(list => {
-            const option = document.createElement('option');
-            option.value = list.listName;
-            option.textContent = list.listName;
-            listSelector.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error loading available lists:', error);
-        showPopup('Failed to load available lists. Please try again.');
-    }
-}
-
-// Call this function when the page loads
-document.addEventListener('DOMContentLoaded', loadAvailableLists);
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////
-
-
-document.getElementById('addNewOptionButton').addEventListener('click', function() {
-    const container = document.getElementById('newOptionsContainer');
-    const newOption = document.createElement('div');
-    newOption.className = 'option-item';
-    newOption.innerHTML = `
-        <label for="newImageLink${newOptionCount}">Image Link:</label>
-        <input type="text" id="newImageLink${newOptionCount}" required>
-        <label for="newTextView${newOptionCount}">Text View:</label>
-        <input type="text" id="newTextView${newOptionCount}" required>
-        <label for="newLink${newOptionCount}">Link:</label>
-        <input type="text" id="newLink${newOptionCount}" required>
-    `;
-    container.appendChild(newOption);
-    newOptionCount++;
-});
-
-
 
     function openPropertyUpload() {
         window.location.href = '/property-upload';
