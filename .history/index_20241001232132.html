@@ -374,71 +374,9 @@
         <button class="tablinks" onclick="openTab(event, 'BuildingsProperties')">Buildings & Properties</button>
         <button class="tablinks" onclick="openTab(event, 'PropertyUpload')">Upload Property</button>
         <button class="tablinks" onclick="openTab(event, 'BuildingUpload')">Upload Building</button>
-        <button class="tablinks" onclick="openTab(event, 'DeeplinkGenerator')">Deeplink Generator</button>
 
 
 
-
-    </div>
-
-
-    <div id="DeeplinkGenerator" class="tabcontent">
-        <h1>Deeplink Generator</h1>
-        <form id="deeplinkForm">
-            <h2>Filter Criteria</h2>
-            <div>
-                <label for="purpose">Purpose:</label>
-                <select id="purpose" name="purpose">
-                    <option value="">Select Purpose</option>
-                    <option value="rent">Rent</option>
-                    <option value="buy">Buy</option>
-                </select>
-            </div>
-            <div>
-                <label for="propertyType">Property Type:</label>
-                <select id="propertyType" name="property_type">
-                    <option value="">Select Property Type</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="house">House</option>
-                    <option value="villa">Villa</option>
-                    <option value="office">Office</option>
-                </select>
-            </div>
-            <div>
-                <label for="minPrice">Min Price:</label>
-                <input type="number" id="minPrice" name="min_price">
-            </div>
-            <div>
-                <label for="maxPrice">Max Price:</label>
-                <input type="number" id="maxPrice" name="max_price">
-            </div>
-            <div>
-                <label for="bedrooms">Bedrooms:</label>
-                <input type="number" id="bedrooms" name="bedrooms">
-            </div>
-            <div>
-                <label for="bathrooms">Bathrooms:</label>
-                <input type="number" id="bathrooms" name="bathrooms">
-            </div>
-            <div>
-                <label for="latitude">Latitude:</label>
-                <input type="number" id="latitude" name="lat" step="any">
-            </div>
-            <div>
-                <label for="longitude">Longitude:</label>
-                <input type="number" id="longitude" name="lng" step="any">
-            </div>
-            <div>
-                <label for="amenities">Amenities (comma-separated):</label>
-                <input type="text" id="amenities" name="amenities">
-            </div>
-            <button type="submit">Generate Deeplink</button>
-        </form>
-        <div id="deeplinkResult">
-            <h3>Generated Deeplink:</h3>
-            <p id="generatedDeeplink"></p>
-            <button id="copyDeeplink">Copy Deeplink</button>
-        </div>
     </div>
 
 
@@ -1124,43 +1062,6 @@
         ////////
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const deeplinkForm = document.getElementById('deeplinkForm');
-            const generatedDeeplink = document.getElementById('generatedDeeplink');
-            const copyDeeplinkButton = document.getElementById('copyDeeplink');
-
-            deeplinkForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const formData = new FormData(deeplinkForm);
-                const params = new URLSearchParams();
-
-                for (const [key, value] of formData.entries()) {
-                    if (value) {
-                        if (key === 'amenities') {
-                            const amenitiesArray = value.split(',').map(item => item.trim());
-                            amenitiesArray.forEach((amenity, index) => {
-                                params.append(`amenities[${index}]`, amenity);
-                            });
-                        } else {
-                            params.append(key, value);
-                        }
-                    }
-                }
-
-                const deeplink = `ofo://filter?${params.toString()}`;
-                generatedDeeplink.textContent = deeplink;
-            });
-
-            copyDeeplinkButton.addEventListener('click', function () {
-                navigator.clipboard.writeText(generatedDeeplink.textContent).then(() => {
-                    alert('Deeplink copied to clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-            });
-        });
-
-
         document.getElementById("buildingUploadForm").addEventListener("submit", async function (e) {
             e.preventDefault();
             const form = e.target;
@@ -1236,6 +1137,14 @@
                 alert('Failed to upload building details. Please try again.');
             }
         });
+
+
+
+
+
+
+
+
 
         document.getElementById('totalFloors').addEventListener('change', function (e) {
             const totalFloors = parseInt(e.target.value);
@@ -2282,22 +2191,6 @@
                 const uploadedImageUrl = document.getElementById('uploadedImageUrl');
                 uploadedImageUrl.textContent = `Uploaded Image URL: ${result.response_data.Location}`;
 
-                // Add copy functionality for the newly uploaded image URL
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(result.response_data.Location).then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-                uploadedImageUrl.appendChild(copyButton);
-
                 // Reload the image grid
                 await loadImages();
             } catch (error) {
@@ -2340,25 +2233,8 @@
                 urlText.className = 'imageUrl';
                 urlText.textContent = imageUrl;
 
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(imageUrl).then(() => {
-                        // Temporarily change the button text to indicate it was copied
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-
-
                 imageItem.appendChild(img);
                 imageItem.appendChild(urlText);
-                imageItem.appendChild(copyButton);
                 imageGrid.appendChild(imageItem);
             });
         }
@@ -2392,23 +2268,6 @@
                 uploadedImageUrl.textContent = `Uploaded Image URL: ${result.response_data.Location}`;
 
                 // Reload the image grid
-
-                // Add copy functionality for the newly uploaded image URL
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(result.response_data.Location).then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-                uploadedImageUrl.appendChild(copyButton);
-
                 await loadImages();
             } catch (error) {
                 console.error('Error uploading image:', error);

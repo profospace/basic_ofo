@@ -373,72 +373,8 @@
         <button class="tablinks" onclick="openTab(event, 'NewListOption')">New List Option</button>
         <button class="tablinks" onclick="openTab(event, 'BuildingsProperties')">Buildings & Properties</button>
         <button class="tablinks" onclick="openTab(event, 'PropertyUpload')">Upload Property</button>
-        <button class="tablinks" onclick="openTab(event, 'BuildingUpload')">Upload Building</button>
-        <button class="tablinks" onclick="openTab(event, 'DeeplinkGenerator')">Deeplink Generator</button>
 
 
-
-
-    </div>
-
-
-    <div id="DeeplinkGenerator" class="tabcontent">
-        <h1>Deeplink Generator</h1>
-        <form id="deeplinkForm">
-            <h2>Filter Criteria</h2>
-            <div>
-                <label for="purpose">Purpose:</label>
-                <select id="purpose" name="purpose">
-                    <option value="">Select Purpose</option>
-                    <option value="rent">Rent</option>
-                    <option value="buy">Buy</option>
-                </select>
-            </div>
-            <div>
-                <label for="propertyType">Property Type:</label>
-                <select id="propertyType" name="property_type">
-                    <option value="">Select Property Type</option>
-                    <option value="apartment">Apartment</option>
-                    <option value="house">House</option>
-                    <option value="villa">Villa</option>
-                    <option value="office">Office</option>
-                </select>
-            </div>
-            <div>
-                <label for="minPrice">Min Price:</label>
-                <input type="number" id="minPrice" name="min_price">
-            </div>
-            <div>
-                <label for="maxPrice">Max Price:</label>
-                <input type="number" id="maxPrice" name="max_price">
-            </div>
-            <div>
-                <label for="bedrooms">Bedrooms:</label>
-                <input type="number" id="bedrooms" name="bedrooms">
-            </div>
-            <div>
-                <label for="bathrooms">Bathrooms:</label>
-                <input type="number" id="bathrooms" name="bathrooms">
-            </div>
-            <div>
-                <label for="latitude">Latitude:</label>
-                <input type="number" id="latitude" name="lat" step="any">
-            </div>
-            <div>
-                <label for="longitude">Longitude:</label>
-                <input type="number" id="longitude" name="lng" step="any">
-            </div>
-            <div>
-                <label for="amenities">Amenities (comma-separated):</label>
-                <input type="text" id="amenities" name="amenities">
-            </div>
-            <button type="submit">Generate Deeplink</button>
-        </form>
-        <div id="deeplinkResult">
-            <h3>Generated Deeplink:</h3>
-            <p id="generatedDeeplink"></p>
-            <button id="copyDeeplink">Copy Deeplink</button>
-        </div>
     </div>
 
 
@@ -557,11 +493,9 @@
             </div>
             <div class="full-width">
                 <label>Location:</label>
-                <button type="button" id="getCurrentLocation">Get Current Location</button>
                 <div id="map" class="map-container"></div>
                 <input type="hidden" id="latitude" name="latitude" required>
                 <input type="hidden" id="longitude" name="longitude" required>
-                <p id="locationDisplay"></p>
             </div>
             <div class="full-width">
                 <label for="post_description">Description:</label>
@@ -569,33 +503,76 @@
             </div>
             <div class="full-width">
                 <label for="amenities">Amenities:</label>
-                <input type="text" id="amenitiesInput" placeholder="Type and press Enter to add">
-                <div id="amenitiesChips" class="chip-container"></div>
-                <input type="hidden" id="amenities" name="amenities">
+                <select id="amenities" name="amenities" multiple>
+                    <option value="Swimming Pool">Swimming Pool</option>
+                    <option value="Gym">Gym</option>
+                    <option value="Parking">Parking</option>
+                    <option value="24/7 Security">24/7 Security</option>
+                    <option value="Clubhouse">Clubhouse</option>
+                    <option value="Playground">Playground</option>
+                    <option value="Garden">Garden</option>
+                    <option value="Elevator">Elevator</option>
+                    <option value="Power Backup">Power Backup</option>
+                    <option value="Jogging Track">Jogging Track</option>
+                </select>
             </div>
+            
             <div class="full-width">
                 <label for="usp">USP (Unique Selling Points):</label>
-                <input type="text" id="uspInput" placeholder="Type and press Enter to add">
-                <div id="uspChips" class="chip-container"></div>
-                <input type="hidden" id="usp" name="usp">
+                <select id="usp" name="usp" multiple>
+                    <option value="Luxury Finishes">Luxury Finishes</option>
+                    <option value="Panoramic View">Panoramic View</option>
+                    <option value="Smart Home Features">Smart Home Features</option>
+                    <option value="Energy Efficient">Energy Efficient</option>
+                    <option value="Prime Location">Prime Location</option>
+                    <option value="High ROI">High ROI</option>
+                    <option value="Low Maintenance">Low Maintenance</option>
+                    <option value="Gated Community">Gated Community</option>
+                    <option value="Eco-Friendly">Eco-Friendly</option>
+                    <option value="Modern Architecture">Modern Architecture</option>
+                </select>
             </div>
+            
             <div class="full-width">
                 <label for="location_advantage">Location Advantages:</label>
-                <input type="text" id="locationAdvantageInput" placeholder="Type and press Enter to add">
-                <div id="locationAdvantageChips" class="chip-container"></div>
-                <input type="hidden" id="location_advantage" name="location_advantage">
+                <select id="location_advantage" name="location_advantage" multiple>
+                    <option value="Close to Schools">Close to Schools</option>
+                    <option value="Near Shopping Centers">Near Shopping Centers</option>
+                    <option value="Public Transport Nearby">Public Transport Nearby</option>
+                    <option value="Close to Hospitals">Close to Hospitals</option>
+                    <option value="Near Business Hub">Near Business Hub</option>
+                    <option value="Quiet Neighborhood">Quiet Neighborhood</option>
+                    <option value="Close to Airport">Close to Airport</option>
+                    <option value="Near Parks">Near Parks</option>
+                    <option value="Waterfront">Waterfront</option>
+                    <option value="City Center Proximity">City Center Proximity</option>
+                </select>
             </div>
-            <div class="full-width">
-                <label for="facilities">Facilities:</label>
-                <input type="text" id="facilitiesInput" placeholder="Type and press Enter to add">
-                <div id="facilitiesChips" class="chip-container"></div>
-                <input type="hidden" id="facilities" name="facilities">
-            </div>
+            
             <div class="full-width">
                 <label for="tags">Tags:</label>
-                <input type="text" id="tagsInput" placeholder="Type and press Enter to add">
-                <div id="tagsChips" class="chip-container"></div>
-                <input type="hidden" id="tags" name="tags">
+                <div id="tagsContainer">
+                    <input type="checkbox" id="tag_postLocation" name="tags" value="Post Location">
+                    <label for="tag_postLocation">Post Location</label>
+                    
+                    <input type="checkbox" id="tag_investmentFriendly" name="tags" value="Investment Friendly">
+                    <label for="tag_investmentFriendly">Investment Friendly</label>
+                    
+                    <input type="checkbox" id="tag_new" name="tags" value="New">
+                    <label for="tag_new">New</label>
+                    
+                    <input type="checkbox" id="tag_budgetFriendly" name="tags" value="Budget-Friendly">
+                    <label for="tag_budgetFriendly">Budget-Friendly</label>
+                    
+                    <input type="checkbox" id="tag_starCommunity" name="tags" value="Star Community">
+                    <label for="tag_starCommunity">Star Community</label>
+                    
+                    <input type="checkbox" id="tag_almostFull" name="tags" value="Almost Full">
+                    <label for="tag_almostFull">Almost Full</label>
+                    
+                    <input type="checkbox" id="tag_growingLocality" name="tags" value="Growing Locality">
+                    <label for="tag_growingLocality">Growing Locality</label>
+                </div>
             </div>
             <div class="full-width">
                 <label for="contactList">Contact Numbers:</label>
@@ -663,8 +640,6 @@
                 <button type="submit">Save Option</button>
             </form>
         </div>
-        <button id="deleteListButton" style="display: none;">Delete List</button>
-
     </div>
 
 
@@ -996,277 +971,9 @@
         </div>
     </div>
 
-    <div id="BuildingUpload" class="tabcontent">
-        <h1>Upload Building Details</h1>
-        <form id="buildingUploadForm">
-            <div>
-                <label for="buildingId">Building ID:</label>
-                <input type="text" id="buildingId" name="buildingId" required>
-            </div>
-            <div>
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div>
-                <label for="frontRoad">Front Road:</label>
-                <input type="text" id="frontRoad" name="frontRoad">
-            </div>
-            <div>
-                <label for="parkingArea">Parking Area:</label>
-                <input type="text" id="parkingArea" name="parkingArea">
-            </div>
-            <div>
-                <label for="description">Description:</label>
-                <textarea id="description" name="description"></textarea>
-            </div>
-            <div>
-                <label for="areaUSP">Area USP:</label>
-                <input type="text" id="areaUSP" name="areaUSP">
-            </div>
-            <div>
-                <label for="ownerName">Owner Name:</label>
-                <input type="text" id="ownerName" name="ownerName">
-            </div>
-            <div>
-                <label for="ownerId">Owner ID:</label>
-                <input type="text" id="ownerId" name="ownerId">
-            </div>
-            <div>
-                <label for="storey">Storey:</label>
-                <input type="text" id="storey" name="storey">
-            </div>
-            <div>
-                <label for="age">Age:</label>
-                <input type="text" id="age" name="age">
-            </div>
-            <div>
-                <label for="type">Type:</label>
-                <input type="text" id="type" name="type">
-            </div>
-            <div>
-                <label for="luda">LUDA:</label>
-                <input type="text" id="luda" name="luda">
-            </div>
-            <div>
-                <label for="totalProperties">Total Properties:</label>
-                <input type="text" id="totalProperties" name="totalProperties">
-            </div>
-            <div>
-                <label for="developmentStatus">Development Status:</label>
-                <input type="text" id="developmentStatus" name="developmentStatus">
-            </div>
-            <div>
-                <label for="allowPreBooking">Allow Pre-Booking:</label>
-                <input type="checkbox" id="allowPreBooking" name="allowPreBooking">
-            </div>
-            <div>
-                <label for="allocatedProperties">Allocated Properties:</label>
-                <input type="text" id="allocatedProperties" name="allocatedProperties">
-            </div>
-            <div>
-                <label for="freeProperties">Free Properties:</label>
-                <input type="text" id="freeProperties" name="freeProperties">
-            </div>
-            <div>
-                <label for="contactNumber">Contact Number:</label>
-                <input type="tel" id="contactNumber" name="contactNumber">
-            </div>
-            <div>
-                <label for="latitude">Latitude:</label>
-                <input type="number" id="latitude" name="latitude" step="any">
-            </div>
-            <div>
-                <label for="longitude">Longitude:</label>
-                <input type="number" id="longitude" name="longitude" step="any">
-            </div>
-            <div>
-                <label for="galleryList">Gallery Images:</label>
-                <input type="file" id="galleryList" name="galleryList" multiple accept="image/*">
-            </div>
-
-
-            <div>
-                <label for="numberOfFlatsAvailable">Number of Flats Available:</label>
-                <input type="number" id="numberOfFlatsAvailable" name="numberOfFlatsAvailable" required>
-            </div>
-            <div>
-                <label for="totalFloors">Total Number of Floors:</label>
-                <input type="number" id="totalFloors" name="totalFloors" required>
-            </div>
-            <div id="flatsDetailsContainer">
-                <h3>Flats Details</h3>
-                <!-- JavaScript will dynamically add input fields here based on totalFloors -->
-            </div>
-            <div>
-                <label for="areaUSP">Area USP:</label>
-                <textarea id="areaUSP" name="areaUSP"></textarea>
-            </div>
-            <div>
-                <label for="brochureLink">Brochure Link:</label>
-                <input type="url" id="brochureLink" name="brochureLink">
-            </div>
-            <div>
-                <label for="mapLink">Map Link:</label>
-                <input type="url" id="mapLink" name="mapLink">
-            </div>
-            <div>
-                <label for="connectedProperties">Connected Properties (Property IDs, comma-separated):</label>
-                <input type="text" id="connectedProperties" name="connectedProperties">
-            </div>
-            <button type="submit">Upload Building</button>
-        </form>
-    </div>
-
-
-
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        ////////
 
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const deeplinkForm = document.getElementById('deeplinkForm');
-            const generatedDeeplink = document.getElementById('generatedDeeplink');
-            const copyDeeplinkButton = document.getElementById('copyDeeplink');
-
-            deeplinkForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const formData = new FormData(deeplinkForm);
-                const params = new URLSearchParams();
-
-                for (const [key, value] of formData.entries()) {
-                    if (value) {
-                        if (key === 'amenities') {
-                            const amenitiesArray = value.split(',').map(item => item.trim());
-                            amenitiesArray.forEach((amenity, index) => {
-                                params.append(`amenities[${index}]`, amenity);
-                            });
-                        } else {
-                            params.append(key, value);
-                        }
-                    }
-                }
-
-                const deeplink = `ofo://filter?${params.toString()}`;
-                generatedDeeplink.textContent = deeplink;
-            });
-
-            copyDeeplinkButton.addEventListener('click', function () {
-                navigator.clipboard.writeText(generatedDeeplink.textContent).then(() => {
-                    alert('Deeplink copied to clipboard!');
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-            });
-        });
-
-
-        document.getElementById("buildingUploadForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const form = e.target;
-            const formData = new FormData(form);
-
-            const buildingData = {
-                buildingId: formData.get('buildingId'),
-                name: formData.get('name'),
-                frontRoad: formData.get('frontRoad'),
-                parkingArea: formData.get('parkingArea'),
-                description: formData.get('description'),
-                areaUSP: formData.get('areaUSP'),
-                ownerName: formData.get('ownerName'),
-                ownerId: formData.get('ownerId'),
-                storey: formData.get('storey'),
-                age: formData.get('age'),
-                type: formData.get('type'),
-                luda: formData.get('luda'),
-                totalProperties: formData.get('totalProperties'),
-                developmentStatus: formData.get('developmentStatus'),
-                allowPreBooking: formData.get('allowPreBooking') === 'on',
-                allocatedProperties: formData.get('allocatedProperties'),
-                freeProperties: formData.get('freeProperties'),
-                contactNumber: formData.get('contactNumber'),
-                numberOfFlatsAvailable: parseInt(formData.get('numberOfFlatsAvailable')),
-                totalFloors: parseInt(formData.get('totalFloors')),
-                flatsDetails: [],
-                areaUSP: formData.get('areaUSP'),
-                brochureLink: formData.get('brochureLink'),
-                mapLink: formData.get('mapLink'),
-                connectedProperties: formData.get('connectedProperties').split(',').map(id => id.trim()),
-                location: {
-                    type: 'Point',
-                    coordinates: [
-                        parseFloat(formData.get('longitude')),
-                        parseFloat(formData.get('latitude'))
-                    ]
-                }
-
-            };
-
-            for (let i = 1; i <= buildingData.totalFloors; i++) {
-                buildingData.flatsDetails.push({
-                    floorNumber: i,
-                    flatsOnFloor: parseInt(formData.get(`flatsOnFloor${i}`)),
-                    availableFlats: parseInt(formData.get(`availableFlats${i}`))
-                });
-            }
-
-            const galleryImages = form.querySelector('input[name="galleryList"]').files;
-            const apiFormData = new FormData();
-            for (let i = 0; i < galleryImages.length; i++) {
-                apiFormData.append('galleryList', galleryImages[i]);
-            }
-
-            apiFormData.append('data', JSON.stringify(buildingData));
-            try {
-                const response = await fetch('https://propertify.onrender.com/api/buildings/saveBuildingDetails', {
-                    method: 'POST',
-                    body: apiFormData
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to upload building details');
-                }
-
-                const result = await response.json();
-                console.log('Building details uploaded successfully:', result);
-                alert('Building details uploaded successfully!');
-                form.reset();
-            } catch (error) {
-                console.error('Error uploading building details:', error);
-                alert('Failed to upload building details. Please try again.');
-            }
-        });
-
-        document.getElementById('totalFloors').addEventListener('change', function (e) {
-            const totalFloors = parseInt(e.target.value);
-            const container = document.getElementById('flatsDetailsContainer');
-            container.innerHTML = '<h3>Flats Details</h3>';
-
-            for (let i = 1; i <= totalFloors; i++) {
-                container.innerHTML += `
-      <div>
-        <h4>Floor ${i}</h4>
-        <label for="flatsOnFloor${i}">Number of Flats on Floor:</label>
-        <input type="number" id="flatsOnFloor${i}" name="flatsOnFloor${i}" required>
-        <label for="availableFlats${i}">Available Flats on Floor:</label>
-        <input type="number" id="availableFlats${i}" name="availableFlats${i}" required>
-      </div>
-    `;
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-
-
-        ////////
         function showPropertyPopup(formData) {
             const popup = document.getElementById('popup');
             const popupMessage = document.getElementById('popup-message');
@@ -1291,6 +998,7 @@
 
 
         let map, marker;
+
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 center: { lat: 0, lng: 0 },
@@ -1309,57 +1017,22 @@
             google.maps.event.addListener(marker, 'dragend', function (event) {
                 updateLatLng(event.latLng);
             });
-
-            document.getElementById('getCurrentLocation').addEventListener('click', getCurrentLocation);
         }
 
         function placeMarker(location) {
             marker.setPosition(location);
-            map.setCenter(location);
             updateLatLng(location);
         }
 
         function updateLatLng(location) {
             document.getElementById('latitude').value = location.lat();
             document.getElementById('longitude').value = location.lng();
-            updateLocationDisplay(location);
         }
 
-        function updateLocationDisplay(location) {
-            const locationDisplay = document.getElementById('locationDisplay');
-            locationDisplay.textContent = `Latitude: ${location.lat().toFixed(6)}, Longitude: ${location.lng().toFixed(6)}`;
-        }
-
-        function getCurrentLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const pos = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        placeMarker(pos);
-                        map.setZoom(15);
-                    },
-                    () => {
-                        handleLocationError(true, map.getCenter());
-                    }
-                );
-            } else {
-                handleLocationError(false, map.getCenter());
-            }
-        }
-        function handleLocationError(browserHasGeolocation, pos) {
-            alert(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
-        }
-
-
+        // Initialize map when the tab is opened
         document.querySelector('button[onclick="openTab(event, \'PropertyUpload\')"]').addEventListener('click', function () {
             setTimeout(initMap, 0);
         });
-
 
         function setupChipInput(inputId, chipsId, hiddenInputId) {
             const input = document.getElementById(inputId);
@@ -1459,6 +1132,17 @@
             formData.append('tags', document.getElementById('tags').value);
             formData.append('contactList', document.getElementById('contactList').value);
 
+
+
+            ['amenities', 'usp', 'location_advantage'].forEach(field => {
+        const select = document.getElementById(field);
+        const selectedOptions = Array.from(select.selectedOptions).map(option => option.value);
+        formData.append(field, selectedOptions.join(','));
+    });
+
+    // Handle tags
+    const selectedTags = Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(checkbox => checkbox.value);
+    formData.append('tags', selectedTags.join(','));
 
 
 
@@ -1779,19 +1463,19 @@
             const propertyElement = document.createElement('div');
             propertyElement.className = 'grid-item property';
             propertyElement.innerHTML = `
-        <h3>Property: ${property.post_title}</h3>
-        <img src="${property.post_image || 'placeholder-property-image.jpg'}" alt="${property.post_title}">
-        <p><strong>ID:</strong> ${property.post_id}</p>
-        <p><strong>Type:</strong> ${property.type_name}</p>
-        <p><strong>Building:</strong> ${getBuildingName(property.building_id) || 'Not assigned'}</p>
-        <div class="connect-property">
-            <select id="building-select-${property.post_id}">
-                <option value="">Select a building</option>
-                ${allBuildings.map(b => `<option value="${b.buildingId}">${b.name}</option>`).join('')}
-            </select>
-            <button onclick="connectPropertyToBuilding('${property.post_id}')">Connect</button>
-        </div>
-    `;
+                <h3>Property: ${property.post_title}</h3>
+                <img src="${property.post_image || 'placeholder-property-image.jpg'}" alt="${property.post_title}">
+                <p><strong>ID:</strong> ${property.post_id}</p>
+                <p><strong>Type:</strong> ${property.type_name}</p>
+                <p><strong>Building:</strong> ${getBuildingName(property.building_id) || 'Not assigned'}</p>
+                <div class="connect-property">
+                    <select id="building-select-${property.post_id}">
+                        <option value="">Select a building</option>
+                        ${allBuildings.map(b => `<option value="${b.buildingId}">${b.name}</option>`).join('')}
+                    </select>
+                    <button onclick="connectPropertyToBuilding('${property.post_id}')">Connect</button>
+                </div>
+            `;
             return propertyElement;
         }
 
@@ -1817,8 +1501,6 @@
                 return;
             }
 
-            console.log('Connecting property:', propertyId, 'to building:', buildingId);
-
             try {
                 const response = await fetch(`https://propertify.onrender.com/api/properties/${propertyId}`, {
                     method: 'PUT',
@@ -1828,20 +1510,18 @@
                     body: JSON.stringify({ building_id: buildingId }),
                 });
 
-                const responseData = await response.json();
-
                 if (!response.ok) {
-                    throw new Error(`Failed to update property: ${response.status} ${response.statusText}. ${JSON.stringify(responseData)}`);
+                    throw new Error('Failed to update property');
                 }
 
                 showPopup('Property connected to building successfully!');
+                // Refresh the data
                 await loadBuildingsAndProperties();
             } catch (error) {
                 console.error('Error connecting property to building:', error);
-                showPopup(`Failed to connect property to building. Error: ${error.message}`);
+                showPopup('Failed to connect property to building. Please try again.');
             }
         }
-
 
         function setupSearch() {
             const searchInput = document.getElementById('searchInput');
@@ -2046,14 +1726,9 @@
 
         const BASE_URL = 'https://propertify.onrender.com';
 
-
-        let currentListName = '';
-
         async function loadListOptions() {
             const listName = document.getElementById('listSelector').value;
             if (!listName) return;
-
-            currentListName = listName;  // Store the current list name
 
             try {
                 const response = await fetch(`${BASE_URL}/api/list-options/${listName}`);
@@ -2062,9 +1737,6 @@
                 }
                 const data = await response.json();
                 displayOptions(data.options);
-
-                // Show delete list button
-                document.getElementById('deleteListButton').style.display = 'block';
             } catch (error) {
                 console.error('Error loading options:', error);
                 showPopup('Failed to load options. Please try again.');
@@ -2094,6 +1766,7 @@
 
         async function saveOption(event) {
             event.preventDefault();
+            const listName = document.getElementById('listSelector').value;
             const optionId = document.getElementById('optionId').value;
             const option = {
                 imagelink: document.getElementById('imagelink').value,
@@ -2103,19 +1776,21 @@
 
             try {
                 let response;
-                if (optionId) {
-                    // Update existing option
-                    response = await fetch(`${BASE_URL}/api/list-options/${currentListName}/update-option/${optionId}`, {
-                        method: 'PUT',
+                if (optionId === '') {
+                    // Add new option
+                    response = await fetch(`${BASE_URL}/api/list-options/${listName}/add-option`, {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(option)
                     });
                 } else {
-                    // Add new option
-                    response = await fetch(`${BASE_URL}/api/list-options/${currentListName}/add-option`, {
-                        method: 'POST',
+                    // Update existing option
+                    response = await fetch(`${BASE_URL}/api/list-options/${listName}`, {
+                        method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(option)
+                        body: JSON.stringify({
+                            options: [{ ...option, _id: optionId }]
+                        })
                     });
                 }
 
@@ -2123,8 +1798,6 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const result = await response.json();
-                console.log('Option saved:', result);
                 loadListOptions(); // Reload the options
                 document.getElementById('optionForm').reset();
                 document.getElementById('optionId').value = '';
@@ -2135,60 +1808,6 @@
             }
         }
 
-        async function deleteOption(optionId) {
-            if (!confirm('Are you sure you want to delete this option?')) return;
-
-            try {
-                const response = await fetch(`${BASE_URL}/api/list-options/${currentListName}/remove-option/${optionId}`, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                loadListOptions(); // Reload the options
-                showPopup('Option deleted successfully!');
-            } catch (error) {
-                console.error('Error deleting option:', error);
-                showPopup('Failed to delete option. Please try again.');
-            }
-        }
-
-        async function deleteList() {
-            if (!confirm(`Are you sure you want to delete the entire list "${currentListName}"?`)) return;
-
-            try {
-                const response = await fetch(`${BASE_URL}/api/list-options/${currentListName}`, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                showPopup('List deleted successfully!');
-                document.getElementById('listSelector').value = '';
-                document.getElementById('optionsList').innerHTML = '';
-                document.getElementById('deleteListButton').style.display = 'none';
-                loadAvailableLists(); // Refresh the list of available lists
-            } catch (error) {
-                console.error('Error deleting list:', error);
-                showPopup('Failed to delete list. Please try again.');
-            }
-        }
-
-        // Make sure these event listeners are set up
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('optionForm').addEventListener('submit', saveOption);
-            document.getElementById('deleteListButton').addEventListener('click', deleteList);
-        });
-
-
-        // Make sure this event listener is set up
-        document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('optionForm').addEventListener('submit', saveOption);
-        });
         async function deleteOption(optionId) {
             const listName = document.getElementById('listSelector').value;
             if (!confirm('Are you sure you want to delete this option?')) return;
@@ -2282,22 +1901,6 @@
                 const uploadedImageUrl = document.getElementById('uploadedImageUrl');
                 uploadedImageUrl.textContent = `Uploaded Image URL: ${result.response_data.Location}`;
 
-                // Add copy functionality for the newly uploaded image URL
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(result.response_data.Location).then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-                uploadedImageUrl.appendChild(copyButton);
-
                 // Reload the image grid
                 await loadImages();
             } catch (error) {
@@ -2340,25 +1943,8 @@
                 urlText.className = 'imageUrl';
                 urlText.textContent = imageUrl;
 
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(imageUrl).then(() => {
-                        // Temporarily change the button text to indicate it was copied
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-
-
                 imageItem.appendChild(img);
                 imageItem.appendChild(urlText);
-                imageItem.appendChild(copyButton);
                 imageGrid.appendChild(imageItem);
             });
         }
@@ -2392,23 +1978,6 @@
                 uploadedImageUrl.textContent = `Uploaded Image URL: ${result.response_data.Location}`;
 
                 // Reload the image grid
-
-                // Add copy functionality for the newly uploaded image URL
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(result.response_data.Location).then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-                uploadedImageUrl.appendChild(copyButton);
-
                 await loadImages();
             } catch (error) {
                 console.error('Error uploading image:', error);

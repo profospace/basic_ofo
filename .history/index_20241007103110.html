@@ -1237,6 +1237,14 @@
             }
         });
 
+
+
+
+
+
+
+
+
         document.getElementById('totalFloors').addEventListener('change', function (e) {
             const totalFloors = parseInt(e.target.value);
             const container = document.getElementById('flatsDetailsContainer');
@@ -2392,23 +2400,6 @@
                 uploadedImageUrl.textContent = `Uploaded Image URL: ${result.response_data.Location}`;
 
                 // Reload the image grid
-
-                // Add copy functionality for the newly uploaded image URL
-                const copyButton = document.createElement('button');
-                copyButton.textContent = 'Copy URL';
-                copyButton.onclick = function () {
-                    navigator.clipboard.writeText(result.response_data.Location).then(() => {
-                        const originalText = copyButton.textContent;
-                        copyButton.textContent = 'Copied!';
-                        setTimeout(() => {
-                            copyButton.textContent = originalText;
-                        }, 1500);
-                    }, (err) => {
-                        console.error('Could not copy text: ', err);
-                    });
-                };
-                uploadedImageUrl.appendChild(copyButton);
-
                 await loadImages();
             } catch (error) {
                 console.error('Error uploading image:', error);

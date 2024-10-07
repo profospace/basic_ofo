@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 2020;
+const PORT = process.env.PORT || 3014;
 
 app.use(fileUpload());
 app.use(cors());
@@ -83,8 +83,6 @@ app.post('/imageUpload', async (req, res) => {
             "response_code": 500,
             "response_message": "Error",
             "response_data": err
-
-
         });
     }
 });
