@@ -1190,6 +1190,7 @@
                 showPopup('Failed to load categories. Please try again.');
             }
         }
+
         function displayCategories() {
             const categoryList = document.getElementById('categoryList');
             categoryList.innerHTML = '';
@@ -1197,8 +1198,8 @@
                 const categoryElement = document.createElement('div');
                 categoryElement.innerHTML = `
             <p>${category.name} - Icon: ${category.iconUrl}</p>
-            <button onclick="editCategory('${category._id}')">Edit</button>
-            <button onclick="deleteCategory('${category._id}')">Delete</button>
+            <button onclick="editCategory('${category.id}')">Edit</button>
+            <button onclick="deleteCategory('${category.id}')">Delete</button>
         `;
                 categoryList.appendChild(categoryElement);
             });
@@ -1220,6 +1221,7 @@
                 name: document.getElementById('categoryName').value,
                 iconUrl: document.getElementById('categoryIcon').value
             };
+
             try {
                 let response;
                 if (categoryId) {
@@ -1234,7 +1236,7 @@
                     response = await fetch('https://propertify.onrender.com/api/categories', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ categories: [categoryData] })
+                        body: JSON.stringify(categoryData)
                     });
                 }
 
@@ -2320,8 +2322,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('optionForm').addEventListener('submit', saveOption);
         });
-
-
 
         async function loadImages() {
             const imageGrid = document.getElementById('imageGrid');

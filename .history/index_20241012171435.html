@@ -1191,18 +1191,18 @@
             }
         }
         function displayCategories() {
-            const categoryList = document.getElementById('categoryList');
-            categoryList.innerHTML = '';
-            categories.forEach(category => {
-                const categoryElement = document.createElement('div');
-                categoryElement.innerHTML = `
+    const categoryList = document.getElementById('categoryList');
+    categoryList.innerHTML = '';
+    categories.forEach(category => {
+        const categoryElement = document.createElement('div');
+        categoryElement.innerHTML = `
             <p>${category.name} - Icon: ${category.iconUrl}</p>
             <button onclick="editCategory('${category._id}')">Edit</button>
             <button onclick="deleteCategory('${category._id}')">Delete</button>
         `;
-                categoryList.appendChild(categoryElement);
-            });
-        }
+        categoryList.appendChild(categoryElement);
+    });
+}
 
         function editCategory(id) {
             const category = categories.find(c => c.id === id);
@@ -1215,28 +1215,28 @@
 
         async function saveCategory(event) {
             event.preventDefault();
-            const categoryId = document.getElementById('categoryId').value;
-            const categoryData = {
-                name: document.getElementById('categoryName').value,
-                iconUrl: document.getElementById('categoryIcon').value
-            };
-            try {
-                let response;
-                if (categoryId) {
-                    // Update existing category
-                    response = await fetch(`https://propertify.onrender.com/api/categories/${categoryId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(categoryData)
-                    });
-                } else {
-                    // Add new category
-                    response = await fetch('https://propertify.onrender.com/api/categories', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ categories: [categoryData] })
-                    });
-                }
+    const categoryId = document.getElementById('categoryId').value;
+    const categoryData = {
+        name: document.getElementById('categoryName').value,
+        iconUrl: document.getElementById('categoryIcon').value
+    };
+    try {
+        let response;
+        if (categoryId) {
+            // Update existing category
+            response = await fetch(`https://propertify.onrender.com/api/categories/${categoryId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(categoryData)
+            });
+        } else {
+            // Add new category
+            response = await fetch('https://propertify.onrender.com/api/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ categories: [categoryData] })
+            });
+        }
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
