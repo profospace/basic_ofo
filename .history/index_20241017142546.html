@@ -400,108 +400,12 @@
         <button class="tablinks" onclick="openTab(event, 'BuildingUpload')">Upload Building</button>
         <button class="tablinks" onclick="openTab(event, 'DeeplinkGenerator')">Deeplink Generator</button>
         <button class="tablinks" onclick="openTab(event, 'CategoryManagement')">Category Management</button>
-        <button class="tablinks" onclick="openTab(event, 'CarouselManagement')">Carousel Management</button>
+
+
+
+
 
     </div>
-
-    <div id="CarouselManagement" class="tabcontent">
-        <h1>Carousel Management</h1>
-        <div id="carouselList"></div>
-
-        <h2>Create/Edit Carousel</h2>
-        <form id="carouselForm">
-            <input type="hidden" id="carouselEditId">
-
-            <label for="carouselId">Carousel ID:*</label>
-            <input type="text" id="carouselId" required placeholder="e.g., featured-properties">
-
-            <label for="carouselName">Name:*</label>
-            <input type="text" id="carouselName" required placeholder="e.g., Featured Properties">
-
-            <label for="autoPlay">Auto Play:</label>
-            <input type="checkbox" id="autoPlay" checked>
-
-            <label for="autoPlayInterval">Auto Play Interval (ms):</label>
-            <input type="number" id="autoPlayInterval" value="3000">
-
-            <label for="showIndicator">Show Indicator:</label>
-            <input type="checkbox" id="showIndicator" checked>
-
-            <h3>Carousel Items</h3>
-            <div id="carouselItems">
-                <!-- Items will be added here dynamically -->
-            </div>
-
-            <button type="button" onclick="addCarouselItem()">Add Item</button>
-            <button type="submit">Save Carousel</button>
-        </form>
-
-        <template id="carouselItemTemplate">
-            <div class="carousel-item">
-                <h4>Item #</h4>
-                <label for="imageUrl_IDX">Image URL:*</label>
-                <input type="text" id="imageUrl_IDX" required>
-
-                <label for="title_IDX">Title:</label>
-                <input type="text" id="title_IDX">
-
-                <label for="actionUrl_IDX">Action URL:</label>
-                <input type="text" id="actionUrl_IDX" placeholder="e.g., ofo://property/123">
-
-                <label for="propertyId_IDX">Property ID:</label>
-                <input type="text" id="propertyId_IDX" placeholder="Optional: Link to a property">
-
-                <label for="category_IDX">Category:</label>
-                <input type="text" id="category_IDX">
-
-                <button type="button" onclick="removeCarouselItem(this)">Remove Item</button>
-            </div>
-        </template>
-
-        <style>
-            .carousel-item {
-                border: 1px solid #ddd;
-                padding: 15px;
-                margin: 10px 0;
-                border-radius: 5px;
-            }
-
-            #carouselForm label {
-                display: block;
-                margin-top: 10px;
-            }
-
-            #carouselForm input:not([type="checkbox"]) {
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 10px;
-            }
-
-            #carouselForm button {
-                margin-top: 10px;
-                padding: 10px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .carousel-item button {
-                background-color: #ff4444 !important;
-            }
-
-            #carouselList .carousel-entry {
-                border: 1px solid #eee;
-                padding: 10px;
-                margin: 10px 0;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-        </style>
-    </div>
-
 
     <div id="CategoryManagement" class="tabcontent">
         <h1>Category Management</h1>
@@ -825,7 +729,7 @@
                     <!-- Options will be dynamically populated -->
                 </select>
             </div>
-
+            
             <div>
                 <label for="facilitiess">Facilities (Ctrl+Click for multiple):</label>
                 <select id="facilitiess" name="facilities[]" multiple size="6">
@@ -1361,160 +1265,7 @@
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        let itemCounter = 0;
-
-        // Load all carousels
-        async function loadCarousels() {
-            try {
-                const response = await fetch('/api/carousels');
-                const carousels = await response.json();
-                displayCarousels(carousels);
-            } catch (error) {
-                console.error('Error loading carousels:', error);
-                showPopup('Failed to load carousels');
-            }
-        }
-
-        // Display carousels in list
-        function displayCarousels(carousels) {
-            const container = document.getElementById('carouselList');
-            container.innerHTML = '<h2>Existing Carousels</h2>';
-
-            carousels.forEach(carousel => {
-                const div = document.createElement('div');
-                div.className = 'carousel-entry';
-                div.innerHTML = `
-            <div>
-                <strong>${carousel.name}</strong> (${carousel.carouselId})
-                <br>
-                Items: ${carousel.items.length}
-            </div>
-            <div>
-                <button onclick="editCarousel('${carousel.carouselId}')">Edit</button>
-                <button onclick="deleteCarousel('${carousel.carouselId}')">Delete</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        function addCarouselItem() {
-            const template = document.getElementById('carouselItemTemplate');
-            const container = document.getElementById('carouselItems');
-
-            const clone = template.content.cloneNode(true);
-            const div = clone.querySelector('.carousel-item');
-
-            // Replace IDX with unique counter
-            div.innerHTML = div.innerHTML.replace(/IDX/g, itemCounter++);
-            div.querySelector('h4').textContent = `Item ${itemCounter}`;
-
-            container.appendChild(div);
-        }
-
-        function removeCarouselItem(button) {
-            button.closest('.carousel-item').remove();
-        }
-
-        async function editCarousel(carouselId) {
-            try {
-                const response = await fetch(`/api/carousels/${carouselId}`);
-                const carousel = await response.json();
-
-                // Populate form
-                document.getElementById('carouselEditId').value = carousel._id;
-                document.getElementById('carouselId').value = carousel.carouselId;
-                document.getElementById('carouselName').value = carousel.name;
-                document.getElementById('autoPlay').checked = carousel.autoPlay;
-                document.getElementById('autoPlayInterval').value = carousel.autoPlayInterval;
-                document.getElementById('showIndicator').checked = carousel.showIndicator;
-
-                // Clear existing items
-                document.getElementById('carouselItems').innerHTML = '';
-
-                // Add existing items
-                carousel.items.forEach(item => {
-                    addCarouselItem();
-                    const div = document.querySelector('.carousel-item:last-child');
-                    div.querySelector('[id^="imageUrl_"]').value = item.imageUrl;
-                    div.querySelector('[id^="title_"]').value = item.title;
-                    div.querySelector('[id^="actionUrl_"]').value = item.actionUrl;
-                    div.querySelector('[id^="propertyId_"]').value = item.propertyId;
-                    div.querySelector('[id^="category_"]').value = item.category;
-                });
-
-            } catch (error) {
-                console.error('Error loading carousel:', error);
-                showPopup('Failed to load carousel');
-            }
-        }
-
-        async function deleteCarousel(carouselId) {
-            if (!confirm('Are you sure you want to delete this carousel?')) return;
-
-            try {
-                const response = await fetch(`/api/carousels/${carouselId}`, {
-                    method: 'DELETE'
-                });
-
-                if (!response.ok) throw new Error('Failed to delete carousel');
-
-                showPopup('Carousel deleted successfully');
-                loadCarousels();
-            } catch (error) {
-                console.error('Error deleting carousel:', error);
-                showPopup('Failed to delete carousel');
-            }
-        }
-
-        // Handle form submission
-        document.getElementById('carouselForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = {
-                carouselId: document.getElementById('carouselId').value,
-                name: document.getElementById('carouselName').value,
-                autoPlay: document.getElementById('autoPlay').checked,
-                autoPlayInterval: parseInt(document.getElementById('autoPlayInterval').value),
-                showIndicator: document.getElementById('showIndicator').checked,
-                items: []
-            };
-
-            // Gather items
-            document.querySelectorAll('.carousel-item').forEach(item => {
-                formData.items.push({
-                    imageUrl: item.querySelector('[id^="imageUrl_"]').value,
-                    title: item.querySelector('[id^="title_"]').value,
-                    actionUrl: item.querySelector('[id^="actionUrl_"]').value,
-                    propertyId: item.querySelector('[id^="propertyId_"]').value || null,
-                    category: item.querySelector('[id^="category_"]').value
-                });
-            });
-
-            try {
-                const editId = document.getElementById('carouselEditId').value;
-                const method = editId ? 'PUT' : 'POST';
-                const url = editId ? `/api/carousels/${editId}` : '/api/carousels';
-
-                const response = await fetch(url, {
-                    method,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (!response.ok) throw new Error('Failed to save carousel');
-
-                showPopup('Carousel saved successfully');
-                document.getElementById('carouselForm').reset();
-                document.getElementById('carouselItems').innerHTML = '';
-                loadCarousels();
-            } catch (error) {
-                console.error('Error saving carousel:', error);
-                showPopup('Failed to save carousel');
-            }
-        });
+        ////////
 
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -1556,60 +1307,60 @@
         document.addEventListener('DOMContentLoaded', function () {
             // Arrays of options
             const propertyTypes = ["Apartment", "House", "Villa", "Office", "Shop", "Warehouse", "Land"];
-            const viewTypes = ["City View", "Sea View", "Mountain View", "Garden View", "Park View"];
-            const propertyConditions = ["Brand New", "Newly Renovated", "Well Maintained", "Needs Minor Repairs", "Needs Major Renovation"];
-            const legalStatuses = ["Clear Title", "Freehold", "Leasehold", "Power of Attorney", "Cooperative Society"];
-            const constructionStatuses = ["Not Started", "Under Construction", "Completed", "Renovating"];
-            const ownershipTypes = ["Freehold", "Leasehold", "Cooperative", "Condominium", "Timeshare"];
-            const financingOptions = ["Conventional Mortgage", "FHA Loan", "VA Loan", "Cash Only"];
-            const propertyTaxClasses = ["Residential", "Commercial", "Industrial", "Agricultural"];
-            const environmentalCertifications = ["LEED Certified", "ENERGY STAR", "BREEAM", "Green Globes"];
-            const propertyManagementServices = ["Full Service", "Partial Service", "On-Call Service"];
-            const investmentStrategies = ["Buy and Hold", "Fix and Flip", "Rental Income", "Development"];
-            const amenities = [
-                "Swimming Pool", "Gym", "Sauna", "Jacuzzi", "Children's Play Area",
-                "BBQ Area", "Garden", "Rooftop Terrace", "Security System",
-                "Concierge Service", "Parking", "Elevator", "Pet-Friendly",
-                "Wheelchair Accessible", "Storage Space", "Laundry Facility"
-            ];
-            const facilities = [
-                "24/7 Security", "CCTV", "Visitor Parking", "High-Speed Internet",
-                "Satellite/Cable TV", "Central Air Conditioning", "Central Heating",
-                "Backup Generator", "Solar Panels", "Water Treatment Plant",
-                "Fire Safety System", "Earthquake Resistant", "Waste Management",
-                "Electric Vehicle Charging", "Bicycle Storage"
-            ];
+    const viewTypes = ["City View", "Sea View", "Mountain View", "Garden View", "Park View"];
+    const propertyConditions = ["Brand New", "Newly Renovated", "Well Maintained", "Needs Minor Repairs", "Needs Major Renovation"];
+    const legalStatuses = ["Clear Title", "Freehold", "Leasehold", "Power of Attorney", "Cooperative Society"];
+    const constructionStatuses = ["Not Started", "Under Construction", "Completed", "Renovating"];
+    const ownershipTypes = ["Freehold", "Leasehold", "Cooperative", "Condominium", "Timeshare"];
+    const financingOptions = ["Conventional Mortgage", "FHA Loan", "VA Loan", "Cash Only"];
+    const propertyTaxClasses = ["Residential", "Commercial", "Industrial", "Agricultural"];
+    const environmentalCertifications = ["LEED Certified", "ENERGY STAR", "BREEAM", "Green Globes"];
+    const propertyManagementServices = ["Full Service", "Partial Service", "On-Call Service"];
+    const investmentStrategies = ["Buy and Hold", "Fix and Flip", "Rental Income", "Development"];
+    const amenities = [
+        "Swimming Pool", "Gym", "Sauna", "Jacuzzi", "Children's Play Area",
+        "BBQ Area", "Garden", "Rooftop Terrace", "Security System",
+        "Concierge Service", "Parking", "Elevator", "Pet-Friendly",
+        "Wheelchair Accessible", "Storage Space", "Laundry Facility"
+    ];
+    const facilities = [
+        "24/7 Security", "CCTV", "Visitor Parking", "High-Speed Internet",
+        "Satellite/Cable TV", "Central Air Conditioning", "Central Heating",
+        "Backup Generator", "Solar Panels", "Water Treatment Plant",
+        "Fire Safety System", "Earthquake Resistant", "Waste Management",
+        "Electric Vehicle Charging", "Bicycle Storage"
+    ];
 
 
-            // Function to populate select elements
-            function populateSelect(selectId, options) {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    options.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.textContent = option;
-                        optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
-                        select.appendChild(optionElement);
-                    });
-                }
-            }
+           // Function to populate select elements
+    function populateSelect(selectId, options) {
+        const select = document.getElementById(selectId);
+        if (select) {
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.textContent = option;
+                optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
+                select.appendChild(optionElement);
+            });
+        }
+    }
 
-            // Function to populate multi-select elements
-            function populateMultiSelect(selectId, options) {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    options.forEach(option => {
-                        const optionElement = document.createElement('option');
-                        optionElement.textContent = option;
-                        optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
-                        select.appendChild(optionElement);
-                    });
-                }
-            }
+    // Function to populate multi-select elements
+    function populateMultiSelect(selectId, options) {
+        const select = document.getElementById(selectId);
+        if (select) {
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.textContent = option;
+                optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
+                select.appendChild(optionElement);
+            });
+        }
+    }
 
-            // Populate multi-select fields
-            populateMultiSelect('amenitiess', amenities);
-            populateMultiSelect('facilitiess', facilities);
+    // Populate multi-select fields
+    populateMultiSelect('amenitiess', amenities);
+    populateMultiSelect('facilitiess', facilities);
 
             // Populate single-select fields
             populateSelect('propertyType', propertyTypes);
@@ -2545,10 +2296,6 @@
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
-            }
-
-            if (tabName === 'CarouselManagement') {
-                loadCarousels();
             }
 
             if (tabName === 'CategoryManagement') {
