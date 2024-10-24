@@ -425,11 +425,6 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
-
-        const styleSheet = document.createElement('style');
-styleSheet.textContent = styles;
-document.head.appendChild(styleSheet);
-
 </head>
 
 <body>
@@ -2324,9 +2319,6 @@ document.head.appendChild(styleSheet);
             }
         }
         document.addEventListener('DOMContentLoaded', loadAvailableLists);
-
-
-
         let allBuildings = [];
         let allProperties = [];
 
@@ -2603,7 +2595,7 @@ document.head.appendChild(styleSheet);
             }
 
             if (tabName === 'ListOptions') {
-                loadAvailableLists();
+                loadListOptions();
             }
 
             if (tabName === 'BuildingsProperties') {

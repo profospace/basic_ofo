@@ -2324,9 +2324,6 @@ document.head.appendChild(styleSheet);
             }
         }
         document.addEventListener('DOMContentLoaded', loadAvailableLists);
-
-
-
         let allBuildings = [];
         let allProperties = [];
 
@@ -2603,7 +2600,7 @@ document.head.appendChild(styleSheet);
             }
 
             if (tabName === 'ListOptions') {
-                loadAvailableLists();
+                loadListOptions();
             }
 
             if (tabName === 'BuildingsProperties') {

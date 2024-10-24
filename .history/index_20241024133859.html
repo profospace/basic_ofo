@@ -382,53 +382,9 @@
             cursor: pointer;
             margin-left: 5px;
         }
-
-        .option-item {
-        border: 1px solid #ddd;
-        margin: 10px 0;
-        padding: 15px;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-    }
-
-    .option-content {
-        margin-bottom: 10px;
-    }
-
-    .option-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .edit-button, .delete-button {
-        padding: 5px 15px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-    .edit-button {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .delete-button {
-        background-color: #f44336;
-        color: white;
-    }
-
-    .edit-button:hover, .delete-button:hover {
-        opacity: 0.8;
-    }
-
     </style>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
-
-
-        const styleSheet = document.createElement('style');
-styleSheet.textContent = styles;
-document.head.appendChild(styleSheet);
 
 </head>
 
@@ -2324,9 +2280,6 @@ document.head.appendChild(styleSheet);
             }
         }
         document.addEventListener('DOMContentLoaded', loadAvailableLists);
-
-
-
         let allBuildings = [];
         let allProperties = [];
 
@@ -2603,7 +2556,7 @@ document.head.appendChild(styleSheet);
             }
 
             if (tabName === 'ListOptions') {
-                loadAvailableLists();
+                loadListOptions();
             }
 
             if (tabName === 'BuildingsProperties') {
@@ -2666,62 +2619,45 @@ document.head.appendChild(styleSheet);
         let currentListName = '';
 
         async function loadListOptions() {
-            const listName = document.getElementById('listSelector').value;
-            if (!listName) {
-                console.log('No list selected');
-                return;
-            }
+    const listName = document.getElementById('listSelector').value;
+    if (!listName) {
+        console.log('No list selected');
+        return;
+    }
 
-            try {
-                console.log('Fetching list options for:', listName);
-                const response = await fetch(`https://propertify.onrender.com/api/list-options/${listName}`);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log('Received data:', data);
-
-                if (!data || !data.options) {
-                    console.error('Invalid data format received');
-                    showPopup('Invalid data format received from server');
-                    return;
-                }
-
-                displayOptions(data.options);
-                document.getElementById('deleteListButton').style.display = 'block';
-            } catch (error) {
-                console.error('Error loading options:', error);
-                showPopup('Failed to load options. Please try again.');
-            }
+    try {
+        console.log('Fetching list options for:', listName);
+        const response = await fetch(`https://propertify.onrender.com/api/list-options/${listName}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Received data:', data);
+        
+        if (!data || !data.options) {
+            console.error('Invalid data format received');
+            showPopup('Invalid data format received from server');
+            return;
         }
 
-
+        displayOptions(data.options);
+        document.getElementById('deleteListButton').style.display = 'block';
+    } catch (error) {
+        console.error('Error loading options:', error);
+        showPopup('Failed to load options. Please try again.');
+    }
+}
         function displayOptions(options) {
             const optionsList = document.getElementById('optionsList');
             optionsList.innerHTML = '';
-
-            if (!Array.isArray(options) || options.length === 0) {
-                optionsList.innerHTML = '<p>No options found for this list</p>';
-                return;
-            }
-
             options.forEach((option) => {
                 const optionElement = document.createElement('div');
-                optionElement.className = 'option-item';
                 optionElement.innerHTML = `
-            <div class="option-content">
-                <p><strong>Text:</strong> ${option.textview || 'N/A'}</p>
-                <p><strong>Link:</strong> ${option.link || 'N/A'}</p>
-                <p><strong>Image:</strong> ${option.imagelink || 'N/A'}</p>
-            </div>
-            <div class="option-actions">
-                <button onclick="editOption('${option._id}', '${option.imagelink}', '${option.textview}', '${option.link}')" 
-                        class="edit-button">Edit</button>
-                <button onclick="deleteOption('${option._id}')" 
-                        class="delete-button">Delete</button>
-            </div>
+            <p>${option.textview}</p>
+            <button onclick="editOption('${option._id}', '${option.imagelink}', '${option.textview}', '${option.link}')">Edit</button>
+            <button onclick="deleteOption('${option._id}')">Delete</button>
         `;
                 optionsList.appendChild(optionElement);
             });
@@ -2819,26 +2755,6 @@ document.head.appendChild(styleSheet);
                 showPopup('Failed to delete list. Please try again.');
             }
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Event listener for list selector
-            const listSelector = document.getElementById('listSelector');
-            if (listSelector) {
-                listSelector.addEventListener('change', loadListOptions);
-            }
-
-            // Event listener for option form
-            const optionForm = document.getElementById('optionForm');
-            if (optionForm) {
-                optionForm.addEventListener('submit', async function (e) {
-                    e.preventDefault();
-                    await saveOption(e);
-                });
-            }
-
-            // Initial load of available lists
-            loadAvailableLists();
-        });
 
         // Make sure these event listeners are set up
         document.addEventListener('DOMContentLoaded', function () {

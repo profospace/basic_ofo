@@ -382,53 +382,9 @@
             cursor: pointer;
             margin-left: 5px;
         }
-
-        .option-item {
-        border: 1px solid #ddd;
-        margin: 10px 0;
-        padding: 15px;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-    }
-
-    .option-content {
-        margin-bottom: 10px;
-    }
-
-    .option-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .edit-button, .delete-button {
-        padding: 5px 15px;
-        border: none;
-        border-radius: 3px;
-        cursor: pointer;
-    }
-
-    .edit-button {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .delete-button {
-        background-color: #f44336;
-        color: white;
-    }
-
-    .edit-button:hover, .delete-button:hover {
-        opacity: 0.8;
-    }
-
     </style>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
-
-
-        const styleSheet = document.createElement('style');
-styleSheet.textContent = styles;
-document.head.appendChild(styleSheet);
 
 </head>
 
@@ -2324,9 +2280,6 @@ document.head.appendChild(styleSheet);
             }
         }
         document.addEventListener('DOMContentLoaded', loadAvailableLists);
-
-
-
         let allBuildings = [];
         let allProperties = [];
 
@@ -2603,7 +2556,7 @@ document.head.appendChild(styleSheet);
             }
 
             if (tabName === 'ListOptions') {
-                loadAvailableLists();
+                loadListOptions();
             }
 
             if (tabName === 'BuildingsProperties') {
@@ -2699,18 +2652,18 @@ document.head.appendChild(styleSheet);
 
 
         function displayOptions(options) {
-            const optionsList = document.getElementById('optionsList');
-            optionsList.innerHTML = '';
+    const optionsList = document.getElementById('optionsList');
+    optionsList.innerHTML = '';
 
-            if (!Array.isArray(options) || options.length === 0) {
-                optionsList.innerHTML = '<p>No options found for this list</p>';
-                return;
-            }
+    if (!Array.isArray(options) || options.length === 0) {
+        optionsList.innerHTML = '<p>No options found for this list</p>';
+        return;
+    }
 
-            options.forEach((option) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option-item';
-                optionElement.innerHTML = `
+    options.forEach((option) => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option-item';
+        optionElement.innerHTML = `
             <div class="option-content">
                 <p><strong>Text:</strong> ${option.textview || 'N/A'}</p>
                 <p><strong>Link:</strong> ${option.link || 'N/A'}</p>
@@ -2723,9 +2676,9 @@ document.head.appendChild(styleSheet);
                         class="delete-button">Delete</button>
             </div>
         `;
-                optionsList.appendChild(optionElement);
-            });
-        }
+        optionsList.appendChild(optionElement);
+    });
+}
 
         function editOption(id, imagelink, textview, link) {
             document.getElementById('optionId').value = id;
@@ -2819,26 +2772,6 @@ document.head.appendChild(styleSheet);
                 showPopup('Failed to delete list. Please try again.');
             }
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Event listener for list selector
-            const listSelector = document.getElementById('listSelector');
-            if (listSelector) {
-                listSelector.addEventListener('change', loadListOptions);
-            }
-
-            // Event listener for option form
-            const optionForm = document.getElementById('optionForm');
-            if (optionForm) {
-                optionForm.addEventListener('submit', async function (e) {
-                    e.preventDefault();
-                    await saveOption(e);
-                });
-            }
-
-            // Initial load of available lists
-            loadAvailableLists();
-        });
 
         // Make sure these event listeners are set up
         document.addEventListener('DOMContentLoaded', function () {
