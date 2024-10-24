@@ -578,15 +578,10 @@
                 <label for="propertyType">Property Type:</label>
                 <select id="propertyType" name="property_type">
                     <option value="">Select Property Type</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="House">House</option>
-                    <option value="Villa">Villa</option>
-                    <option value="Office">Office</option>
-                    <option value="Shop">Shop</option>
-                    <option value="Warehouse">Warehouse</option>
-                    <option value="Factory">Factory</option>
-                    <option value="Plot">Plot</option>
-                    <option value="Room">Room</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="villa">Villa</option>
+                    <option value="office">Office</option>
                 </select>
             </div>
             <div>
@@ -2778,6 +2773,7 @@
         async function saveOptions() {
             const optionId = document.getElementById('optionId').value;
 
+            showPopup(`saveOptions  successfully!`);
 
             if (!currentListName) {
                 showPopup('Please select a list first');
@@ -2794,7 +2790,6 @@
                 let response;
                 if (optionId) {
                     // Update existing option
-
                     response = await fetch(`${BASE_URL}/api/list-options/${currentListName}/update-option/${optionId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
@@ -2811,14 +2806,13 @@
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                    showPopup( " here is the response :::"+ response.status)
                 }
 
                 const result = await response.json();
                 console.log('Option saved:', result);
-                //loadListOptions(); // Reload the options
+                loadListOptions(); // Reload the options
                // document.getElementById('optionForm').reset();
-               // document.getElementById('optionId').value = '';
+                document.getElementById('optionId').value = '';
                 showPopup('Option saved successfully!');
             } catch (error) {
                 console.error('Error saving option:', error);

@@ -578,15 +578,10 @@
                 <label for="propertyType">Property Type:</label>
                 <select id="propertyType" name="property_type">
                     <option value="">Select Property Type</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="House">House</option>
-                    <option value="Villa">Villa</option>
-                    <option value="Office">Office</option>
-                    <option value="Shop">Shop</option>
-                    <option value="Warehouse">Warehouse</option>
-                    <option value="Factory">Factory</option>
-                    <option value="Plot">Plot</option>
-                    <option value="Room">Room</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="villa">Villa</option>
+                    <option value="office">Office</option>
                 </select>
             </div>
             <div>
@@ -947,7 +942,7 @@
                 <input type="text" id="textview" required>
                 <label for="link">Link:</label>
                 <input type="text" id="link" required>
-                <button type="submit"  onclick="saveOptions()">Save Option</button>
+                <button type="submit">Save Option</button>
             </form>
         </div>
         <button id="deleteListButton" style="display: none;">Delete List</button>
@@ -1410,8 +1405,6 @@
     <script>
 
         let itemCounter = 0;
-        var currentListName = '';
-
 
         // Load all carousels
         async function loadCarousels() {
@@ -2690,7 +2683,6 @@
             tabButtons[i].addEventListener("click", function (event) {
                 openTab(event, this.getAttribute("onclick").split("'")[1]);
             });
-
         }
 
 
@@ -2701,6 +2693,7 @@
 
         });
 
+        let currentListName = '';
 
         async function loadListOptions() {
             const listName = document.getElementById('listSelector').value;
@@ -2712,8 +2705,6 @@
 
             try {
                 console.log('Fetching list options for:', listName);
-                currentListName = listName;
-
                 const response = await fetch(`https://propertify.onrender.com/api/list-options/${listName}`);
 
                 if (!response.ok) {
@@ -2733,8 +2724,9 @@
                 document.getElementById('deleteListButton').style.display = 'block';
             } catch (error) {
                 console.error('Error loading options:', error);
-                showPopup('Failed to load options. Please try again.'+ error);
+                showPopup('Failed to load options. Please try again.');
             }
+            currentListName = listName;
 
         }
 
@@ -2778,7 +2770,6 @@
         async function saveOptions() {
             const optionId = document.getElementById('optionId').value;
 
-
             if (!currentListName) {
                 showPopup('Please select a list first');
                 return;
@@ -2794,7 +2785,6 @@
                 let response;
                 if (optionId) {
                     // Update existing option
-
                     response = await fetch(`${BASE_URL}/api/list-options/${currentListName}/update-option/${optionId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
@@ -2811,14 +2801,13 @@
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                    showPopup( " here is the response :::"+ response.status)
                 }
 
                 const result = await response.json();
                 console.log('Option saved:', result);
-                //loadListOptions(); // Reload the options
-               // document.getElementById('optionForm').reset();
-               // document.getElementById('optionId').value = '';
+                loadListOptions(); // Reload the options
+                document.getElementById('optionForm').reset();
+                document.getElementById('optionId').value = '';
                 showPopup('Option saved successfully!');
             } catch (error) {
                 console.error('Error saving option:', error);
@@ -2877,13 +2866,13 @@
             }
 
             // Event listener for option form
-            // const optionForm = document.getElementById('optionForm');
-            // if (optionForm) {
-            //     optionForm.addEventListener('submit', async function (e) {
-            //         e.preventDefault();
-            //         await saveOptions(e);
-            //     });
-            // }
+            const optionForm = document.getElementById('optionForm');
+            if (optionForm) {
+                optionForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    await saveOptions(e);
+                });
+            }
 
             // Initial load of available lists
             loadAvailableLists();
@@ -2891,6 +2880,7 @@
 
         // Make sure these event listeners are set up
         document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('optionForm').addEventListener('submit', saveOption);
             document.getElementById('deleteListButton').addEventListener('click', deleteList);
 
             document.getElementById('categoryForm').addEventListener('submit', saveCategory);
@@ -2901,6 +2891,10 @@
         });
 
 
+        // Make sure this event listener is set up
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('optionForm').addEventListener('submit', saveOption);
+        });
         async function deleteOption(optionId) {
             const listName = document.getElementById('listSelector').value;
             if (!confirm('Are you sure you want to delete this option?')) return;
@@ -2924,7 +2918,7 @@
 
         // Add this to your existing DOMContentLoaded event listener
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('optionForm').addEventListener('submit', saveOptions());
+            document.getElementById('optionForm').addEventListener('submit', saveOption);
         });
 
 
