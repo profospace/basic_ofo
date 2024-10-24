@@ -2809,9 +2809,12 @@
                     });
                 }
 
+                showPopup( " here is the response :::"+ response.status)
+
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                    showPopup( " here is the response :::"+ response.status)
+                    
                 }
 
                 const result = await response.json();

@@ -568,7 +568,7 @@
             <h2>Filter Criteria</h2>
             <div>
                 <label for="purpose">Purpose:</label>
-                <select id="purpose" name="purpose">
+                <select id="purposes" name="purposes">
                     <option value="">Select Purpose</option>
                     <option value="rent">Rent</option>
                     <option value="buy">Buy</option>
@@ -2809,9 +2809,12 @@
                     });
                 }
 
+                showPopup( " here is the response :::"+ response.status)
+
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                    showPopup( " here is the response :::"+ response.status)
+                    
                 }
 
                 const result = await response.json();
