@@ -601,11 +601,11 @@
             </div>
             <div>
                 <label for="bedroom">Bedrooms:</label>
-                <input type="number" id="bedroom" name="bedrooms">
+                <input type="number" id="bedroom" name="bedroom">
             </div>
             <div>
                 <label for="bathroom">Bathrooms:</label>
-                <input type="number" id="bathroom" name="bathrooms">
+                <input type="number" id="bathroom" name="bathroom">
             </div>
             <div>
                 <label for="latitude">Latitude:</label>
@@ -698,7 +698,10 @@
                     <option value="Unfurnished">Unfurnished</option>
                 </select>
             </div>
-
+            <div>
+                <label for="furnishStatus">Furnish Status:</label>
+                <input type="text" id="furnishStatus" name="furnishStatus">
+            </div>
             <div>
                 <label for="carpetArea">Carpet Area:</label>
                 <input type="number" id="carpetArea" name="carpetArea">
@@ -719,12 +722,18 @@
                 <label for="region">Region:</label>
                 <input type="text" id="region" name="region">
             </div>
-
+            <div>
+                <label for="construction_status">Construction Status:</label>
+                <input type="text" id="construction_status" name="construction_status">
+            </div>
             <div>
                 <label for="possession">Possession:</label>
                 <input type="text" id="possession" name="possession">
             </div>
-
+            <div>
+                <label for="broker_status">Broker Status:</label>
+                <input type="text" id="broker_status" name="broker_status">
+            </div>
             <div>
                 <label for="agreement">Agreement:</label>
                 <input type="text" id="agreement" name="agreement">
@@ -745,7 +754,36 @@
                 <label for="post_description">Description:</label>
                 <textarea id="post_description" name="post_description" required></textarea>
             </div>
-
+            <div class="full-width">
+                <label for="amenities">Amenities:</label>
+                <input type="text" id="amenitiesInput" placeholder="Type and press Enter to add">
+                <div id="amenitiesChips" class="chip-container"></div>
+                <input type="hidden" id="amenities" name="amenities">
+            </div>
+            <div class="full-width">
+                <label for="usp">USP (Unique Selling Points):</label>
+                <input type="text" id="uspInput" placeholder="Type and press Enter to add">
+                <div id="uspChips" class="chip-container"></div>
+                <input type="hidden" id="usp" name="usp">
+            </div>
+            <div class="full-width">
+                <label for="location_advantage">Location Advantages:</label>
+                <input type="text" id="locationAdvantageInput" placeholder="Type and press Enter to add">
+                <div id="locationAdvantageChips" class="chip-container"></div>
+                <input type="hidden" id="location_advantage" name="location_advantage">
+            </div>
+            <div class="full-width">
+                <label for="facilities">Facilities:</label>
+                <input type="text" id="facilitiesInput" placeholder="Type and press Enter to add">
+                <div id="facilitiesChips" class="chip-container"></div>
+                <input type="hidden" id="facilities" name="facilities">
+            </div>
+            <div class="full-width">
+                <label for="tags">Tags:</label>
+                <input type="text" id="tagsInput" placeholder="Type and press Enter to add">
+                <div id="tagsChips" class="chip-container"></div>
+                <input type="hidden" id="tags" name="tags">
+            </div>
             <div class="full-width">
                 <label for="contactList">Contact Numbers:</label>
                 <input type="text" id="contactListInput" placeholder="Type and press Enter to add">
@@ -755,6 +793,13 @@
 
 
 
+            <div>
+                <label for="propertyType">Property Type:</label>
+                <select id="propertyType" name="type_name" required>
+                    <option value="">Select Property Type</option>
+                    <!-- Options will be dynamically populated -->
+                </select>
+            </div>
 
             <div>
                 <label for="viewType">View Type:</label>
@@ -868,10 +913,12 @@
                 <div id="gallery_images_preview"></div>
             </div>
             <div class="full-width">
-                <button id="copyDeeplink">Upload Property</button>
+                <button type="submit">Upload Property</button>
             </div>
         </form>
     </div>
+
+
 
 
     <div id="BuildingsProperties" class="tabcontent">
@@ -902,7 +949,7 @@
                 <input type="text" id="textview" required>
                 <label for="link">Link:</label>
                 <input type="text" id="link" required>
-                <button type="submit" onclick="saveOptions()">Save Option</button>
+                <button type="submit"  onclick="saveOptions()">Save Option</button>
             </form>
         </div>
         <button id="deleteListButton" style="display: none;">Delete List</button>
@@ -2036,38 +2083,106 @@
 
 
             const propertyData = {
-                post_title: formData.get('post_title'),
-                type_name: formData.get('type_name'),
-                purpose: formData.get('purpose'),
-                building_id: formData.get('building_id'),
-                price: parseFloat(formData.get('price')),
-                priceUnit: formData.get('priceUnit'),
-                area: parseFloat(formData.get('area')),
-                areaUnit: formData.get('areaUnit'),
-                bedrooms: parseInt(formData.get('bedrooms')),
-                bathrooms: parseInt(formData.get('bathrooms')),
-                floor: parseInt(formData.get('floor')),
-                furnishing: formData.get('furnishing'),
-                furnishStatus: formData.get('furnishStatus'),
-                carpetArea: parseFloat(formData.get('carpetArea')),
-                superBuiltupArea: parseFloat(formData.get('superBuiltupArea')),
-                available: formData.get('available') === 'true',
-                category: parseInt(formData.get('category')),
-                region: formData.get('region'),
-                construction_status: formData.get('construction_status'),
-                possession: formData.get('possession'),
-                broker_status: formData.get('broker_status'),
-                agreement: formData.get('agreement'),
-                address: formData.get('address'),
-                post_description: formData.get('post_description'),
-                latitude: parseFloat(formData.get('latitude')),
-                longitude: parseFloat(formData.get('longitude')),
-                amenities: formData.getAll('amenities').join(','),
-                usp: formData.getAll('usp').join(','),
-                location_advantage: formData.getAll('location_advantage').join(','),
-                facilities: formData.getAll('facilities').join(','),
-                tags: formData.getAll('tags').join(','),
-                contactList: formData.getAll('contactList').join(',')
+
+                // Basic Property Information
+        post_title: document.getElementById('post_title').value,
+        post_description: document.getElementById('post_description').value,
+        type_name: document.getElementById('type_name').value,
+        building_id: document.getElementById('building_id').value || null,
+        purpose: document.getElementById('purpose').value,
+        
+        // Contact Information
+        phone: document.getElementById('phone').value,
+        contactList: document.getElementById('contactList').value.split(',')
+            .map(num => parseInt(num.trim()))
+            .filter(num => !isNaN(num)),
+        
+        // Location Information
+        address: document.getElementById('address').value,
+        latitude: parseFloat(document.getElementById('latitude').value),
+        longitude: parseFloat(document.getElementById('longitude').value),
+        location: {
+            type: 'Point',
+            coordinates: [
+                parseFloat(document.getElementById('longitude').value),
+                parseFloat(document.getElementById('latitude').value)
+            ]
+        },
+        region: document.getElementById('region').value,
+        
+        // Property Specifications
+        bedrooms: parseInt(document.getElementById('bedrooms').value),
+        bathrooms: parseInt(document.getElementById('bathrooms').value),
+        floor: document.getElementById('floor').value,
+        area: document.getElementById('area').value,
+        priceUnit: document.getElementById('priceUnit').value,
+        areaUnit: document.getElementById('areaUnit').value,
+        price: parseFloat(document.getElementById('price').value),
+        carpetArea: parseFloat(document.getElementById('carpetArea').value),
+        superBuiltupArea: parseFloat(document.getElementById('superBuiltupArea').value),
+        pricePerSqFt: parseFloat(document.getElementById('pricePerSqFt').value),
+        
+        // Property Status
+        furnishing: document.getElementById('furnishing').value,
+        furnishStatus: document.getElementById('furnishStatus').value,
+        available: document.getElementById('available').checked,
+        category: parseInt(document.getElementById('category').value),
+        construction_status: document.getElementById('construction_status').value,
+        possession: document.getElementById('possession').value,
+        broker_status: document.getElementById('broker_status').value,
+        agreement: document.getElementById('agreement').value,
+        
+        // Features and Amenities
+        amenities: document.getElementById('amenities').value.split(',').filter(Boolean),
+        facilities: document.getElementById('facilities').value.split(',').filter(Boolean),
+        usp: document.getElementById('usp').value.split(',').filter(Boolean),
+        location_advantage: document.getElementById('location_advantage').value.split(',').filter(Boolean),
+        tags: document.getElementById('tags').value.split(',').filter(Boolean),
+        
+        // Property Details
+        floorNumber: parseInt(document.getElementById('floorNumber').value),
+        totalFloors: parseInt(document.getElementById('totalFloors').value),
+        configuration: document.getElementById('configuration').value,
+        facing: document.getElementById('facing').value,
+        
+        // Additional Property Information
+        estimatedEMI: parseFloat(document.getElementById('estimatedEMI').value),
+        reraStatus: document.getElementById('reraStatus').value,
+        reraRegistrationNumber: document.getElementById('reraRegistrationNumber').value,
+        reraWebsite: document.getElementById('reraWebsite').value,
+        overlookingAmenities: document.getElementById('overlookingAmenities').value.split(',').filter(Boolean),
+        possessionDate: document.getElementById('possessionDate').value,
+        transactionType: document.getElementById('transactionType').value,
+        propertyOwnership: document.getElementById('propertyOwnership').value,
+        flooring: document.getElementById('flooring').value,
+        parking: document.getElementById('parking').value,
+        propertyCode: document.getElementById('propertyCode').value,
+        widthOfFacingRoad: parseFloat(document.getElementById('widthOfFacingRoad').value),
+        gatedCommunity: document.getElementById('gatedCommunity').checked,
+        waterSource: document.getElementById('waterSource').value.split(',').filter(Boolean),
+        powerBackup: document.getElementById('powerBackup').value,
+        petFriendly: document.getElementById('petFriendly').checked,
+        
+        // Property Classifications
+        propertyTypes: Array.from(document.getElementById('propertyTypes').selectedOptions).map(opt => opt.value),
+        propertyFeatures: Array.from(document.getElementById('propertyFeatures').selectedOptions).map(opt => opt.value),
+        viewTypes: Array.from(document.getElementById('viewTypes').selectedOptions).map(opt => opt.value),
+        propertyConditions: Array.from(document.getElementById('propertyConditions').selectedOptions).map(opt => opt.value),
+        legalStatuses: Array.from(document.getElementById('legalStatuses').selectedOptions).map(opt => opt.value),
+        constructionStatuses: Array.from(document.getElementById('constructionStatuses').selectedOptions).map(opt => opt.value),
+        ownershipTypes: Array.from(document.getElementById('ownershipTypes').selectedOptions).map(opt => opt.value),
+        financingOptions: Array.from(document.getElementById('financingOptions').selectedOptions).map(opt => opt.value),
+        propertyTaxClasses: Array.from(document.getElementById('propertyTaxClasses').selectedOptions).map(opt => opt.value),
+        environmentalCertifications: Array.from(document.getElementById('environmentalCertifications').selectedOptions).map(opt => opt.value),
+        propertyManagementServices: Array.from(document.getElementById('propertyManagementServices').selectedOptions).map(opt => opt.value),
+        investmentStrategies: Array.from(document.getElementById('investmentStrategies').selectedOptions).map(opt => opt.value),
+
+        // Optional fields that might be set by the server
+        anyConstraint: [],  // Server-side field
+        verified: false,    // Server-side field
+        total_views: 0,     // Server-side field
+        favourite: false  
+
             };
 
 
@@ -2688,7 +2803,7 @@
                 document.getElementById('deleteListButton').style.display = 'block';
             } catch (error) {
                 console.error('Error loading options:', error);
-                showPopup('Failed to load options. Please try again.' + error);
+                showPopup('Failed to load options. Please try again.'+ error);
             }
 
         }
@@ -2766,14 +2881,14 @@
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                    showPopup(" here is the response :::" + response.status)
+                    showPopup( " here is the response :::"+ response.status)
                 }
 
                 const result = await response.json();
                 console.log('Option saved:', result);
                 //loadListOptions(); // Reload the options
-                // document.getElementById('optionForm').reset();
-                // document.getElementById('optionId').value = '';
+               // document.getElementById('optionForm').reset();
+               // document.getElementById('optionId').value = '';
                 showPopup('Option saved successfully!');
             } catch (error) {
                 console.error('Error saving option:', error);

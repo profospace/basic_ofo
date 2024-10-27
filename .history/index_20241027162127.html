@@ -1933,215 +1933,267 @@
         });
 
 
-        function setupChipInput(inputId, chipsId, hiddenInputId) {
-            const input = document.getElementById(inputId);
-            const chipsContainer = document.getElementById(chipsId);
-            const hiddenInput = document.getElementById(hiddenInputId);
-            const chips = new Set();
-
-            input.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    const value = this.value.trim();
-                    if (value && !chips.has(value)) {
-                        addChip(value);
-                        this.value = '';
+        // Add this function at the start of your script
+        function prefillForm() {
+            // Helper function to set value for single inputs
+            function setValue(id, value) {
+                const element = document.getElementById(id);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = value;
+                    } else {
+                        element.value = value;
                     }
                 }
-            });
+            }
+
+            // Helper function to set multiple select values
+            function setMultipleSelect(id, values) {
+                const element = document.getElementById(id);
+                if (element) {
+                    Array.from(element.options).forEach(option => {
+                        option.selected = values.includes(option.value);
+                    });
+                }
+            }
+
+            // Basic Information
+            setValue('post_title', '3BHK Luxury Apartment');
+            setValue('type_name', 'Apartment');
+            setValue('purpose', 'Rent');
+            setValue('building_id', 'BUILD123');
+            setValue('price', '25000');
+            setValue('priceUnit', 'INR');
+            setValue('area', '1500');
+            setValue('areaUnit', 'sqft');
+            setValue('bedrooms', '3');
+            setValue('bathrooms', '2');
+            setValue('floor', '5');
+            setValue('furnishing', 'Semi-Furnished');
+            setValue('furnishStatus', 'Ready to move');
+            setValue('carpetArea', '1200');
+            setValue('superBuiltupArea', '1500');
+            setValue('available', true);
+            setValue('category', '1');
+            setValue('region', 'City Center');
+
+            // Status and Additional Info
+            setValue('construction_status', 'Ready');
+            setValue('possession', 'Immediate');
+            setValue('broker_status', 'Verified');
+            setValue('agreement', '11 months');
+            setValue('address', '123 Main Street, City Center');
+            setValue('post_description', 'Luxurious 3BHK apartment with modern amenities, great location, and beautiful views.');
+            setValue('latitude', '28.6139');
+            setValue('longitude', '77.2090');
+
+            // Multiple Selections
+            setMultipleSelect('financingOptions', ['conventional-mortgage', 'fha-loan']);
+            setMultipleSelect('environmentalCertifications', ['leed-certified', 'energy-star']);
+            setMultipleSelect('propertyManagementServices', ['full-service', 'on-call-service']);
+            setMultipleSelect('amenitiess', ['swimming-pool', 'gym', 'parking']);
+            setMultipleSelect('facilitiess', ['24/7-security', 'backup-generator']);
+
+            // Set values for chip inputs
+            setValue('amenities', 'Gym, Swimming Pool, Security');
+            setValue('usp', 'Prime Location, Metro Nearby');
+            setValue('location_advantage', 'Near Metro, Shopping Mall');
+            setValue('facilities', '24x7 Security, Power Backup');
+            setValue('tags', 'Premium, Family-Friendly');
+            setValue('contactList', '9876543210, 8765432109');
+
+            // Additional Fields
+            setValue('viewType', 'city-view');
+            setValue('propertyCondition', 'well-maintained');
+            setValue('legalStatus', 'clear-title');
+            setValue('ownershipType', 'freehold');
+            setValue('propertyTaxClass', 'residential');
+            setValue('investmentStrategy', 'rental-income');
+
+            // Location Fields
+            if (map && marker) {
+                const position = new google.maps.LatLng(28.6139, 77.2090);
+                marker.setPosition(position);
+                map.setCenter(position);
+                map.setZoom(15);
+                updateLatLng(position);
+            }
         }
 
-        function addChip(value) {
-            chips.add(value);
-            const chip = document.createElement('div');
-            chip.className = 'chip';
-            chip.innerHTML = `
-                    ${value}
-                    <button type="button" onclick="removeChip(this, '${value}', '${chipsId}', '${hiddenInputId}')">×</button>
-                `;
-            chipsContainer.appendChild(chip);
-            updateHiddenInput();
-        }
+        // Add button to HTML for testing
+        const prefillButton = document.createElement('button');
+        prefillButton.type = 'button';
+        prefillButton.textContent = 'Pre-fill Form (Testing)';
+        prefillButton.className = 'prefill-button';
+        prefillButton.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1000;
+`;
+        prefillButton.onclick = prefillForm;
 
-        function updateHiddenInput() {
-            hiddenInput.value = Array.from(chips).join(',');
-        }
+        // Add button to document when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            document.body.appendChild(prefillButton);
+        });
 
 
-        function removeChip(button, value, chipsId, hiddenInputId) {
-            const chipsContainer = document.getElementById(chipsId);
-            const hiddenInput = document.getElementById(hiddenInputId);
-            const chips = new Set(hiddenInput.value.split(','));
 
-            chips.delete(value);
-            button.parentElement.remove();
-            hiddenInput.value = Array.from(chips).join(',');
-        }
-
-        // Set up chip inputs for various fields
-        setupChipInput('amenitiesInput', 'amenitiesChips', 'amenities');
-        setupChipInput('uspInput', 'uspChips', 'usp');
-        setupChipInput('locationAdvantageInput', 'locationAdvantageChips', 'location_advantage');
-        setupChipInput('facilitiesInput', 'facilitiesChips', 'facilities');
-        setupChipInput('tagsInput', 'tagsChips', 'tags');
-        setupChipInput('contactListInput', 'contactListChips', 'contactList');
 
         document.getElementById('propertyUploadForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const formData = new FormData();
-
-
-
-
-            // Text inputs
-            formData.append('post_title', document.getElementById('post_title').value);
-            formData.append('type_name', document.getElementById('type_name').value);
-            formData.append('purpose', document.getElementById('purpose').value);
-            formData.append('building_id', document.getElementById('building_id').value);
-            formData.append('price', document.getElementById('price').value);
-            formData.append('priceUnit', document.getElementById('priceUnit').value);
-            formData.append('area', document.getElementById('area').value);
-            formData.append('areaUnit', document.getElementById('areaUnit').value);
-            formData.append('bedrooms', document.getElementById('bedrooms').value);
-            formData.append('bathrooms', document.getElementById('bathrooms').value);
-            formData.append('floor', document.getElementById('floor').value);
-            formData.append('furnishing', document.getElementById('furnishing').value);
-            formData.append('furnishStatus', document.getElementById('furnishStatus').value);
-            formData.append('carpetArea', document.getElementById('carpetArea').value);
-            formData.append('superBuiltupArea', document.getElementById('superBuiltupArea').value);
-            formData.append('available', document.getElementById('available').checked);
-            formData.append('category', document.getElementById('category').value);
-            formData.append('region', document.getElementById('region').value);
-            formData.append('construction_status', document.getElementById('construction_status').value);
-            formData.append('possession', document.getElementById('possession').value);
-            formData.append('broker_status', document.getElementById('broker_status').value);
-            formData.append('agreement', document.getElementById('agreement').value);
-            formData.append('address', document.getElementById('address').value);
-            formData.append('post_description', document.getElementById('post_description').value);
-
-            // Hidden fields (location data)
-            formData.append('latitude', document.getElementById('latitude').value);
-            formData.append('longitude', document.getElementById('longitude').value);
-
-            // Chip inputs
-            formData.append('amenities', document.getElementById('amenities').value);
-            formData.append('usp', document.getElementById('usp').value);
-            formData.append('location_advantage', document.getElementById('location_advantage').value);
-            formData.append('facilities', document.getElementById('facilities').value);
-            formData.append('tags', document.getElementById('tags').value);
-            formData.append('contactList', document.getElementById('contactList').value);
-
-
-
-
-
-            const propertyData = {
-                post_title: formData.get('post_title'),
-                type_name: formData.get('type_name'),
-                purpose: formData.get('purpose'),
-                building_id: formData.get('building_id'),
-                price: parseFloat(formData.get('price')),
-                priceUnit: formData.get('priceUnit'),
-                area: parseFloat(formData.get('area')),
-                areaUnit: formData.get('areaUnit'),
-                bedrooms: parseInt(formData.get('bedrooms')),
-                bathrooms: parseInt(formData.get('bathrooms')),
-                floor: parseInt(formData.get('floor')),
-                furnishing: formData.get('furnishing'),
-                furnishStatus: formData.get('furnishStatus'),
-                carpetArea: parseFloat(formData.get('carpetArea')),
-                superBuiltupArea: parseFloat(formData.get('superBuiltupArea')),
-                available: formData.get('available') === 'true',
-                category: parseInt(formData.get('category')),
-                region: formData.get('region'),
-                construction_status: formData.get('construction_status'),
-                possession: formData.get('possession'),
-                broker_status: formData.get('broker_status'),
-                agreement: formData.get('agreement'),
-                address: formData.get('address'),
-                post_description: formData.get('post_description'),
-                latitude: parseFloat(formData.get('latitude')),
-                longitude: parseFloat(formData.get('longitude')),
-                amenities: formData.getAll('amenities').join(','),
-                usp: formData.getAll('usp').join(','),
-                location_advantage: formData.getAll('location_advantage').join(','),
-                facilities: formData.getAll('facilities').join(','),
-                tags: formData.getAll('tags').join(','),
-                contactList: formData.getAll('contactList').join(',')
-            };
-
-
-            // Create a new FormData object for the API request
-            const apiFormData = new FormData();
-
-            // Add the propertyData as a JSON string
-            apiFormData.append('data', JSON.stringify(propertyData));
-
-
-            const postImage = document.getElementById('post_image').files[0];
-            if (postImage) {
-                apiFormData.set('post_image', postImage);  // Use set instead of append to avoid duplication
-            }
-
-            const floorPlanImage = document.getElementById('floor_plan_image').files[0];
-            if (floorPlanImage) {
-                apiFormData.set('floor_plan_image', floorPlanImage);
-            }
-
-            const galleryImages = document.getElementById('gallery_images').files;
-            apiFormData.delete('galleryList');  // Remove any existing entries
-            for (let i = 0; i < galleryImages.length; i++) {
-                apiFormData.append('galleryList', galleryImages[i]);
-            }
-
-
-
-
-            // Print form data
-            console.log('Form data to be sent:');
-            for (let [key, value] of apiFormData.entries()) {
-                if (value instanceof File) {
-                    console.log(key, value.name);
-                } else {
-                    console.log(key, value);
-                }
-            }
-
-            // Show form data in popup
-            let formDataString = 'Form data to be sent:\n\n';
-            for (let [key, value] of apiFormData.entries()) {
-                if (value instanceof File) {
-                    formDataString += `${key}: ${value.name}\n`;
-                } else {
-                    formDataString += `${key}: ${value}\n`;
-                }
-            }
-            showPopup(formDataString, true);
-
-
-            // Log all form data (for debugging)
-            for (let [key, value] of apiFormData.entries()) {
-                console.log(key, value);
-            }
 
             try {
-                const response = await fetch('https://propertify.onrender.com/api/upload/property', {
-                    method: 'POST',
-                    body: apiFormData
-                });
+                const formData = new FormData();
 
-                if (!response.ok) {
-                    throw new Error('Failed to upload property');
+                function getMultiSelectValues(id) {
+                    const element = document.getElementById(id);
+                    if (!element) {
+                        console.warn(`Multiple select with id '${id}' not found`);
+                        return [];
+                    }
+                    return Array.from(element.selectedOptions).map(opt => opt.value);
                 }
 
-                const result = await response.json();
+                function getElementValue(id, type = 'value') {
+                    const element = document.getElementById(id);
+                    if (!element) {
+                        console.warn(`Element with id '${id}' not found`);
+                        return '';
+                    }
+                    return type === 'checked' ? element.checked : element.value;
+                }
+
+                // Single value fields
+                formData.append('post_title', getElementValue('post_title'));
+                formData.append('type_name', getElementValue('type_name'));
+                formData.append('purpose', getElementValue('purpose'));
+                formData.append('building_id', getElementValue('building_id'));
+                formData.append('price', getElementValue('price'));
+                formData.append('priceUnit', getElementValue('priceUnit'));
+                formData.append('area', getElementValue('area'));
+                formData.append('areaUnit', getElementValue('areaUnit'));
+                formData.append('bedrooms', getElementValue('bedrooms'));
+                formData.append('bathrooms', getElementValue('bathrooms'));
+                formData.append('floor', getElementValue('floor'));
+                formData.append('furnishing', getElementValue('furnishing'));
+                formData.append('furnishStatus', getElementValue('furnishStatus'));
+                formData.append('carpetArea', getElementValue('carpetArea'));
+                formData.append('superBuiltupArea', getElementValue('superBuiltupArea'));
+                formData.append('available', getElementValue('available', 'checked'));
+                formData.append('category', getElementValue('category'));
+                formData.append('region', getElementValue('region'));
+                formData.append('construction_status', getElementValue('construction_status'));
+                formData.append('possession', getElementValue('possession'));
+                formData.append('broker_status', getElementValue('broker_status'));
+                formData.append('agreement', getElementValue('agreement'));
+                formData.append('address', getElementValue('address'));
+                formData.append('post_description', getElementValue('post_description'));
+                formData.append('latitude', getElementValue('latitude'));
+                formData.append('longitude', getElementValue('longitude'));
+                formData.append('contactList', getElementValue('contactList'));
+
+
+                // Multiple selection fields with error handling
+                const financingOptions = getMultiSelectValues('financingOptions');
+                formData.append('financingOptions', JSON.stringify(financingOptions));
+
+                const environmentalCertifications = getMultiSelectValues('environmentalCertifications');
+                formData.append('environmentalCertifications', JSON.stringify(environmentalCertifications));
+
+                const propertyManagementServices = getMultiSelectValues('propertyManagementServices');
+                formData.append('propertyManagementServices', JSON.stringify(propertyManagementServices));
+
+                const amenitiesSelect = getMultiSelectValues('amenitiess');
+                formData.append('amenitiesSelect', JSON.stringify(amenitiesSelect));
+
+                const facilitiesSelect = getMultiSelectValues('facilitiess');
+                formData.append('facilitiesSelect', JSON.stringify(facilitiesSelect));
+
+                // Image uploads with error handling
+                const mainImageInput = document.getElementById('post_image');
+                if (mainImageInput && mainImageInput.files[0]) {
+                    formData.append('post_image', mainImageInput.files[0]);
+                }
+
+                const floorPlanInput = document.getElementById('floor_plan_image');
+                if (floorPlanInput && floorPlanInput.files[0]) {
+                    formData.append('floor_plan_image', floorPlanInput.files[0]);
+                }
+
+                const galleryInput = document.getElementById('gallery_images');
+                if (galleryInput && galleryInput.files.length > 0) {
+                    Array.from(galleryInput.files).forEach(file => {
+                        formData.append('galleryList', file);
+                    });
+                }
+
+                // Log the data being sent
+                console.log('Property Data:', formData);
+
+                console.log('Sending form data to API...');
+
+                console.log('Property Data:', formData);
+
+                console.log('Files being uploaded:', {
+                    post_image: mainImage,
+                    floor_plan_image: floorPlanImage,
+                    galleryList: Array.from(galleryImages || [])
+                });
+
+                const response = await fetch('https://propertify.onrender.com/api/upload/property', {
+                    method: 'POST',
+                    headers: {
+                        // Remove Content-Type header to let browser set it with boundary parameter
+                        'Accept': 'application/json',
+                        // Add any authentication headers if required
+                        // 'Authorization': 'Bearer your-token'
+                    },
+                    body: formData
+                });
+
+
+                // Log entire response for debugging
+                console.log('Response received:', response);
+
+                // Parse response even if not ok to get error message
+                const result = await response.text(); // Get text first
+                console.log('Raw response:', result);
+
+                let jsonResult;
+                try {
+                    jsonResult = JSON.parse(result);
+                } catch (e) {
+                    console.error('Error parsing JSON:', e);
+                    throw new Error('Invalid response from server');
+                }
+
+                if (!response.ok) {
+                    // Get error message from response if available
+                    const errorMessage = jsonResult.message || `HTTP error! status: ${response.status}`;
+                    throw new Error(errorMessage);
+                }
+
+                console.log('Upload success:', jsonResult);
                 showPopup('Property uploaded successfully!');
-                // this.reset();
-                // clearImagePreviews();
-                // clearChips();
+
+
+
             } catch (error) {
-                console.error('Error uploading property:', error);
-                showPopup('Failed to upload property. Please try again. ' + error);
+                console.error('Error details:', error);
+                showPopup('Error uploading property: ' + error.message);
+
+                // Log FormData contents for debugging
+                console.log('FormData contents:');
+                for (let pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
             }
         });
 

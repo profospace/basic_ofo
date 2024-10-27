@@ -698,7 +698,10 @@
                     <option value="Unfurnished">Unfurnished</option>
                 </select>
             </div>
-
+            <div>
+                <label for="furnishStatus">Furnish Status:</label>
+                <input type="text" id="furnishStatus" name="furnishStatus">
+            </div>
             <div>
                 <label for="carpetArea">Carpet Area:</label>
                 <input type="number" id="carpetArea" name="carpetArea">
@@ -719,12 +722,18 @@
                 <label for="region">Region:</label>
                 <input type="text" id="region" name="region">
             </div>
-
+            <div>
+                <label for="construction_status">Construction Status:</label>
+                <input type="text" id="construction_status" name="construction_status">
+            </div>
             <div>
                 <label for="possession">Possession:</label>
                 <input type="text" id="possession" name="possession">
             </div>
-
+            <div>
+                <label for="broker_status">Broker Status:</label>
+                <input type="text" id="broker_status" name="broker_status">
+            </div>
             <div>
                 <label for="agreement">Agreement:</label>
                 <input type="text" id="agreement" name="agreement">
@@ -745,7 +754,36 @@
                 <label for="post_description">Description:</label>
                 <textarea id="post_description" name="post_description" required></textarea>
             </div>
-
+            <div class="full-width">
+                <label for="amenities">Amenities:</label>
+                <input type="text" id="amenitiesInput" placeholder="Type and press Enter to add">
+                <div id="amenitiesChips" class="chip-container"></div>
+                <input type="hidden" id="amenities" name="amenities">
+            </div>
+            <div class="full-width">
+                <label for="usp">USP (Unique Selling Points):</label>
+                <input type="text" id="uspInput" placeholder="Type and press Enter to add">
+                <div id="uspChips" class="chip-container"></div>
+                <input type="hidden" id="usp" name="usp">
+            </div>
+            <div class="full-width">
+                <label for="location_advantage">Location Advantages:</label>
+                <input type="text" id="locationAdvantageInput" placeholder="Type and press Enter to add">
+                <div id="locationAdvantageChips" class="chip-container"></div>
+                <input type="hidden" id="location_advantage" name="location_advantage">
+            </div>
+            <div class="full-width">
+                <label for="facilities">Facilities:</label>
+                <input type="text" id="facilitiesInput" placeholder="Type and press Enter to add">
+                <div id="facilitiesChips" class="chip-container"></div>
+                <input type="hidden" id="facilities" name="facilities">
+            </div>
+            <div class="full-width">
+                <label for="tags">Tags:</label>
+                <input type="text" id="tagsInput" placeholder="Type and press Enter to add">
+                <div id="tagsChips" class="chip-container"></div>
+                <input type="hidden" id="tags" name="tags">
+            </div>
             <div class="full-width">
                 <label for="contactList">Contact Numbers:</label>
                 <input type="text" id="contactListInput" placeholder="Type and press Enter to add">
@@ -755,6 +793,13 @@
 
 
 
+            <div>
+                <label for="propertyType">Property Type:</label>
+                <select id="propertyType" name="type_name" required>
+                    <option value="">Select Property Type</option>
+                    <!-- Options will be dynamically populated -->
+                </select>
+            </div>
 
             <div>
                 <label for="viewType">View Type:</label>
@@ -868,10 +913,12 @@
                 <div id="gallery_images_preview"></div>
             </div>
             <div class="full-width">
-                <button id="copyDeeplink">Upload Property</button>
+                <button type="submit">Upload Property</button>
             </div>
         </form>
     </div>
+
+
 
 
     <div id="BuildingsProperties" class="tabcontent">
@@ -902,7 +949,7 @@
                 <input type="text" id="textview" required>
                 <label for="link">Link:</label>
                 <input type="text" id="link" required>
-                <button type="submit" onclick="saveOptions()">Save Option</button>
+                <button type="submit"  onclick="saveOptions()">Save Option</button>
             </form>
         </div>
         <button id="deleteListButton" style="display: none;">Delete List</button>
@@ -2688,7 +2735,7 @@
                 document.getElementById('deleteListButton').style.display = 'block';
             } catch (error) {
                 console.error('Error loading options:', error);
-                showPopup('Failed to load options. Please try again.' + error);
+                showPopup('Failed to load options. Please try again.'+ error);
             }
 
         }
@@ -2766,14 +2813,14 @@
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
-                    showPopup(" here is the response :::" + response.status)
+                    showPopup( " here is the response :::"+ response.status)
                 }
 
                 const result = await response.json();
                 console.log('Option saved:', result);
                 //loadListOptions(); // Reload the options
-                // document.getElementById('optionForm').reset();
-                // document.getElementById('optionId').value = '';
+               // document.getElementById('optionForm').reset();
+               // document.getElementById('optionId').value = '';
                 showPopup('Option saved successfully!');
             } catch (error) {
                 console.error('Error saving option:', error);
