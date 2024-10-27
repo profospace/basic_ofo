@@ -2585,17 +2585,14 @@
                         amenities: getMultiSelectValues('amenitiess'),
                         facilities: getMultiSelectValues('facilitiess'),
 
-
-
-
                         // Additional Attributes
-                        viewTypes: document.getElementById('viewType').value,
-                        propertyConditions: document.getElementById('propertyCondition').value,
-                        legalStatuses: document.getElementById('legalStatus').value,
-                        constructionStatuses: document.getElementById('constructionStatus').value,
-                        ownershipTypes: document.getElementById('ownershipType').value,
-                        propertyTaxClasses: document.getElementById('propertyTaxClass').value,
-                        investmentStrategies: document.getElementById('investmentStrategy').value
+                        viewType: document.getElementById('viewType').value,
+                        propertyCondition: document.getElementById('propertyCondition').value,
+                        legalStatus: document.getElementById('legalStatus').value,
+                        constructionStatus: document.getElementById('constructionStatus').value,
+                        ownershipType: document.getElementById('ownershipType').value,
+                        propertyTaxClass: document.getElementById('propertyTaxClass').value,
+                        investmentStrategy: document.getElementById('investmentStrategy').value
                     };
 
                     // Append the property data as a JSON string
@@ -3115,14 +3112,6 @@
                 loadBuildingsAndProperties();
             }
 
-
-            // Add PropertyEdit handling
-            if (tabName === 'PropertyEdit') {
-                // Initialize the property edit tab
-                initializePropertyEdit();
-            }
-
-
             tablinks = document.getElementsByClassName("tablinks");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
@@ -3173,199 +3162,6 @@
             });
 
         }
-
-        async function initializePropertyEdit() {
-    try {
-        // Reset the form and clear any previous data
-        clearEditForm();
-        
-        // Load property list into selector
-        await loadPropertyList();
-        
-        // Initialize map
-        if (typeof google !== 'undefined') {
-            initializeEditMap();
-        }
-        
-        // Initialize all dropdowns with their options
-        populateEditDropdowns();
-        
-        // Set up contact chips functionality
-        initializeContactChips();
-        
-        // Set up image preview handlers
-        setupImagePreviewHandlers();
-        
-        console.log('Property Edit tab initialized successfully');
-    } catch (error) {
-        console.error('Error initializing Property Edit tab:', error);
-        showPopup('Error initializing edit form');
-    }
-}
-
-// Function to initialize the map for property editing
-function initializeEditMap() {
-    const mapContainer = document.getElementById('edit_map');
-    const map = new google.maps.Map(mapContainer, {
-        center: { lat: 0, lng: 0 },
-        zoom: 2
-    });
-
-    const marker = new google.maps.Marker({
-        map: map,
-        draggable: true
-    });
-
-    // Add click event listener to map
-    google.maps.event.addListener(map, 'click', function(event) {
-        marker.setPosition(event.latLng);
-        updateEditLatLng(event.latLng);
-    });
-
-    // Add dragend event listener to marker
-    google.maps.event.addListener(marker, 'dragend', function(event) {
-        updateEditLatLng(event.latLng);
-    });
-
-    // Store map and marker references
-    mapContainer.map = map;
-    mapContainer.marker = marker;
-}
-
-// Function to update latitude and longitude fields
-function updateEditLatLng(location) {
-    document.getElementById('edit_latitude').value = location.lat();
-    document.getElementById('edit_longitude').value = location.lng();
-    document.getElementById('edit_locationDisplay').textContent = 
-        `Latitude: ${location.lat().toFixed(6)}, Longitude: ${location.lng().toFixed(6)}`;
-}
-
-// Function to populate all dropdowns
-function populateEditDropdowns() {
-    // Property Type options
-    const propertyTypes = ["Apartment", "House", "Villa", "Office", "Shop", "Warehouse", "Land"];
-    populateDropdown('edit_type_name', propertyTypes);
-
-    // View Type options
-    const viewTypes = ["City View", "Sea View", "Mountain View", "Garden View", "Park View"];
-    populateDropdown('edit_viewType', viewTypes);
-
-    // Property Condition options
-    const conditions = ["Brand New", "Newly Renovated", "Well Maintained", "Needs Minor Repairs", "Needs Major Renovation"];
-    populateDropdown('edit_propertyCondition', conditions);
-
-    // And so on for other dropdowns...
-}
-
-// Helper function to populate a dropdown
-function populateDropdown(elementId, options) {
-    const select = document.getElementById(elementId);
-    if (!select) return;
-
-    select.innerHTML = '<option value="">Select Option</option>';
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
-        optionElement.textContent = option;
-        select.appendChild(optionElement);
-    });
-}
-
-// Function to set up image preview handlers
-function setupImagePreviewHandlers() {
-    // Main image preview
-    document.getElementById('edit_post_image').addEventListener('change', function(e) {
-        const preview = document.getElementById('edit_post_image_preview');
-        handleImagePreview(this, preview);
-    });
-
-    // Floor plan preview
-    document.getElementById('edit_floor_plan_image').addEventListener('change', function(e) {
-        const preview = document.getElementById('edit_floor_plan_preview');
-        handleImagePreview(this, preview);
-    });
-
-    // Gallery images preview
-    document.getElementById('edit_gallery_images').addEventListener('change', function(e) {
-        const preview = document.getElementById('edit_gallery_preview');
-        handleGalleryPreview(this, preview);
-    });
-}
-
-// Function to handle image preview
-function handleImagePreview(input, preview) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-// Function to handle gallery preview
-function handleGalleryPreview(input, previewContainer) {
-    previewContainer.innerHTML = '';
-    if (input.files) {
-        Array.from(input.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.alt = 'Gallery Preview';
-                previewContainer.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-}
-
-// Function to initialize contact chips
-function initializeContactChips() {
-    const input = document.getElementById('edit_contactListInput');
-    const chipContainer = document.getElementById('edit_contactListChips');
-    const hiddenInput = document.getElementById('edit_contactList');
-
-    input.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const value = this.value.trim();
-            if (value) {
-                addContactChip(value, chipContainer, hiddenInput);
-                this.value = '';
-            }
-        }
-    });
-}
-
-// Function to add a contact chip
-function addContactChip(value, container, hiddenInput) {
-    const chip = document.createElement('div');
-    chip.className = 'chip';
-    chip.innerHTML = `
-        ${value}
-        <button type="button" onclick="removeContactChip(this)">&times;</button>
-    `;
-    container.appendChild(chip);
-    updateHiddenContactInput(container, hiddenInput);
-}
-
-// Function to remove a contact chip
-function removeContactChip(button) {
-    const chip = button.parentElement;
-    const container = chip.parentElement;
-    const hiddenInput = document.getElementById('edit_contactList');
-    chip.remove();
-    updateHiddenContactInput(container, hiddenInput);
-}
-
-// Function to update hidden contact input
-function updateHiddenContactInput(container, hiddenInput) {
-    const contacts = Array.from(container.querySelectorAll('.chip'))
-        .map(chip => chip.textContent.trim().replace('×', ''));
-    hiddenInput.value = contacts.join(',');
-}
 
 
 
