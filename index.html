@@ -6,6 +6,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OFO Core</title>
     <style>
+
+.project-form-section {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.grid-2-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.grid-3-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.map-container {
+    height: 300px;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.floor-plan-item {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.amenity-category,
+.gallery-category {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.project-card {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.project-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+.project-status.upcoming {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.project-status.under_construction {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.project-status.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.secondary-button {
+    background: #6c757d;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-button {
+    background: #dc3545;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
         .property-select-section {
             margin-bottom: 2rem;
             padding: 1rem;
@@ -684,8 +772,303 @@
         <button class="tablinks" onclick="openTab(event, 'DeeplinkGenerator')">Deeplink Generator</button>
         <button class="tablinks" onclick="openTab(event, 'CategoryManagement')">Category Management</button>
         <button class="tablinks" onclick="openTab(event, 'CarouselManagement')">Carousel Management</button>
-
+        <button class="tablinks" onclick="openTab(event, 'BuilderUpload')">Builder Upload</button>
+        <button class="tablinks" onclick="openTab(event, 'ProjectManagement')">Project Management</button>
     </div>
+
+
+    <div id="ProjectManagement" class="tabcontent">
+        <h1>Project Management</h1>
+        
+        <!-- Project List Section -->
+        <div class="projects-list-section">
+            <h2>Existing Projects</h2>
+            <input type="text" id="projectSearch" placeholder="Search projects..." class="search-input">
+            <div id="projectsList"></div>
+        </div>
+    
+        <!-- Project Upload Form -->
+        <div class="project-form-section">
+            <h2>Create/Edit Project</h2>
+            <form id="projectUploadForm">
+                <input type="hidden" id="projectEditId">
+                
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    <div class="grid-2-cols">
+                        <div>
+                            <label for="projectName">Project Name*:</label>
+                            <input type="text" id="projectName" name="name" required>
+                        </div>
+                        <div>
+                            <label for="projectType">Project Type*:</label>
+                            <select id="projectType" name="type" required>
+                                <option value="RESIDENTIAL">Residential</option>
+                                <option value="COMMERCIAL">Commercial</option>
+                                <option value="MIXED_USE">Mixed Use</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="projectStatus">Status:</label>
+                            <select id="projectStatus" name="status">
+                                <option value="UPCOMING">Upcoming</option>
+                                <option value="UNDER_CONSTRUCTION">Under Construction</option>
+                                <option value="COMPLETED">Completed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="builderSelect">Builder*:</label>
+                            <select id="builderSelect" name="builder" required>
+                                <option value="">Select Builder</option>
+                            </select>
+                        </div>
+                    </div>
+    
+                    <label for="projectDescription">Description:</label>
+                    <textarea id="projectDescription" name="description" rows="4"></textarea>
+                </div>
+    
+                <!-- Overview Section -->
+                <div class="form-section">
+                    <h3>Project Overview</h3>
+                    <div class="grid-2-cols">
+                        <div>
+                            <label for="totalUnits">Total Units:</label>
+                            <input type="number" id="totalUnits" name="overview.totalUnits">
+                        </div>
+                        <div>
+                            <label for="totalTowers">Total Towers:</label>
+                            <input type="number" id="totalTowers" name="overview.totalTowers">
+                        </div>
+                        <div>
+                            <label for="launchDate">Launch Date:</label>
+                            <input type="date" id="launchDate" name="overview.launchDate">
+                        </div>
+                        <div>
+                            <label for="possessionDate">Possession Date:</label>
+                            <input type="date" id="possessionDate" name="overview.possessionDate">
+                        </div>
+                    </div>
+    
+                    <!-- Price Range -->
+                    <h4>Price Range</h4>
+                    <div class="grid-3-cols">
+                        <div>
+                            <label for="priceMin">Minimum Price (₹):</label>
+                            <input type="number" id="priceMin" name="overview.priceRange.min">
+                        </div>
+                        <div>
+                            <label for="priceMax">Maximum Price (₹):</label>
+                            <input type="number" id="priceMax" name="overview.priceRange.max">
+                        </div>
+                        <div>
+                            <label for="pricePerSqFt">Price per sq.ft (₹):</label>
+                            <input type="number" id="pricePerSqFt" name="overview.priceRange.pricePerSqFt">
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Location Section -->
+                <div class="form-section">
+                    <h3>Location Details</h3>
+                    <div class="grid-2-cols">
+                        <div>
+                            <label for="projectAddress">Address*:</label>
+                            <input type="text" id="projectAddress" name="location.address" required>
+                        </div>
+                        <div>
+                            <label for="projectLandmark">Landmark:</label>
+                            <input type="text" id="projectLandmark" name="location.landmark">
+                        </div>
+                        <div>
+                            <label for="projectCity">City*:</label>
+                            <input type="text" id="projectCity" name="location.city" required>
+                        </div>
+                        <div>
+                            <label for="projectState">State*:</label>
+                            <input type="text" id="projectState" name="location.state" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Location -->
+                    <div class="map-section">
+                        <label>Location on Map:</label>
+                        <div id="projectMap" class="map-container"></div>
+                        <input type="hidden" id="projectLatitude" name="location.coordinates[1]">
+                        <input type="hidden" id="projectLongitude" name="location.coordinates[0]">
+                    </div>
+                </div>
+    
+                <!-- Floor Plans Section -->
+                <div class="form-section">
+                    <h3>Floor Plans</h3>
+                    <div id="floorPlansContainer"></div>
+                    <button type="button" onclick="addFloorPlan()" class="secondary-button">Add Floor Plan</button>
+                </div>
+    
+                <!-- Amenities Section -->
+                <div class="form-section">
+                    <h3>Amenities</h3>
+                    <div id="amenitiesContainer">
+                        <div class="amenity-category">
+                            <input type="text" placeholder="Category Name" class="category-input">
+                            <div class="amenity-items">
+                                <input type="text" placeholder="Amenity Item" class="amenity-input">
+                            </div>
+                            <button type="button" onclick="addAmenityItem(this)" class="small-button">Add Item</button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addAmenityCategory()" class="secondary-button">Add Category</button>
+                </div>
+    
+                <!-- Specification Section -->
+                <div class="form-section">
+                    <h3>Specifications</h3>
+                    <div id="specificationsContainer">
+                        <!-- Specifications will be added dynamically -->
+                    </div>
+                    <button type="button" onclick="addSpecificationCategory()" class="secondary-button">Add Specification Category</button>
+                </div>
+    
+                <!-- Gallery Section -->
+                <div class="form-section">
+                    <h3>Project Gallery</h3>
+                    <div id="galleryContainer">
+                        <div class="gallery-category">
+                            <input type="text" placeholder="Category Name" class="category-input">
+                            <input type="file" multiple accept="image/*" class="gallery-input">
+                            <div class="gallery-preview"></div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addGalleryCategory()" class="secondary-button">Add Gallery Category</button>
+                </div>
+    
+                <!-- Phases Section -->
+                <div class="form-section">
+                    <h3>Project Phases</h3>
+                    <div id="phasesContainer"></div>
+                    <button type="button" onclick="addPhase()" class="secondary-button">Add Phase</button>
+                </div>
+    
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="save-button">Save Project</button>
+                    <button type="button" class="cancel-button" onclick="resetProjectForm()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<!-- Add this new tab content -->
+<div id="BuilderUpload" class="tabcontent">
+    <h1>Builder Management</h1>
+    
+    <!-- Builder Upload Form -->
+    <div class="builder-form-section">
+        <h2>Upload Builder</h2>
+        <form id="builderUploadForm">
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h3>Basic Information</h3>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="builderName">Builder Name*:</label>
+                        <input type="text" id="builderName" name="name" required>
+                    </div>
+                    <div>
+                        <label for="builderLogo">Logo URL:</label>
+                        <input type="text" id="builderLogo" name="logo">
+                    </div>
+                    <div>
+                        <label for="builderExperience">Experience (years)*:</label>
+                        <input type="number" id="builderExperience" name="experience" required>
+                    </div>
+                    <div>
+                        <label for="builderEstablished">Established Year*:</label>
+                        <input type="number" id="builderEstablished" name="established" required>
+                    </div>
+                </div>
+                
+                <label for="builderDescription">Description:</label>
+                <textarea id="builderDescription" name="description" rows="4"></textarea>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h3>Contact Information</h3>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="builderEmail">Email:</label>
+                        <input type="email" id="builderEmail" name="contact.email">
+                    </div>
+                    <div>
+                        <label for="builderPhone">Phone:</label>
+                        <input type="tel" id="builderPhone" name="contact.phone">
+                    </div>
+                    <div>
+                        <label for="builderWebsite">Website:</label>
+                        <input type="url" id="builderWebsite" name="contact.website">
+                    </div>
+                </div>
+                
+                <!-- Address -->
+                <h4>Office Address</h4>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="builderStreet">Street:</label>
+                        <input type="text" id="builderStreet" name="contact.address.street">
+                    </div>
+                    <div>
+                        <label for="builderCity">City:</label>
+                        <input type="text" id="builderCity" name="contact.address.city">
+                    </div>
+                    <div>
+                        <label for="builderState">State:</label>
+                        <input type="text" id="builderState" name="contact.address.state">
+                    </div>
+                    <div>
+                        <label for="builderPincode">Pincode:</label>
+                        <input type="text" id="builderPincode" name="contact.address.pincode">
+                    </div>
+                </div>
+                
+                <!-- Location Map -->
+                <div class="map-section">
+                    <label>Office Location:</label>
+                    <div id="builderMap" class="map-container"></div>
+                    <input type="hidden" id="builderLatitude" name="contact.address.location.coordinates[1]">
+                    <input type="hidden" id="builderLongitude" name="contact.address.location.coordinates[0]">
+                </div>
+            </div>
+
+            <!-- Property Connection -->
+            <div class="form-section">
+                <h3>Connect Properties</h3>
+                <div class="property-search">
+                    <input type="text" id="propertySearch" placeholder="Search properties by ID or title...">
+                    <div id="propertySearchResults" class="search-results"></div>
+                </div>
+                <div id="selectedProperties" class="selected-properties">
+                    <h4>Selected Properties</h4>
+                    <div class="property-chips"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-button">Upload Builder</button>
+                <button type="button" class="cancel-button" onclick="resetBuilderForm()">Reset</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Existing Builders List -->
+    <div class="builders-list-section">
+        <h2>Existing Builders</h2>
+        <div id="buildersList"></div>
+    </div>
+</div>
 
     <div id="CarouselManagement" class="tabcontent">
         <h1>Carousel Management</h1>
@@ -782,6 +1165,8 @@
                 justify-content: space-between;
                 align-items: center;
             }
+
+            
         </style>
     </div>
 
@@ -1829,6 +2214,327 @@
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
+
+
+
+// Project Management Functions
+let projectMap, projectMarker;
+
+function initializeProjectMap() {
+    projectMap = new google.maps.Map(document.getElementById('projectMap'), {
+        center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+        zoom: 5
+    });
+
+    projectMarker = new google.maps.Marker({
+        map: projectMap,
+        draggable: true
+    });
+
+    google.maps.event.addListener(projectMap, 'click', function(event) {
+        placeProjectMarker(event.latLng);
+    });
+
+    google.maps.event.addListener(projectMarker, 'dragend', function(event) {
+        updateProjectLatLng(event.latLng);
+    });
+}
+
+function placeProjectMarker(location) {
+    projectMarker.setPosition(location);
+    projectMap.setCenter(location);
+    updateProjectLatLng(location);
+}
+
+function updateProjectLatLng(location) {
+    document.getElementById('projectLatitude').value = location.lat();
+    document.getElementById('projectLongitude').value = location.lng();
+}
+
+function addFloorPlan() {
+    const container = document.getElementById('floorPlansContainer');
+    const floorPlanDiv = document.createElement('div');
+    floorPlanDiv.className = 'floor-plan-item';
+    floorPlanDiv.innerHTML = `
+        <div class="grid-2-cols">
+            <div>
+                <label>Plan Name:</label>
+                <input type="text" name="floorPlans[][name]" required>
+            </div>
+            <div>
+                <label>Type:</label>
+                <input type="text" name="floorPlans[][type]" placeholder="e.g., 2BHK, 3BHK" required>
+            </div>
+            <div>
+                <label>Super Area (sq.ft):</label>
+                <input type="number" name="floorPlans[][superArea]" required>
+            </div>
+            <div>
+                <label>Carpet Area (sq.ft):</label>
+                <input type="number" name="floorPlans[][carpetArea]" required>
+            </div>
+            <div>
+                <label>Price:</label>
+                <input type="number" name="floorPlans[][price]" required>
+            </div>
+            <div>
+                <label>Floor Plan Image:</label>
+                <input type="file" name="floorPlans[][image]" accept="image/*">
+            </div>
+        </div>
+        <button type="button" onclick="removeFloorPlan(this)" class="remove-button">Remove Floor Plan</button>
+    `;
+    container.appendChild(floorPlanDiv);
+}
+
+// Add other functions for handling amenities, specifications, gallery, and phases...
+
+document.getElementById('projectUploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(this);
+        const projectData = {
+            name: formData.get('name'),
+            type: formData.get('type'),
+            status: formData.get('status'),
+            builder: formData.get('builder'),
+            description: formData.get('description'),
+            // Add all other form fields...
+        };
+
+        const response = await fetch('https://propertify.onrender.com/api/projects', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(projectData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to save project');
+        }
+
+        showPopup('Project saved successfully!');
+        resetProjectForm();
+        loadProjectsList();
+    } catch (error) {
+        console.error('Error saving project:', error);
+        showPopup('Failed to save project: ' + error.message);
+    }
+});
+
+async function loadProjectsList() {
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/projects');
+        const projects = await response.json();
+        
+        const projectsList = document.getElementById('projectsList');
+        projectsList.innerHTML = projects.map(project => `
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>${project.name}</h3>
+                    <span class="project-status ${project.status.toLowerCase()}">${project.status}</span>
+                </div>
+                <div class="project-details">
+                    <p><strong>Type:</strong> ${project.type}</p>
+                    <p><strong>Total Units:</strong> ${project.overview.totalUnits}</p>
+                    <p><strong>Location:</strong> ${project.location.city}</p>
+                </div>
+                <div class="project-actions">
+                    <button onclick="editProject('${project._id}')">Edit</button>
+                    <button onclick="deleteProject('${project._id}')">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading projects:', error);
+        showPopup('Failed to load projects list');
+    }
+}
+
+let builderMap, builderMarker;
+let selectedProperties = new Set();
+
+function initializeBuilderMap() {
+    builderMap = new google.maps.Map(document.getElementById('builderMap'), {
+        center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+        zoom: 5
+    });
+
+    builderMarker = new google.maps.Marker({
+        map: builderMap,
+        draggable: true
+    });
+
+    // Add click event for map
+    google.maps.event.addListener(builderMap, 'click', function(event) {
+        placeBuilderMarker(event.latLng);
+    });
+
+    // Add dragend event for marker
+    google.maps.event.addListener(builderMarker, 'dragend', function(event) {
+        updateBuilderLatLng(event.latLng);
+    });
+}
+
+function placeBuilderMarker(location) {
+    builderMarker.setPosition(location);
+    builderMap.setCenter(location);
+    updateBuilderLatLng(location);
+}
+
+function updateBuilderLatLng(location) {
+    document.getElementById('builderLatitude').value = location.lat();
+    document.getElementById('builderLongitude').value = location.lng();
+}
+
+// Property search functionality
+let searchTimeout;
+const propertySearch = document.getElementById('propertySearch');
+const searchResults = document.getElementById('propertySearchResults');
+
+propertySearch.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(async () => {
+        const searchTerm = this.value.trim();
+        if (searchTerm.length < 2) {
+            searchResults.innerHTML = '';
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://propertify.onrender.com/api/properties/search?q=${searchTerm}`);
+            const properties = await response.json();
+            
+            searchResults.innerHTML = properties.map(property => `
+                <div class="search-result-item" onclick="selectProperty('${property.post_id}', '${property.post_title}')">
+                    <img src="${property.post_image}" alt="${property.post_title}">
+                    <div class="property-info">
+                        <div class="property-title">${property.post_title}</div>
+                        <div class="property-id">ID: ${property.post_id}</div>
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Error searching properties:', error);
+        }
+    }, 300);
+});
+
+function selectProperty(propertyId, propertyTitle) {
+    if (selectedProperties.has(propertyId)) return;
+    
+    selectedProperties.add(propertyId);
+    const propertyChips = document.querySelector('.property-chips');
+    
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `
+        ${propertyTitle}
+        <button onclick="removeProperty('${propertyId}', this)">&times;</button>
+    `;
+    propertyChips.appendChild(chip);
+    
+    // Clear search
+    propertySearch.value = '';
+    searchResults.innerHTML = '';
+}
+
+function removeProperty(propertyId, button) {
+    selectedProperties.delete(propertyId);
+    button.parentElement.remove();
+}
+
+// Form submission
+document.getElementById('builderUploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const builderData = {
+        name: formData.get('name'),
+        logo: formData.get('logo'),
+        experience: parseInt(formData.get('experience')),
+        established: parseInt(formData.get('established')),
+        description: formData.get('description'),
+        contact: {
+            email: formData.get('contact.email'),
+            phone: formData.get('contact.phone'),
+            website: formData.get('contact.website'),
+            address: {
+                street: formData.get('contact.address.street'),
+                city: formData.get('contact.address.city'),
+                state: formData.get('contact.address.state'),
+                pincode: formData.get('contact.address.pincode'),
+                location: {
+                    type: 'Point',
+                    coordinates: [
+                        parseFloat(formData.get('contact.address.location.coordinates[0]')),
+                        parseFloat(formData.get('contact.address.location.coordinates[1]'))
+                    ]
+                }
+            }
+        },
+        properties: Array.from(selectedProperties)
+    };
+
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/builders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(builderData)
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to upload builder');
+        }
+
+        const result = await response.json();
+        showPopup('Builder uploaded successfully!');
+        resetBuilderForm();
+        loadBuildersList();
+    } catch (error) {
+        console.error('Error uploading builder:', error);
+        showPopup('Failed to upload builder: ' + error.message);
+    }
+});
+
+function resetBuilderForm() {
+    document.getElementById('builderUploadForm').reset();
+    selectedProperties.clear();
+    document.querySelector('.property-chips').innerHTML = '';
+    if (builderMarker) builderMarker.setPosition(null);
+}
+
+async function loadBuildersList() {
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/builders');
+        const builders = await response.json();
+        
+        const buildersList = document.getElementById('buildersList');
+        buildersList.innerHTML = builders.map(builder => `
+            <div class="builder-card">
+                <div class="builder-header">
+                    <img src="${builder.logo || 'placeholder-logo.png'}" alt="${builder.name}">
+                    <h3>${builder.name}</h3>
+                </div>
+                <div class="builder-info">
+                    <p>Experience: ${builder.experience} years</p>
+                    <p>Properties: ${builder.properties.length}</p>
+                </div>
+                <div class="builder-actions">
+                    <button onclick="editBuilder('${builder._id}')">Edit</button>
+                    <button onclick="deleteBuilder('${builder._id}')">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading builders:', error);
+        showPopup('Failed to load builders list');
+    }
+}
 
         let itemCounter = 0;
         var currentListName = '';
