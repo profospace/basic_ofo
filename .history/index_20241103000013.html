@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css">
 
 <head>
     <meta charset="UTF-8">
@@ -9,94 +9,96 @@
     <link rel="stylesheet" href="./styles.css">
 
     <style>
-        .project-form-section {
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
 
-        .grid-2-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
 
-        .grid-3-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-        }
 
-        .map-container {
-            height: 300px;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
+.project-form-section {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-        .floor-plan-item {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
+.grid-2-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
 
-        .amenity-category,
-        .gallery-category {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
+.grid-3-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
 
-        .project-card {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-            background: #fff;
-        }
+.map-container {
+    height: 300px;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
 
-        .project-status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-        }
+.floor-plan-item {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
 
-        .project-status.upcoming {
-            background: #fff3cd;
-            color: #856404;
-        }
+.amenity-category,
+.gallery-category {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
 
-        .project-status.under_construction {
-            background: #cce5ff;
-            color: #004085;
-        }
+.project-card {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    background: #fff;
+}
 
-        .project-status.completed {
-            background: #d4edda;
-            color: #155724;
-        }
+.project-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
 
-        .secondary-button {
-            background: #6c757d;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.project-status.upcoming {
+    background: #fff3cd;
+    color: #856404;
+}
 
-        .remove-button {
-            background: #dc3545;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
+.project-status.under_construction {
+    background: #cce5ff;
+    color: #004085;
+}
 
+.project-status.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.secondary-button {
+    background: #6c757d;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-button {
+    background: #dc3545;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
         .property-select-section {
             margin-bottom: 2rem;
             padding: 1rem;
@@ -755,6 +757,11 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
+
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+
 </head>
 
 <body>
@@ -774,25 +781,25 @@
         <button class="tablinks" onclick="openTab(event, 'ProjectManagement')">Project Management</button>
     </div>
 
-
+    
 
 
     <div id="ProjectManagement" class="tabcontent">
         <h1>Project Management</h1>
-
+        
         <!-- Project List Section -->
         <div class="projects-list-section">
             <h2>Existing Projects</h2>
             <input type="text" id="projectSearch" placeholder="Search projects..." class="search-input">
             <div id="projectsList"></div>
         </div>
-
+    
         <!-- Project Upload Form -->
         <div class="project-form-section">
             <h2>Create/Edit Project</h2>
             <form id="projectUploadForm">
                 <input type="hidden" id="projectEditId">
-
+                
                 <!-- Basic Information -->
                 <div class="form-section">
                     <h3>Basic Information</h3>
@@ -824,11 +831,11 @@
                             </select>
                         </div>
                     </div>
-
+    
                     <label for="projectDescription">Description:</label>
                     <textarea id="projectDescription" name="description" rows="4"></textarea>
                 </div>
-
+    
                 <!-- Overview Section -->
                 <div class="form-section">
                     <h3>Project Overview</h3>
@@ -850,7 +857,7 @@
                             <input type="date" id="possessionDate" name="overview.possessionDate">
                         </div>
                     </div>
-
+    
                     <!-- Price Range -->
                     <h4>Price Range</h4>
                     <div class="grid-3-cols">
@@ -868,7 +875,7 @@
                         </div>
                     </div>
                 </div>
-
+    
                 <!-- Location Section -->
                 <div class="form-section">
                     <h3>Location Details</h3>
@@ -890,7 +897,7 @@
                             <input type="text" id="projectState" name="location.state" required>
                         </div>
                     </div>
-
+                    
                     <!-- Map Location -->
                     <div class="map-section">
                         <label>Location on Map:</label>
@@ -899,14 +906,14 @@
                         <input type="hidden" id="projectLongitude" name="location.coordinates[0]">
                     </div>
                 </div>
-
+    
                 <!-- Floor Plans Section -->
                 <div class="form-section">
                     <h3>Floor Plans</h3>
                     <div id="floorPlansContainer"></div>
                     <button type="button" onclick="addFloorPlan()" class="secondary-button">Add Floor Plan</button>
                 </div>
-
+    
                 <!-- Amenities Section -->
                 <div class="form-section">
                     <h3>Amenities</h3>
@@ -921,17 +928,16 @@
                     </div>
                     <button type="button" onclick="addAmenityCategory()" class="secondary-button">Add Category</button>
                 </div>
-
+    
                 <!-- Specification Section -->
                 <div class="form-section">
                     <h3>Specifications</h3>
                     <div id="specificationsContainer">
                         <!-- Specifications will be added dynamically -->
                     </div>
-                    <button type="button" onclick="addSpecificationCategory()" class="secondary-button">Add
-                        Specification Category</button>
+                    <button type="button" onclick="addSpecificationCategory()" class="secondary-button">Add Specification Category</button>
                 </div>
-
+    
                 <!-- Gallery Section -->
                 <div class="form-section">
                     <h3>Project Gallery</h3>
@@ -942,17 +948,16 @@
                             <div class="gallery-preview"></div>
                         </div>
                     </div>
-                    <button type="button" onclick="addGalleryCategory()" class="secondary-button">Add Gallery
-                        Category</button>
+                    <button type="button" onclick="addGalleryCategory()" class="secondary-button">Add Gallery Category</button>
                 </div>
-
+    
                 <!-- Phases Section -->
                 <div class="form-section">
                     <h3>Project Phases</h3>
                     <div id="phasesContainer"></div>
                     <button type="button" onclick="addPhase()" class="secondary-button">Add Phase</button>
                 </div>
-
+    
                 <!-- Form Actions -->
                 <div class="form-actions">
                     <button type="submit" class="save-button">Save Project</button>
@@ -960,118 +965,118 @@
                 </div>
             </form>
         </div>
-
+        
     </div>
 
 
-    <!-- Add this new tab content -->
-    <div id="BuilderUpload" class="tabcontent">
-        <h1>Builder Management</h1>
-
-        <!-- Builder Upload Form -->
-        <div class="builder-form-section">
-            <h2>Upload Builder</h2>
-            <form id="builderUploadForm">
-                <!-- Basic Information -->
-                <div class="form-section">
-                    <h3>Basic Information</h3>
-                    <div class="grid-2-cols">
-                        <div>
-                            <label for="builderName">Builder Name*:</label>
-                            <input type="text" id="builderName" name="name" required>
-                        </div>
-                        <div>
-                            <label for="builderLogo">Logo URL:</label>
-                            <input type="text" id="builderLogo" name="logo">
-                        </div>
-                        <div>
-                            <label for="builderExperience">Experience (years)*:</label>
-                            <input type="number" id="builderExperience" name="experience" required>
-                        </div>
-                        <div>
-                            <label for="builderEstablished">Established Year*:</label>
-                            <input type="number" id="builderEstablished" name="established" required>
-                        </div>
+<!-- Add this new tab content -->
+<div id="BuilderUpload" class="tabcontent">
+    <h1>Builder Management</h1>
+    
+    <!-- Builder Upload Form -->
+    <div class="builder-form-section">
+        <h2>Upload Builder</h2>
+        <form id="builderUploadForm">
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h3>Basic Information</h3>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="builderName">Builder Name*:</label>
+                        <input type="text" id="builderName" name="name" required>
                     </div>
-
-                    <label for="builderDescription">Description:</label>
-                    <textarea id="builderDescription" name="description" rows="4"></textarea>
-                </div>
-
-                <!-- Contact Information -->
-                <div class="form-section">
-                    <h3>Contact Information</h3>
-                    <div class="grid-2-cols">
-                        <div>
-                            <label for="builderEmail">Email:</label>
-                            <input type="email" id="builderEmail" name="contact.email">
-                        </div>
-                        <div>
-                            <label for="builderPhone">Phone:</label>
-                            <input type="tel" id="builderPhone" name="contact.phone">
-                        </div>
-                        <div>
-                            <label for="builderWebsite">Website:</label>
-                            <input type="url" id="builderWebsite" name="contact.website">
-                        </div>
+                    <div>
+                        <label for="builderLogo">Logo URL:</label>
+                        <input type="text" id="builderLogo" name="logo">
                     </div>
-
-                    <!-- Address -->
-                    <h4>Office Address</h4>
-                    <div class="grid-2-cols">
-                        <div>
-                            <label for="builderStreet">Street:</label>
-                            <input type="text" id="builderStreet" name="contact.address.street">
-                        </div>
-                        <div>
-                            <label for="builderCity">City:</label>
-                            <input type="text" id="builderCity" name="contact.address.city">
-                        </div>
-                        <div>
-                            <label for="builderState">State:</label>
-                            <input type="text" id="builderState" name="contact.address.state">
-                        </div>
-                        <div>
-                            <label for="builderPincode">Pincode:</label>
-                            <input type="text" id="builderPincode" name="contact.address.pincode">
-                        </div>
+                    <div>
+                        <label for="builderExperience">Experience (years)*:</label>
+                        <input type="number" id="builderExperience" name="experience" required>
                     </div>
-
-                    <!-- Location Map -->
-                    <div class="map-section">
-                        <label>Office Location:</label>
-                        <div id="builderMap" class="map-container"></div>
-                        <input type="hidden" id="builderLatitude" name="contact.address.location.coordinates[1]">
-                        <input type="hidden" id="builderLongitude" name="contact.address.location.coordinates[0]">
+                    <div>
+                        <label for="builderEstablished">Established Year*:</label>
+                        <input type="number" id="builderEstablished" name="established" required>
                     </div>
                 </div>
+                
+                <label for="builderDescription">Description:</label>
+                <textarea id="builderDescription" name="description" rows="4"></textarea>
+            </div>
 
-                <!-- Property Connection -->
-                <div class="form-section">
-                    <h3>Connect Properties</h3>
-                    <div class="property-search">
-                        <input type="text" id="propertySearch" placeholder="Search properties by ID or title...">
-                        <div id="propertySearchResults" class="search-results"></div>
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h3>Contact Information</h3>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="builderEmail">Email:</label>
+                        <input type="email" id="builderEmail" name="contact.email">
                     </div>
-                    <div id="selectedProperties" class="selected-properties">
-                        <h4>Selected Properties</h4>
-                        <div class="property-chips"></div>
+                    <div>
+                        <label for="builderPhone">Phone:</label>
+                        <input type="tel" id="builderPhone" name="contact.phone">
+                    </div>
+                    <div>
+                        <label for="builderWebsite">Website:</label>
+                        <input type="url" id="builderWebsite" name="contact.website">
                     </div>
                 </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="save-button">Upload Builder</button>
-                    <button type="button" class="cancel-button" onclick="resetBuilderForm()">Reset</button>
+                
+                <!-- Address -->
+                <h4>Office Address</h4>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="builderStreet">Street:</label>
+                        <input type="text" id="builderStreet" name="contact.address.street">
+                    </div>
+                    <div>
+                        <label for="builderCity">City:</label>
+                        <input type="text" id="builderCity" name="contact.address.city">
+                    </div>
+                    <div>
+                        <label for="builderState">State:</label>
+                        <input type="text" id="builderState" name="contact.address.state">
+                    </div>
+                    <div>
+                        <label for="builderPincode">Pincode:</label>
+                        <input type="text" id="builderPincode" name="contact.address.pincode">
+                    </div>
                 </div>
-            </form>
-        </div>
+                
+                <!-- Location Map -->
+                <div class="map-section">
+                    <label>Office Location:</label>
+                    <div id="builderMap" class="map-container"></div>
+                    <input type="hidden" id="builderLatitude" name="contact.address.location.coordinates[1]">
+                    <input type="hidden" id="builderLongitude" name="contact.address.location.coordinates[0]">
+                </div>
+            </div>
 
-        <!-- Existing Builders List -->
-        <div class="builders-list-section">
-            <h2>Existing Builders</h2>
-            <div id="buildersList"></div>
-        </div>
+            <!-- Property Connection -->
+            <div class="form-section">
+                <h3>Connect Properties</h3>
+                <div class="property-search">
+                    <input type="text" id="propertySearch" placeholder="Search properties by ID or title...">
+                    <div id="propertySearchResults" class="search-results"></div>
+                </div>
+                <div id="selectedProperties" class="selected-properties">
+                    <h4>Selected Properties</h4>
+                    <div class="property-chips"></div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="save-button">Upload Builder</button>
+                <button type="button" class="cancel-button" onclick="resetBuilderForm()">Reset</button>
+            </div>
+        </form>
     </div>
+
+    <!-- Existing Builders List -->
+    <div class="builders-list-section">
+        <h2>Existing Builders</h2>
+        <div id="buildersList"></div>
+    </div>
+</div>
 
     <div id="CarouselManagement" class="tabcontent">
         <h1>Carousel Management</h1>
@@ -1168,6 +1173,8 @@
                 justify-content: space-between;
                 align-items: center;
             }
+
+            
         </style>
     </div>
 
@@ -2215,104 +2222,82 @@
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        ////////////////
+////////////////
 
 
-        // Helper function to handle map marker placement
-        function placeProjectMarker(location) {
-            if (projectMarker && projectMap) {
-                projectMarker.setPosition(location);
-                projectMap.panTo(location);
-                updateProjectLatLng(location);
-            }
+// Helper function to handle map marker placement
+function placeProjectMarker(location) {
+    if (projectMarker && projectMap) {
+        projectMarker.setPosition(location);
+        projectMap.panTo(location);
+        updateProjectLatLng(location);
+    }
+}
+
+// Helper function to update lat/lng fields
+function updateProjectLatLng(location) {
+    const latInput = document.getElementById('projectLatitude');
+    const lngInput = document.getElementById('projectLongitude');
+    
+    if (latInput && lngInput) {
+        latInput.value = location.lat();
+        lngInput.value = location.lng();
+    }
+}
+
+// Add a resize observer to handle map rendering when tab becomes visible
+const resizeObserver = new ResizeObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.target.id === 'projectMap' && projectMap) {
+            google.maps.event.trigger(projectMap, 'resize');
         }
+    });
+});
 
-        // Helper function to update lat/lng fields
-        function updateProjectLatLng(location) {
-            const latInput = document.getElementById('projectLatitude');
-            const lngInput = document.getElementById('projectLongitude');
+// Observe the map container
+const mapContainer = document.getElementById('projectMap');
+if (mapContainer) {
+    resizeObserver.observe(mapContainer);
+}
 
-            if (latInput && lngInput) {
-                latInput.value = location.lat();
-                lngInput.value = location.lng();
-            }
-        }
+let projectMap, projectMarker;
 
-        // Add a resize observer to handle map rendering when tab becomes visible
-        const resizeObserver = new ResizeObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.target.id === 'projectMap' && projectMap) {
-                    google.maps.event.trigger(projectMap, 'resize');
-                }
-            });
-        });
+function initializeProjectMap() {
+    projectMap = new google.maps.Map(document.getElementById('projectMap'), {
+        center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+        zoom: 5
+    });
 
-        // Observe the map container
-        const mapContainer = document.getElementById('projectMap');
-        if (mapContainer) {
-            resizeObserver.observe(mapContainer);
-        }
+    projectMarker = new google.maps.Marker({
+        map: projectMap,
+        draggable: true
+    });
 
-        let projectMap, projectMarker;
+    google.maps.event.addListener(projectMap, 'click', function(event) {
+        placeProjectMarker(event.latLng);
+    });
 
-        // Modified initializeProjectMap function
-        function initializeProjectMap() {
-            const mapElement = document.getElementById('projectMap');
-            if (!mapElement) {
-                console.error('Project map container not found');
-                return;
-            }
+    google.maps.event.addListener(projectMarker, 'dragend', function(event) {
+        updateProjectLatLng(event.latLng);
+    });
+}
 
-            // Center coordinates (India)           
-            const defaultCenter = { lat: 20.5937, lng: 78.9629 };
+function placeProjectMarker(location) {
+    projectMarker.setPosition(location);
+    projectMap.setCenter(location);
+    updateProjectLatLng(location);
+}
 
-            projectMap = new google.maps.Map(mapElement, {
-                center: defaultCenter,
-                zoom: 5,
-                mapTypeControl: true,
-                streetViewControl: false,
-                zoomControl: true
-            });
+function updateProjectLatLng(location) {
+    document.getElementById('projectLatitude').value = location.lat();
+    document.getElementById('projectLongitude').value = location.lng();
+}
 
-            projectMarker = new google.maps.Marker({
-                map: projectMap,
-                draggable: true,
-                animation: google.maps.Animation.DROP
-            });
-
-            // Add click event for map
-            google.maps.event.addListener(projectMap, 'click', function (event) {
-                placeProjectMarker(event.latLng);
-            });
-
-            // Add dragend event for marker
-            google.maps.event.addListener(projectMarker, 'dragend', function (event) {
-                updateProjectLatLng(event.latLng);
-            });
-
-            // Trigger resize event to ensure map renders correctly
-            setTimeout(() => {
-                google.maps.event.trigger(projectMap, 'resize');
-                projectMap.setCenter(defaultCenter);
-            }, 100);
-        }
-
-        function placeProjectMarker(location) {
-            projectMarker.setPosition(location);
-            projectMap.setCenter(location);
-            updateProjectLatLng(location);
-        }
-
-        function updateProjectLatLng(location) {
-            document.getElementById('projectLatitude').value = location.lat();
-            document.getElementById('projectLongitude').value = location.lng();
-        }
-
-        function addFloorPlan() {
-            const container = document.getElementById('floorPlansContainer');
-            const floorPlanDiv = document.createElement('div');
-            floorPlanDiv.className = 'floor-plan-item';
-            floorPlanDiv.innerHTML = `
+function addFloorPlan() {
+    const container = document.getElementById('floorPlansContainer');
+    const floorPlanDiv = document.createElement('div');
+    floorPlanDiv.className = 'floor-plan-item';
+    floorPlanDiv.innerHTML = `
         <div class="grid-2-cols">
             <div>
                 <label>Plan Name:</label>
@@ -2341,202 +2326,111 @@
         </div>
         <button type="button" onclick="removeFloorPlan(this)" class="remove-button">Remove Floor Plan</button>
     `;
-            container.appendChild(floorPlanDiv);
-        }
+    container.appendChild(floorPlanDiv);
+}
 
-        // Add other functions for handling amenities, specifications, gallery, and phases...
+// Add other functions for handling amenities, specifications, gallery, and phases...
 
-        document.getElementById('projectUploadForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+document.getElementById('projectUploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(this);
+        const projectData = {
+            name: formData.get('name'),
+            type: formData.get('type'),
+            status: formData.get('status'),
+            builder: formData.get('builder'),
+            description: formData.get('description'),
+            // Add all other form fields...
+        };
 
-            try {
-                const formData = new FormData(this);
-                const projectData = {
-                    name: formData.get('name'),
-                    type: formData.get('type'),
-                    status: formData.get('status'),
-                    builder: formData.get('builder'),
-                    description: formData.get('description'),
-                    // Add all other form fields...
-                };
-
-                const response = await fetch('https://propertify.onrender.com/api/projects', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(projectData)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to save project');
-                }
-
-                showPopup('Project saved successfully!');
-                resetProjectForm();
-                loadProjectsList();
-            } catch (error) {
-                console.error('Error saving project:', error);
-                showPopup('Failed to save project: ' + error.message);
-            }
+        const response = await fetch('https://propertify.onrender.com/api/projects', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(projectData)
         });
 
-
-        async function initializeProjectManagement() {
-            console.log('Initializing Project Management...');
-
-
-            console.log('Initializing Project Management...');
-
-            // Add refresh button
-            addBuilderRefreshButton();
-
-            // Load builders list
-            loadBuildersList()
-                .then(() => {
-                    console.log('Builders list loaded successfully');
-                    // Initialize map after builders are loaded
-                    if (typeof google !== 'undefined') {
-                        initializeProjectMap();
-                        console.log('Map initialized successfully');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error during initialization:', error);
-                    showPopup('Error initializing project management. Please refresh the page.');
-                });
-
-            try {
-                // Initialize map first
-                if (typeof google !== 'undefined') {
-                    // Ensure map container is visible
-                    document.getElementById('projectMap').style.display = 'block';
-                    initializeProjectMap();
-                    console.log('Project map initialized');
-                } else {
-                    console.error('Google Maps API not loaded');
-                }
-
-                // Load builders list
-                await loadBuildersList();
-                console.log('Builders list loaded');
-
-                // Load existing projects
-                await loadProjectsList();
-                console.log('Projects list loaded');
-
-            } catch (error) {
-                console.error('Error initializing Project Management:', error);
-                showPopup('Error initializing project management. Please refresh the page.');
-            }
+        if (!response.ok) {
+            throw new Error('Failed to save project');
         }
 
-        async function loadBuildersList() {
-            const builderSelect = document.getElementById('builderSelect');
-            if (!builderSelect) {
-                console.error('Builder select element not found');
-                return;
-            }
+        showPopup('Project saved successfully!');
+        resetProjectForm();
+        loadProjectsList();
+    } catch (error) {
+        console.error('Error saving project:', error);
+        showPopup('Failed to save project: ' + error.message);
+    }
+});
 
-            try {
-                // Show loading state
-                builderSelect.innerHTML = '<option value="">Loading builders...</option>';
-                builderSelect.disabled = true;
 
-                console.log('Fetching builders from API...');
-                const response = await fetch('https://propertify.onrender.com/builders', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const builders = await response.json();
-                console.log('Received builders:', builders);
-
-                if (!Array.isArray(builders)) {
-                    throw new Error('Received invalid builders data');
-                }
-
-                // Clear loading state
-                builderSelect.innerHTML = '<option value="">Select Builder</option>';
-
-                // Sort builders by name
-                builders.sort((a, b) => a.name.localeCompare(b.name));
-
-                // Add builders to dropdown
-                builders.forEach(builder => {
-                    if (builder && builder._id && builder.name) {
-                        const option = document.createElement('option');
-                        option.value = builder._id;
-                        option.textContent = builder.name;
-                        builderSelect.appendChild(option);
-                    }
-                });
-
-                console.log(`Successfully loaded ${builders.length} builders`);
-                builderSelect.disabled = false;
-
-                // Add event listener for builder selection
-                builderSelect.addEventListener('change', function (e) {
-                    const selectedBuilderId = e.target.value;
-                    if (selectedBuilderId) {
-                        console.log('Selected builder:', selectedBuilderId);
-                        // You can add additional functionality here when a builder is selected
-                    }
-                });
-
-            } catch (error) {
-                console.error('Error loading builders:', error);
-                builderSelect.innerHTML = '<option value="">Error loading builders. Click to retry.</option>';
-                builderSelect.disabled = false;
-
-                // Add retry functionality
-                builderSelect.addEventListener('click', function retryLoad() {
-                    this.removeEventListener('click', retryLoad);
-                    loadBuildersList();
-                });
-
-                showPopup('Failed to load builders list. Please try again.  -  ' + error);
-            }
+async function initializeProjectManagement() {
+    console.log('Initializing Project Management...');
+    
+    try {
+        // Initialize map first
+        if (typeof google !== 'undefined') {
+            // Ensure map container is visible
+            document.getElementById('projectMap').style.display = 'block';
+            initializeProjectMap();
+            console.log('Project map initialized');
+        } else {
+            console.error('Google Maps API not loaded');
         }
 
-        // Add a refresh button next to the builder select
-        function addBuilderRefreshButton() {
-            const builderSelect = document.getElementById('builderSelect');
-            if (!builderSelect || document.getElementById('refreshBuildersBtn')) return;
+        // Load builders list
+        await loadBuildersList();
+        console.log('Builders list loaded');
 
-            const refreshButton = document.createElement('button');
-            refreshButton.id = 'refreshBuildersBtn';
-            refreshButton.type = 'button';
-            refreshButton.className = 'secondary-button';
-            refreshButton.style.marginLeft = '10px';
-            refreshButton.innerHTML = '🔄 Refresh';
-            refreshButton.onclick = () => {
-                refreshButton.disabled = true;
-                refreshButton.innerHTML = '🔄 Loading...';
-                loadBuildersList().finally(() => {
-                    refreshButton.disabled = false;
-                    refreshButton.innerHTML = '🔄 Refresh';
-                });
-            };
+        // Load existing projects
+        await loadProjectsList();
+        console.log('Projects list loaded');
 
-            builderSelect.parentNode.appendChild(refreshButton);
+    } catch (error) {
+        console.error('Error initializing Project Management:', error);
+        showPopup('Error initializing project management. Please refresh the page.');
+    }
+}
+
+// Function to load builders into the select dropdown
+async function loadBuildersList() {
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/builders');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+        
+        const builders = await response.json();
+        const builderSelect = document.getElementById('builderSelect');
+        
+        // Clear existing options except the default one
+        builderSelect.innerHTML = '<option value="">Select Builder</option>';
+        
+        // Add builders to dropdown
+        builders.forEach(builder => {
+            const option = document.createElement('option');
+            option.value = builder._id;
+            option.textContent = builder.name;
+            builderSelect.appendChild(option);
+        });
+        
+        console.log('Builders loaded successfully');
+    } catch (error) {
+        console.error('Error loading builders:', error);
+        showPopup('Failed to load builders list');
+    }
+}
 
-
-        async function loadProjectsList() {
-            try {
-                const response = await fetch('https://propertify.onrender.com/api/projects');
-                const projects = await response.json();
-
-                const projectsList = document.getElementById('projectsList');
-                projectsList.innerHTML = projects.map(project => `
+async function loadProjectsList() {
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/projects');
+        const projects = await response.json();
+        
+        const projectsList = document.getElementById('projectsList');
+        projectsList.innerHTML = projects.map(project => `
             <div class="project-card">
                 <div class="project-header">
                     <h3>${project.name}</h3>
@@ -2553,17 +2447,17 @@
                 </div>
             </div>
         `).join('');
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                showPopup('Failed to load projects list');
-            }
-        }
+    } catch (error) {
+        console.error('Error loading projects:', error);
+        showPopup('Failed to load projects list');
+    }
+}
 
-        const prefillProjectButton = document.createElement('button');
-        prefillProjectButton.type = 'button';
-        prefillProjectButton.textContent = 'Pre-fill Project Form (Testing)';
-        prefillProjectButton.className = 'prefill-button';
-        prefillProjectButton.style.cssText = `
+const prefillProjectButton = document.createElement('button');
+prefillProjectButton.type = 'button';
+prefillProjectButton.textContent = 'Pre-fill Project Form (Testing)';
+prefillProjectButton.className = 'prefill-button';
+prefillProjectButton.style.cssText = `
     position: fixed;
     bottom: 80px;
     right: 20px;
@@ -2575,94 +2469,94 @@
     cursor: pointer;
     z-index: 1000;
 `;
-        prefillProjectButton.onclick = prefillProjectForm;
+prefillProjectButton.onclick = prefillProjectForm;
 
-        // Add button to document when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function () {
-            document.body.appendChild(prefillProjectButton);
-        });
+// Add button to document when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.appendChild(prefillProjectButton);
+});
 
 
 
-        function prefillProjectForm() {
-            // Helper function to set value for single inputs
-            function setValue(id, value) {
-                const element = document.getElementById(id);
-                if (element) {
-                    if (element.type === 'checkbox') {
-                        element.checked = value;
-                    } else {
-                        element.value = value;
-                    }
-                }
+function prefillProjectForm() {
+    // Helper function to set value for single inputs
+    function setValue(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+            if (element.type === 'checkbox') {
+                element.checked = value;
+            } else {
+                element.value = value;
             }
+        }
+    }
 
-            // Basic Information
-            setValue('projectName', 'Green Valley Residences');
-            setValue('projectType', 'RESIDENTIAL');
-            setValue('projectStatus', 'UNDER_CONSTRUCTION');
-            setValue('builderSelect', '1'); // Assuming builder ID
-            setValue('projectDescription', 'Luxury residential project featuring modern amenities, sustainable design, and premium finishes. Located in a prime area with excellent connectivity.');
+    // Basic Information
+    setValue('projectName', 'Green Valley Residences');
+    setValue('projectType', 'RESIDENTIAL');
+    setValue('projectStatus', 'UNDER_CONSTRUCTION');
+    setValue('builderSelect', '1'); // Assuming builder ID
+    setValue('projectDescription', 'Luxury residential project featuring modern amenities, sustainable design, and premium finishes. Located in a prime area with excellent connectivity.');
 
-            // Overview Section
-            setValue('totalUnits', '250');
-            setValue('totalTowers', '3');
-            setValue('launchDate', '2024-06-01');
-            setValue('possessionDate', '2027-12-31');
+    // Overview Section
+    setValue('totalUnits', '250');
+    setValue('totalTowers', '3');
+    setValue('launchDate', '2024-06-01');
+    setValue('possessionDate', '2027-12-31');
+    
+    // Price Range
+    setValue('priceMin', '8500000');
+    setValue('priceMax', '25000000');
+    setValue('pricePerSqFt', '7500');
 
-            // Price Range
-            setValue('priceMin', '8500000');
-            setValue('priceMax', '25000000');
-            setValue('pricePerSqFt', '7500');
+    // Location Details
+    setValue('projectAddress', '123 Green Valley Road, Sector 15');
+    setValue('projectLandmark', 'Near Central Metro Station');
+    setValue('projectCity', 'Bangalore');
+    setValue('projectState', 'Karnataka');
+    setValue('projectLatitude', '12.9716');
+    setValue('projectLongitude', '77.5946');
 
-            // Location Details
-            setValue('projectAddress', '123 Green Valley Road, Sector 15');
-            setValue('projectLandmark', 'Near Central Metro Station');
-            setValue('projectCity', 'Bangalore');
-            setValue('projectState', 'Karnataka');
-            setValue('projectLatitude', '12.9716');
-            setValue('projectLongitude', '77.5946');
+    // Set map location if map is initialized
+    if (typeof projectMap !== 'undefined' && projectMarker) {
+        const position = new google.maps.LatLng(12.9716, 77.5946);
+        projectMarker.setPosition(position);
+        projectMap.setCenter(position);
+        projectMap.setZoom(15);
+    }
 
-            // Set map location if map is initialized
-            if (typeof projectMap !== 'undefined' && projectMarker) {
-                const position = new google.maps.LatLng(12.9716, 77.5946);
-                projectMarker.setPosition(position);
-                projectMap.setCenter(position);
-                projectMap.setZoom(15);
-            }
+    // Add Floor Plans
+    const floorPlansContainer = document.getElementById('floorPlansContainer');
+    floorPlansContainer.innerHTML = ''; // Clear existing floor plans
+    
+    const floorPlans = [
+        {
+            name: '2 BHK Premium',
+            type: '2BHK',
+            superArea: 1250,
+            carpetArea: 1000,
+            price: 8500000
+        },
+        {
+            name: '3 BHK Luxury',
+            type: '3BHK',
+            superArea: 1750,
+            carpetArea: 1400,
+            price: 12500000
+        },
+        {
+            name: '4 BHK Penthouse',
+            type: '4BHK',
+            superArea: 2500,
+            carpetArea: 2000,
+            price: 25000000
+        }
+    ];
 
-            // Add Floor Plans
-            const floorPlansContainer = document.getElementById('floorPlansContainer');
-            floorPlansContainer.innerHTML = ''; // Clear existing floor plans
-
-            const floorPlans = [
-                {
-                    name: '2 BHK Premium',
-                    type: '2BHK',
-                    superArea: 1250,
-                    carpetArea: 1000,
-                    price: 8500000
-                },
-                {
-                    name: '3 BHK Luxury',
-                    type: '3BHK',
-                    superArea: 1750,
-                    carpetArea: 1400,
-                    price: 12500000
-                },
-                {
-                    name: '4 BHK Penthouse',
-                    type: '4BHK',
-                    superArea: 2500,
-                    carpetArea: 2000,
-                    price: 25000000
-                }
-            ];
-
-            floorPlans.forEach(plan => {
-                const floorPlanDiv = document.createElement('div');
-                floorPlanDiv.className = 'floor-plan-item';
-                floorPlanDiv.innerHTML = `
+    floorPlans.forEach(plan => {
+        const floorPlanDiv = document.createElement('div');
+        floorPlanDiv.className = 'floor-plan-item';
+        floorPlanDiv.innerHTML = `
             <div class="grid-2-cols">
                 <div>
                     <label>Plan Name:</label>
@@ -2691,24 +2585,24 @@
             </div>
             <button type="button" onclick="removeFloorPlan(this)" class="remove-button">Remove Floor Plan</button>
         `;
-                floorPlansContainer.appendChild(floorPlanDiv);
-            });
+        floorPlansContainer.appendChild(floorPlanDiv);
+    });
 
-            // Add Amenities
-            const amenitiesContainer = document.getElementById('amenitiesContainer');
-            amenitiesContainer.innerHTML = ''; // Clear existing amenities
+    // Add Amenities
+    const amenitiesContainer = document.getElementById('amenitiesContainer');
+    amenitiesContainer.innerHTML = ''; // Clear existing amenities
 
-            const amenities = {
-                'Outdoor Features': ['Swimming Pool', 'Garden', 'Kids Play Area', 'Jogging Track'],
-                'Indoor Features': ['Gymnasium', 'Community Hall', 'Indoor Games Room'],
-                'Security': ['24/7 Security', 'CCTV Surveillance', 'Access Control'],
-                'Convenience': ['Power Backup', 'Car Parking', 'Visitor Parking']
-            };
+    const amenities = {
+        'Outdoor Features': ['Swimming Pool', 'Garden', 'Kids Play Area', 'Jogging Track'],
+        'Indoor Features': ['Gymnasium', 'Community Hall', 'Indoor Games Room'],
+        'Security': ['24/7 Security', 'CCTV Surveillance', 'Access Control'],
+        'Convenience': ['Power Backup', 'Car Parking', 'Visitor Parking']
+    };
 
-            Object.entries(amenities).forEach(([category, items]) => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'amenity-category';
-                categoryDiv.innerHTML = `
+    Object.entries(amenities).forEach(([category, items]) => {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'amenity-category';
+        categoryDiv.innerHTML = `
             <input type="text" placeholder="Category Name" class="category-input" value="${category}">
             <div class="amenity-items">
                 ${items.map(item => `
@@ -2717,51 +2611,51 @@
             </div>
             <button type="button" onclick="addAmenityItem(this)" class="small-button">Add Item</button>
         `;
-                amenitiesContainer.appendChild(categoryDiv);
-            });
-        }
+        amenitiesContainer.appendChild(categoryDiv);
+    });
+}
 
 
 
-        /////////////////
+/////////////////
 
 
-        function initializeProjectMap() {
-            projectMap = new google.maps.Map(document.getElementById('projectMap'), {
-                center: { lat: 20.5937, lng: 78.9629 }, // Center of India
-                zoom: 5
-            });
+function initializeProjectMap() {
+    projectMap = new google.maps.Map(document.getElementById('projectMap'), {
+        center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+        zoom: 5
+    });
 
-            projectMarker = new google.maps.Marker({
-                map: projectMap,
-                draggable: true
-            });
+    projectMarker = new google.maps.Marker({
+        map: projectMap,
+        draggable: true
+    });
 
-            google.maps.event.addListener(projectMap, 'click', function (event) {
-                placeProjectMarker(event.latLng);
-            });
+    google.maps.event.addListener(projectMap, 'click', function(event) {
+        placeProjectMarker(event.latLng);
+    });
 
-            google.maps.event.addListener(projectMarker, 'dragend', function (event) {
-                updateProjectLatLng(event.latLng);
-            });
-        }
+    google.maps.event.addListener(projectMarker, 'dragend', function(event) {
+        updateProjectLatLng(event.latLng);
+    });
+}
 
-        function placeProjectMarker(location) {
-            projectMarker.setPosition(location);
-            projectMap.setCenter(location);
-            updateProjectLatLng(location);
-        }
+function placeProjectMarker(location) {
+    projectMarker.setPosition(location);
+    projectMap.setCenter(location);
+    updateProjectLatLng(location);
+}
 
-        function updateProjectLatLng(location) {
-            document.getElementById('projectLatitude').value = location.lat();
-            document.getElementById('projectLongitude').value = location.lng();
-        }
+function updateProjectLatLng(location) {
+    document.getElementById('projectLatitude').value = location.lat();
+    document.getElementById('projectLongitude').value = location.lng();
+}
 
-        function addFloorPlan() {
-            const container = document.getElementById('floorPlansContainer');
-            const floorPlanDiv = document.createElement('div');
-            floorPlanDiv.className = 'floor-plan-item';
-            floorPlanDiv.innerHTML = `
+function addFloorPlan() {
+    const container = document.getElementById('floorPlansContainer');
+    const floorPlanDiv = document.createElement('div');
+    floorPlanDiv.className = 'floor-plan-item';
+    floorPlanDiv.innerHTML = `
         <div class="grid-2-cols">
             <div>
                 <label>Plan Name:</label>
@@ -2790,53 +2684,53 @@
         </div>
         <button type="button" onclick="removeFloorPlan(this)" class="remove-button">Remove Floor Plan</button>
     `;
-            container.appendChild(floorPlanDiv);
-        }
+    container.appendChild(floorPlanDiv);
+}
 
-        // Add other functions for handling amenities, specifications, gallery, and phases...
+// Add other functions for handling amenities, specifications, gallery, and phases...
 
-        document.getElementById('projectUploadForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
+document.getElementById('projectUploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    try {
+        const formData = new FormData(this);
+        const projectData = {
+            name: formData.get('name'),
+            type: formData.get('type'),
+            status: formData.get('status'),
+            builder: formData.get('builder'),
+            description: formData.get('description'),
+            // Add all other form fields...
+        };
 
-            try {
-                const formData = new FormData(this);
-                const projectData = {
-                    name: formData.get('name'),
-                    type: formData.get('type'),
-                    status: formData.get('status'),
-                    builder: formData.get('builder'),
-                    description: formData.get('description'),
-                    // Add all other form fields...
-                };
-
-                const response = await fetch('https://propertify.onrender.com/api/projects', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(projectData)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to save project');
-                }
-
-                showPopup('Project saved successfully!');
-                resetProjectForm();
-                loadProjectsList();
-            } catch (error) {
-                console.error('Error saving project:', error);
-                showPopup('Failed to save project: ' + error.message);
-            }
+        const response = await fetch('https://propertify.onrender.com/api/projects', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(projectData)
         });
 
-        async function loadProjectsList() {
-            try {
-                const response = await fetch('https://propertify.onrender.com/api/projects');
-                const projects = await response.json();
+        if (!response.ok) {
+            throw new Error('Failed to save project');
+        }
 
-                const projectsList = document.getElementById('projectsList');
-                projectsList.innerHTML = projects.map(project => `
+        showPopup('Project saved successfully!');
+        resetProjectForm();
+        loadProjectsList();
+    } catch (error) {
+        console.error('Error saving project:', error);
+        showPopup('Failed to save project: ' + error.message);
+    }
+});
+
+async function loadProjectsList() {
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/projects');
+        const projects = await response.json();
+        
+        const projectsList = document.getElementById('projectsList');
+        projectsList.innerHTML = projects.map(project => `
             <div class="project-card">
                 <div class="project-header">
                     <h3>${project.name}</h3>
@@ -2853,67 +2747,67 @@
                 </div>
             </div>
         `).join('');
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                showPopup('Failed to load projects list');
-            }
+    } catch (error) {
+        console.error('Error loading projects:', error);
+        showPopup('Failed to load projects list');
+    }
+}
+
+let builderMap, builderMarker;
+let selectedProperties = new Set();
+
+function initializeBuilderMap() {
+    builderMap = new google.maps.Map(document.getElementById('builderMap'), {
+        center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+        zoom: 5
+    });
+
+    builderMarker = new google.maps.Marker({
+        map: builderMap,
+        draggable: true
+    });
+
+    // Add click event for map
+    google.maps.event.addListener(builderMap, 'click', function(event) {
+        placeBuilderMarker(event.latLng);
+    });
+
+    // Add dragend event for marker
+    google.maps.event.addListener(builderMarker, 'dragend', function(event) {
+        updateBuilderLatLng(event.latLng);
+    });
+}
+
+function placeBuilderMarker(location) {
+    builderMarker.setPosition(location);
+    builderMap.setCenter(location);
+    updateBuilderLatLng(location);
+}
+
+function updateBuilderLatLng(location) {
+    document.getElementById('builderLatitude').value = location.lat();
+    document.getElementById('builderLongitude').value = location.lng();
+}
+
+// Property search functionality
+let searchTimeout;
+const propertySearch = document.getElementById('propertySearch');
+const searchResults = document.getElementById('propertySearchResults');
+
+propertySearch.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(async () => {
+        const searchTerm = this.value.trim();
+        if (searchTerm.length < 2) {
+            searchResults.innerHTML = '';
+            return;
         }
-
-        let builderMap, builderMarker;
-        let selectedProperties = new Set();
-
-        function initializeBuilderMap() {
-            builderMap = new google.maps.Map(document.getElementById('builderMap'), {
-                center: { lat: 20.5937, lng: 78.9629 }, // Center of India
-                zoom: 5
-            });
-
-            builderMarker = new google.maps.Marker({
-                map: builderMap,
-                draggable: true
-            });
-
-            // Add click event for map
-            google.maps.event.addListener(builderMap, 'click', function (event) {
-                placeBuilderMarker(event.latLng);
-            });
-
-            // Add dragend event for marker
-            google.maps.event.addListener(builderMarker, 'dragend', function (event) {
-                updateBuilderLatLng(event.latLng);
-            });
-        }
-
-        function placeBuilderMarker(location) {
-            builderMarker.setPosition(location);
-            builderMap.setCenter(location);
-            updateBuilderLatLng(location);
-        }
-
-        function updateBuilderLatLng(location) {
-            document.getElementById('builderLatitude').value = location.lat();
-            document.getElementById('builderLongitude').value = location.lng();
-        }
-
-        // Property search functionality
-        let searchTimeout;
-        const propertySearch = document.getElementById('propertySearch');
-        const searchResults = document.getElementById('propertySearchResults');
-
-        propertySearch.addEventListener('input', function () {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(async () => {
-                const searchTerm = this.value.trim();
-                if (searchTerm.length < 2) {
-                    searchResults.innerHTML = '';
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`https://propertify.onrender.com/api/properties/search?q=${searchTerm}`);
-                    const properties = await response.json();
-
-                    searchResults.innerHTML = properties.map(property => `
+        
+        try {
+            const response = await fetch(`https://propertify.onrender.com/api/properties/search?q=${searchTerm}`);
+            const properties = await response.json();
+            
+            searchResults.innerHTML = properties.map(property => `
                 <div class="search-result-item" onclick="selectProperty('${property.post_id}', '${property.post_title}')">
                     <img src="${property.post_image}" alt="${property.post_title}">
                     <div class="property-info">
@@ -2922,125 +2816,125 @@
                     </div>
                 </div>
             `).join('');
-                } catch (error) {
-                    console.error('Error searching properties:', error);
-                }
-            }, 300);
-        });
+        } catch (error) {
+            console.error('Error searching properties:', error);
+        }
+    }, 300);
+});
 
-        function selectProperty(propertyId, propertyTitle) {
-            if (selectedProperties.has(propertyId)) return;
-
-            selectedProperties.add(propertyId);
-            const propertyChips = document.querySelector('.property-chips');
-
-            const chip = document.createElement('div');
-            chip.className = 'chip';
-            chip.innerHTML = `
+function selectProperty(propertyId, propertyTitle) {
+    if (selectedProperties.has(propertyId)) return;
+    
+    selectedProperties.add(propertyId);
+    const propertyChips = document.querySelector('.property-chips');
+    
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `
         ${propertyTitle}
         <button onclick="removeProperty('${propertyId}', this)">&times;</button>
     `;
-            propertyChips.appendChild(chip);
+    propertyChips.appendChild(chip);
+    
+    // Clear search
+    propertySearch.value = '';
+    searchResults.innerHTML = '';
+}
 
-            // Clear search
-            propertySearch.value = '';
-            searchResults.innerHTML = '';
-        }
+function removeProperty(propertyId, button) {
+    selectedProperties.delete(propertyId);
+    button.parentElement.remove();
+}
 
-        function removeProperty(propertyId, button) {
-            selectedProperties.delete(propertyId);
-            button.parentElement.remove();
-        }
-
-        // Form submission
-        document.getElementById('builderUploadForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            const builderData = {
-                name: formData.get('name'),
-                logo: formData.get('logo'),
-                experience: parseInt(formData.get('experience')),
-                established: parseInt(formData.get('established')),
-                description: formData.get('description'),
-                contact: {
-                    email: formData.get('contact.email'),
-                    phone: formData.get('contact.phone'),
-                    website: formData.get('contact.website'),
-                    address: {
-                        street: formData.get('contact.address.street'),
-                        city: formData.get('contact.address.city'),
-                        state: formData.get('contact.address.state'),
-                        pincode: formData.get('contact.address.pincode'),
-                        location: {
-                            type: 'Point',
-                            coordinates: [
-                                parseFloat(formData.get('contact.address.location.coordinates[0]')),
-                                parseFloat(formData.get('contact.address.location.coordinates[1]'))
-                            ]
-                        }
-                    }
-                },
-                properties: Array.from(selectedProperties)
-            };
-
-            try {
-                const response = await fetch('https://propertify.onrender.com/builders', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(builderData)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to upload builder');
+// Form submission
+document.getElementById('builderUploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const builderData = {
+        name: formData.get('name'),
+        logo: formData.get('logo'),
+        experience: parseInt(formData.get('experience')),
+        established: parseInt(formData.get('established')),
+        description: formData.get('description'),
+        contact: {
+            email: formData.get('contact.email'),
+            phone: formData.get('contact.phone'),
+            website: formData.get('contact.website'),
+            address: {
+                street: formData.get('contact.address.street'),
+                city: formData.get('contact.address.city'),
+                state: formData.get('contact.address.state'),
+                pincode: formData.get('contact.address.pincode'),
+                location: {
+                    type: 'Point',
+                    coordinates: [
+                        parseFloat(formData.get('contact.address.location.coordinates[0]')),
+                        parseFloat(formData.get('contact.address.location.coordinates[1]'))
+                    ]
                 }
-
-                const result = await response.json();
-                showPopup('Builder uploaded successfully!');
-                resetBuilderForm();
-                loadBuildersList();
-            } catch (error) {
-                console.error('Error uploading builder:', error);
-                showPopup('Failed to upload builder: ' + error.message);
             }
+        },
+        properties: Array.from(selectedProperties)
+    };
+
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/builders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(builderData)
         });
 
-        function resetBuilderForm() {
-            document.getElementById('builderUploadForm').reset();
-            selectedProperties.clear();
-            document.querySelector('.property-chips').innerHTML = '';
-            if (builderMarker) builderMarker.setPosition(null);
+        if (!response.ok) {
+            throw new Error('Failed to upload builder');
         }
 
-        // async function loadBuildersList() {
-        //     try {
-        //         const response = await fetch('https://propertify.onrender.com/builders');
-        //         const builders = await response.json();
+        const result = await response.json();
+        showPopup('Builder uploaded successfully!');
+        resetBuilderForm();
+        loadBuildersList();
+    } catch (error) {
+        console.error('Error uploading builder:', error);
+        showPopup('Failed to upload builder: ' + error.message);
+    }
+});
 
-        //         const buildersList = document.getElementById('buildersList');
-        //         buildersList.innerHTML = builders.map(builder => `
-        //     <div class="builder-card">
-        //         <div class="builder-header">
-        //             <img src="${builder.logo || 'placeholder-logo.png'}" alt="${builder.name}">
-        //             <h3>${builder.name}</h3>
-        //         </div>
-        //         <div class="builder-info">
-        //             <p>Experience: ${builder.experience} years</p>
-        //             <p>Properties: ${builder.properties.length}</p>
-        //         </div>
-        //         <div class="builder-actions">
-        //             <button onclick="editBuilder('${builder._id}')">Edit</button>
-        //             <button onclick="deleteBuilder('${builder._id}')">Delete</button>
-        //         </div>
-        //     </div>
-        // `).join('');
-        //     } catch (error) {
-        //         console.error('Error loading builders:', error);
-        //         showPopup('Failed to load builders list'+ error);
-        //     }
-        // }
+function resetBuilderForm() {
+    document.getElementById('builderUploadForm').reset();
+    selectedProperties.clear();
+    document.querySelector('.property-chips').innerHTML = '';
+    if (builderMarker) builderMarker.setPosition(null);
+}
+
+async function loadBuildersList() {
+    try {
+        const response = await fetch('https://propertify.onrender.com/api/builders');
+        const builders = await response.json();
+        
+        const buildersList = document.getElementById('buildersList');
+        buildersList.innerHTML = builders.map(builder => `
+            <div class="builder-card">
+                <div class="builder-header">
+                    <img src="${builder.logo || 'placeholder-logo.png'}" alt="${builder.name}">
+                    <h3>${builder.name}</h3>
+                </div>
+                <div class="builder-info">
+                    <p>Experience: ${builder.experience} years</p>
+                    <p>Properties: ${builder.properties.length}</p>
+                </div>
+                <div class="builder-actions">
+                    <button onclick="editBuilder('${builder._id}')">Edit</button>
+                    <button onclick="deleteBuilder('${builder._id}')">Delete</button>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading builders:', error);
+        showPopup('Failed to load builders list');
+    }
+}
 
         let itemCounter = 0;
         var currentListName = '';
@@ -4327,13 +4221,6 @@
                 loadBuildingsAndProperties();
             }
 
-            if (tabName === 'CategoryManagement') {
-                loadCategories();
-            }
-
-            if (tabName === 'ProjectManagement') {
-                initializeProjectManagement();
-            }
 
             // Add PropertyEdit handling
             if (tabName === 'PropertyEdit') {
@@ -4380,7 +4267,13 @@
         document.addEventListener('DOMContentLoaded', loadImages);
 
 
+        if (tabName === 'CategoryManagement') {
+            loadCategories();
+        }
 
+        if (tabName === 'ProjectManagement') {
+        initializeProjectManagement();
+    }
 
         // Add click event listeners to tab buttons
         var tabButtons = document.getElementsByClassName("tablinks");
@@ -4392,197 +4285,197 @@
         }
 
         async function initializePropertyEdit() {
-            try {
-                // Reset the form and clear any previous data
-                clearEditForm();
+    try {
+        // Reset the form and clear any previous data
+        clearEditForm();
+        
+        // Load property list into selector
+        await loadPropertyList();
+        
+        // Initialize map
+        if (typeof google !== 'undefined') {
+            initializeEditMap();
+        }
+        
+        // Initialize all dropdowns with their options
+        populateEditDropdowns();
+        
+        // Set up contact chips functionality
+        initializeContactChips();
+        
+        // Set up image preview handlers
+        setupImagePreviewHandlers();
+        
+        console.log('Property Edit tab initialized successfully');
+    } catch (error) {
+        console.error('Error initializing Property Edit tab:', error);
+        showPopup('Error initializing edit form');
+    }
+}
 
-                // Load property list into selector
-                await loadPropertyList();
+// Function to initialize the map for property editing
+function initializeEditMap() {
+    const mapContainer = document.getElementById('edit_map');
+    const map = new google.maps.Map(mapContainer, {
+        center: { lat: 0, lng: 0 },
+        zoom: 2
+    });
 
-                // Initialize map
-                if (typeof google !== 'undefined') {
-                    initializeEditMap();
-                }
+    const marker = new google.maps.Marker({
+        map: map,
+        draggable: true
+    });
 
-                // Initialize all dropdowns with their options
-                populateEditDropdowns();
+    // Add click event listener to map
+    google.maps.event.addListener(map, 'click', function(event) {
+        marker.setPosition(event.latLng);
+        updateEditLatLng(event.latLng);
+    });
 
-                // Set up contact chips functionality
-                initializeContactChips();
+    // Add dragend event listener to marker
+    google.maps.event.addListener(marker, 'dragend', function(event) {
+        updateEditLatLng(event.latLng);
+    });
 
-                // Set up image preview handlers
-                setupImagePreviewHandlers();
+    // Store map and marker references
+    mapContainer.map = map;
+    mapContainer.marker = marker;
+}
 
-                console.log('Property Edit tab initialized successfully');
-            } catch (error) {
-                console.error('Error initializing Property Edit tab:', error);
-                showPopup('Error initializing edit form');
+// Function to update latitude and longitude fields
+function updateEditLatLng(location) {
+    document.getElementById('edit_latitude').value = location.lat();
+    document.getElementById('edit_longitude').value = location.lng();
+    document.getElementById('edit_locationDisplay').textContent = 
+        `Latitude: ${location.lat().toFixed(6)}, Longitude: ${location.lng().toFixed(6)}`;
+}
+
+// Function to populate all dropdowns
+function populateEditDropdowns() {
+    // Property Type options
+    const propertyTypes = ["Apartment", "House", "Villa", "Office", "Shop", "Warehouse", "Land"];
+    populateDropdown('edit_type_name', propertyTypes);
+
+    // View Type options
+    const viewTypes = ["City View", "Sea View", "Mountain View", "Garden View", "Park View"];
+    populateDropdown('edit_viewType', viewTypes);
+
+    // Property Condition options
+    const conditions = ["Brand New", "Newly Renovated", "Well Maintained", "Needs Minor Repairs", "Needs Major Renovation"];
+    populateDropdown('edit_propertyCondition', conditions);
+
+    // And so on for other dropdowns...
+}
+
+// Helper function to populate a dropdown
+function populateDropdown(elementId, options) {
+    const select = document.getElementById(elementId);
+    if (!select) return;
+
+    select.innerHTML = '<option value="">Select Option</option>';
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
+        optionElement.textContent = option;
+        select.appendChild(optionElement);
+    });
+}
+
+// Function to set up image preview handlers
+function setupImagePreviewHandlers() {
+    // Main image preview
+    document.getElementById('edit_post_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('edit_post_image_preview');
+        handleImagePreview(this, preview);
+    });
+
+    // Floor plan preview
+    document.getElementById('edit_floor_plan_image').addEventListener('change', function(e) {
+        const preview = document.getElementById('edit_floor_plan_preview');
+        handleImagePreview(this, preview);
+    });
+
+    // Gallery images preview
+    document.getElementById('edit_gallery_images').addEventListener('change', function(e) {
+        const preview = document.getElementById('edit_gallery_preview');
+        handleGalleryPreview(this, preview);
+    });
+}
+
+// Function to handle image preview
+function handleImagePreview(input, preview) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Function to handle gallery preview
+function handleGalleryPreview(input, previewContainer) {
+    previewContainer.innerHTML = '';
+    if (input.files) {
+        Array.from(input.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = 'Gallery Preview';
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+}
+
+// Function to initialize contact chips
+function initializeContactChips() {
+    const input = document.getElementById('edit_contactListInput');
+    const chipContainer = document.getElementById('edit_contactListChips');
+    const hiddenInput = document.getElementById('edit_contactList');
+
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = this.value.trim();
+            if (value) {
+                addContactChip(value, chipContainer, hiddenInput);
+                this.value = '';
             }
         }
+    });
+}
 
-        // Function to initialize the map for property editing
-        function initializeEditMap() {
-            const mapContainer = document.getElementById('edit_map');
-            const map = new google.maps.Map(mapContainer, {
-                center: { lat: 0, lng: 0 },
-                zoom: 2
-            });
-
-            const marker = new google.maps.Marker({
-                map: map,
-                draggable: true
-            });
-
-            // Add click event listener to map
-            google.maps.event.addListener(map, 'click', function (event) {
-                marker.setPosition(event.latLng);
-                updateEditLatLng(event.latLng);
-            });
-
-            // Add dragend event listener to marker
-            google.maps.event.addListener(marker, 'dragend', function (event) {
-                updateEditLatLng(event.latLng);
-            });
-
-            // Store map and marker references
-            mapContainer.map = map;
-            mapContainer.marker = marker;
-        }
-
-        // Function to update latitude and longitude fields
-        function updateEditLatLng(location) {
-            document.getElementById('edit_latitude').value = location.lat();
-            document.getElementById('edit_longitude').value = location.lng();
-            document.getElementById('edit_locationDisplay').textContent =
-                `Latitude: ${location.lat().toFixed(6)}, Longitude: ${location.lng().toFixed(6)}`;
-        }
-
-        // Function to populate all dropdowns
-        function populateEditDropdowns() {
-            // Property Type options
-            const propertyTypes = ["Apartment", "House", "Villa", "Office", "Shop", "Warehouse", "Land"];
-            populateDropdown('edit_type_name', propertyTypes);
-
-            // View Type options
-            const viewTypes = ["City View", "Sea View", "Mountain View", "Garden View", "Park View"];
-            populateDropdown('edit_viewType', viewTypes);
-
-            // Property Condition options
-            const conditions = ["Brand New", "Newly Renovated", "Well Maintained", "Needs Minor Repairs", "Needs Major Renovation"];
-            populateDropdown('edit_propertyCondition', conditions);
-
-            // And so on for other dropdowns...
-        }
-
-        // Helper function to populate a dropdown
-        function populateDropdown(elementId, options) {
-            const select = document.getElementById(elementId);
-            if (!select) return;
-
-            select.innerHTML = '<option value="">Select Option</option>';
-            options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
-                optionElement.textContent = option;
-                select.appendChild(optionElement);
-            });
-        }
-
-        // Function to set up image preview handlers
-        function setupImagePreviewHandlers() {
-            // Main image preview
-            document.getElementById('edit_post_image').addEventListener('change', function (e) {
-                const preview = document.getElementById('edit_post_image_preview');
-                handleImagePreview(this, preview);
-            });
-
-            // Floor plan preview
-            document.getElementById('edit_floor_plan_image').addEventListener('change', function (e) {
-                const preview = document.getElementById('edit_floor_plan_preview');
-                handleImagePreview(this, preview);
-            });
-
-            // Gallery images preview
-            document.getElementById('edit_gallery_images').addEventListener('change', function (e) {
-                const preview = document.getElementById('edit_gallery_preview');
-                handleGalleryPreview(this, preview);
-            });
-        }
-
-        // Function to handle image preview
-        function handleImagePreview(input, preview) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // Function to handle gallery preview
-        function handleGalleryPreview(input, previewContainer) {
-            previewContainer.innerHTML = '';
-            if (input.files) {
-                Array.from(input.files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = 'Gallery Preview';
-                        previewContainer.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
-
-        // Function to initialize contact chips
-        function initializeContactChips() {
-            const input = document.getElementById('edit_contactListInput');
-            const chipContainer = document.getElementById('edit_contactListChips');
-            const hiddenInput = document.getElementById('edit_contactList');
-
-            input.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const value = this.value.trim();
-                    if (value) {
-                        addContactChip(value, chipContainer, hiddenInput);
-                        this.value = '';
-                    }
-                }
-            });
-        }
-
-        // Function to add a contact chip
-        function addContactChip(value, container, hiddenInput) {
-            const chip = document.createElement('div');
-            chip.className = 'chip';
-            chip.innerHTML = `
+// Function to add a contact chip
+function addContactChip(value, container, hiddenInput) {
+    const chip = document.createElement('div');
+    chip.className = 'chip';
+    chip.innerHTML = `
         ${value}
         <button type="button" onclick="removeContactChip(this)">&times;</button>
     `;
-            container.appendChild(chip);
-            updateHiddenContactInput(container, hiddenInput);
-        }
+    container.appendChild(chip);
+    updateHiddenContactInput(container, hiddenInput);
+}
 
-        // Function to remove a contact chip
-        function removeContactChip(button) {
-            const chip = button.parentElement;
-            const container = chip.parentElement;
-            const hiddenInput = document.getElementById('edit_contactList');
-            chip.remove();
-            updateHiddenContactInput(container, hiddenInput);
-        }
+// Function to remove a contact chip
+function removeContactChip(button) {
+    const chip = button.parentElement;
+    const container = chip.parentElement;
+    const hiddenInput = document.getElementById('edit_contactList');
+    chip.remove();
+    updateHiddenContactInput(container, hiddenInput);
+}
 
-        // Function to update hidden contact input
-        function updateHiddenContactInput(container, hiddenInput) {
-            const contacts = Array.from(container.querySelectorAll('.chip'))
-                .map(chip => chip.textContent.trim().replace('×', ''));
-            hiddenInput.value = contacts.join(',');
-        }
+// Function to update hidden contact input
+function updateHiddenContactInput(container, hiddenInput) {
+    const contacts = Array.from(container.querySelectorAll('.chip'))
+        .map(chip => chip.textContent.trim().replace('×', ''));
+    hiddenInput.value = contacts.join(',');
+}
 
 
 

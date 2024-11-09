@@ -755,6 +755,11 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
+
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+
 </head>
 
 <body>
@@ -2263,7 +2268,7 @@
                 return;
             }
 
-            // Center coordinates (India)           
+            // Center coordinates (India)
             const defaultCenter = { lat: 20.5937, lng: 78.9629 };
 
             projectMap = new google.maps.Map(mapElement, {
@@ -2444,7 +2449,7 @@
                 builderSelect.disabled = true;
 
                 console.log('Fetching builders from API...');
-                const response = await fetch('https://propertify.onrender.com/builders', {
+                const response = await fetch('https://propertify.onrender.com/api/builders', {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -2502,7 +2507,7 @@
                     loadBuildersList();
                 });
 
-                showPopup('Failed to load builders list. Please try again.  -  ' + error);
+                showPopup('Failed to load builders list. Please try again.');
             }
         }
 
@@ -2985,7 +2990,7 @@
             };
 
             try {
-                const response = await fetch('https://propertify.onrender.com/builders', {
+                const response = await fetch('https://propertify.onrender.com/api/builders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3014,33 +3019,33 @@
             if (builderMarker) builderMarker.setPosition(null);
         }
 
-        // async function loadBuildersList() {
-        //     try {
-        //         const response = await fetch('https://propertify.onrender.com/builders');
-        //         const builders = await response.json();
+        async function loadBuildersList() {
+            try {
+                const response = await fetch('https://propertify.onrender.com/api/builders');
+                const builders = await response.json();
 
-        //         const buildersList = document.getElementById('buildersList');
-        //         buildersList.innerHTML = builders.map(builder => `
-        //     <div class="builder-card">
-        //         <div class="builder-header">
-        //             <img src="${builder.logo || 'placeholder-logo.png'}" alt="${builder.name}">
-        //             <h3>${builder.name}</h3>
-        //         </div>
-        //         <div class="builder-info">
-        //             <p>Experience: ${builder.experience} years</p>
-        //             <p>Properties: ${builder.properties.length}</p>
-        //         </div>
-        //         <div class="builder-actions">
-        //             <button onclick="editBuilder('${builder._id}')">Edit</button>
-        //             <button onclick="deleteBuilder('${builder._id}')">Delete</button>
-        //         </div>
-        //     </div>
-        // `).join('');
-        //     } catch (error) {
-        //         console.error('Error loading builders:', error);
-        //         showPopup('Failed to load builders list'+ error);
-        //     }
-        // }
+                const buildersList = document.getElementById('buildersList');
+                buildersList.innerHTML = builders.map(builder => `
+            <div class="builder-card">
+                <div class="builder-header">
+                    <img src="${builder.logo || 'placeholder-logo.png'}" alt="${builder.name}">
+                    <h3>${builder.name}</h3>
+                </div>
+                <div class="builder-info">
+                    <p>Experience: ${builder.experience} years</p>
+                    <p>Properties: ${builder.properties.length}</p>
+                </div>
+                <div class="builder-actions">
+                    <button onclick="editBuilder('${builder._id}')">Edit</button>
+                    <button onclick="deleteBuilder('${builder._id}')">Delete</button>
+                </div>
+            </div>
+        `).join('');
+            } catch (error) {
+                console.error('Error loading builders:', error);
+                showPopup('Failed to load builders list');
+            }
+        }
 
         let itemCounter = 0;
         var currentListName = '';
