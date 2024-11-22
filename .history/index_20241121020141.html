@@ -958,67 +958,6 @@
             }
         }
 
-        .gallery-category,
-        .specification-category {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-        }
-
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .gallery-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .gallery-image-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-        }
-
-        .gallery-preview-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .specification-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .remove-button {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .secondary-button {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
         .notification.success {
             background: #28a745;
         }
@@ -1236,52 +1175,6 @@
                     <div id="phasesContainer"></div>
                     <button type="button" onclick="addPhase()" class="secondary-button">Add Phase</button>
                 </div>
-
-                <div class="form-section">
-                    <h3>Project Highlights</h3>
-                    <div id="highlightsContainer">
-                        <!-- Highlights will be added dynamically -->
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="addHighlight()" class="secondary-button">Add Highlight</button>
-                        <button type="button" onclick="addSampleHighlights()" class="secondary-button">Add Sample
-                            Highlights</button>
-                    </div>
-                </div>
-
-                <!-- Brochures Section -->
-                <div class="form-section">
-                    <h3>Project Brochures</h3>
-                    <div id="brochuresContainer">
-                        <!-- Brochures will be added dynamically -->
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="addBrochure()" class="secondary-button">Add Brochure</button>
-                        <button type="button" onclick="addSampleBrochures()" class="secondary-button">Add Sample
-                            Brochures</button>
-                    </div>
-                </div>
-
-                <!-- Nearby Locations Section -->
-                <div class="form-section">
-                    <h3>Nearby Locations</h3>
-                    <div id="nearbyLocationsContainer">
-                        <!-- Nearby locations will be added dynamically -->
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="addNearbyLocation()" class="secondary-button">Add
-                            Location</button>
-                        <button type="button" onclick="addSampleNearbyLocations()" class="secondary-button">Add Sample
-                            Locations</button>
-                    </div>
-                </div>
-
-                const sampleButton = `
-                <button type="button" onclick="addSampleSpecifications()" class="secondary-button"
-                    style="margin-left: 10px;">
-                    Add Sample Specifications
-                </button>
-                `;
 
                 <!-- Form Actions -->
                 <div class="form-actions">
@@ -2787,300 +2680,6 @@
             }
         }
 
-
-        function addSampleSpecifications() {
-            const specifications = [
-                {
-                    category: "Structure",
-                    details: [
-                        "RCC framed structure with earthquake resistant design",
-                        "External walls with 6-inch blocks and internal walls with 4-inch blocks",
-                        "Floor-to-floor height of 10 feet",
-                        "High-quality waterproofing in wet areas and terraces"
-                    ]
-                },
-                {
-                    category: "Flooring",
-                    details: [
-                        "Living/Dining: 800x800mm premium vitrified tiles",
-                        "Bedrooms: Laminated wooden flooring",
-                        "Kitchen: Anti-skid ceramic tiles",
-                        "Balconies: Matt finish ceramic tiles",
-                        "Bathrooms: Anti-skid ceramic tiles"
-                    ]
-                },
-                {
-                    category: "Kitchen",
-                    details: [
-                        "Granite platform with stainless steel sink",
-                        "2 feet height ceramic tile dado above platform",
-                        "Provision for water purifier",
-                        "Premium quality CP fittings",
-                        "Modular kitchen cabinets"
-                    ]
-                },
-                {
-                    category: "Bathrooms",
-                    details: [
-                        "Premium sanitary ware from Kohler/American Standard",
-                        "Chrome plated fittings from Grohe/Jaquar",
-                        "Concealed plumbing with premium quality CPVC pipes",
-                        "Wall-mounted WC with concealed flush tank",
-                        "Shower partition in master bathroom",
-                        "Hot water provision in all bathrooms"
-                    ]
-                },
-                {
-                    category: "Doors & Windows",
-                    details: [
-                        "Main door: Teak wood frame with designer shutters",
-                        "Internal doors: Hardwood frames with flush shutters",
-                        "Windows: UPVC frames with mosquito mesh",
-                        "Hardware: Premium quality locks and handles",
-                        "Double-glazed windows for sound insulation"
-                    ]
-                },
-                {
-                    category: "Electrical",
-                    details: [
-                        "Concealed copper wiring in PVC conduits",
-                        "Modular switches from Legrand/Schneider",
-                        "TV and telephone points in living and master bedroom",
-                        "AC points in all bedrooms",
-                        "100% power backup",
-                        "LED lighting in common areas"
-                    ]
-                },
-                {
-                    category: "Painting & Finishes",
-                    details: [
-                        "Interior walls: Premium emulsion paint",
-                        "Exterior walls: Weather-proof exterior paint",
-                        "Ceiling: Oil bound distemper",
-                        "Anti-termite treatment",
-                        "Textured paint in lift lobbies"
-                    ]
-                },
-                {
-                    category: "Security & Automation",
-                    details: [
-                        "Video door phone with intercom facility",
-                        "CCTV surveillance in common areas",
-                        "24x7 manned security",
-                        "Smart home automation-ready",
-                        "Biometric access control for main entrance"
-                    ]
-                }
-            ];
-
-            const container = document.getElementById('specificationsContainer');
-            container.innerHTML = ''; // Clear existing specifications
-
-            specifications.forEach(spec => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'specification-category';
-                categoryDiv.innerHTML = `
-            <div class="category-header">
-                <input type="text" value="${spec.category}" class="category-input" required>
-                <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
-            </div>
-            <div class="specification-items">
-                ${spec.details.map(detail => `
-                    <div class="specification-item">
-                        <input type="text" value="${detail}" class="specification-input" required>
-                        <button type="button" onclick="removeSpecificationItem(this)" class="remove-button">×</button>
-                    </div>
-                `).join('')}
-            </div>
-            <button type="button" onclick="addSpecificationItem(this)" class="secondary-button">Add Item</button>
-        `;
-                container.appendChild(categoryDiv);
-            });
-        }
-
-
-
-
-
-        // Highlights Functions
-        function addHighlight() {
-            const container = document.getElementById('highlightsContainer');
-            const highlightDiv = document.createElement('div');
-            highlightDiv.className = 'highlight-item';
-            highlightDiv.innerHTML = `
-        <div class="input-group">
-            <input type="text" class="highlight-title" placeholder="Highlight Title" required>
-            <input type="text" class="highlight-description" placeholder="Highlight Description" required>
-            <input type="text" class="highlight-icon" placeholder="Icon URL">
-            <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-        </div>
-    `;
-            container.appendChild(highlightDiv);
-        }
-
-        function addSampleHighlights() {
-            const highlights = [
-                { title: "Strategic Location", description: "Prime location with excellent connectivity", icon: "location-icon.png" },
-                { title: "Green Living", description: "80% open space with landscaped gardens", icon: "nature-icon.png" },
-                { title: "Smart Homes", description: "IoT enabled home automation systems", icon: "smart-icon.png" },
-                { title: "Premium Amenities", description: "World-class lifestyle amenities", icon: "amenities-icon.png" },
-                { title: "Sustainable Design", description: "IGBC Green Building certified", icon: "green-icon.png" },
-                { title: "Security", description: "Multi-layer security system", icon: "security-icon.png" }
-            ];
-
-            const container = document.getElementById('highlightsContainer');
-            container.innerHTML = ''; // Clear existing highlights
-
-            highlights.forEach(highlight => {
-                const div = document.createElement('div');
-                div.className = 'highlight-item';
-                div.innerHTML = `
-            <div class="input-group">
-                <input type="text" class="highlight-title" value="${highlight.title}" required>
-                <input type="text" class="highlight-description" value="${highlight.description}" required>
-                <input type="text" class="highlight-icon" value="${highlight.icon}">
-                <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        // Brochures Functions
-        function addBrochure() {
-            const container = document.getElementById('brochuresContainer');
-            const brochureDiv = document.createElement('div');
-            brochureDiv.className = 'brochure-item';
-            brochureDiv.innerHTML = `
-        <div class="input-group">
-            <input type="text" class="brochure-title" placeholder="Brochure Title" required>
-            <input type="text" class="brochure-url" placeholder="Brochure URL/Link" required>
-            <input type="text" class="brochure-thumbnail" placeholder="Thumbnail Image URL">
-            <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-        </div>
-    `;
-            container.appendChild(brochureDiv);
-        }
-
-        function addSampleBrochures() {
-            const brochures = [
-                { title: "Master Brochure", url: "https://example.com/master-brochure.pdf", thumbnail: "brochure-thumb1.jpg" },
-                { title: "Floor Plans", url: "https://example.com/floor-plans.pdf", thumbnail: "brochure-thumb2.jpg" },
-                { title: "Amenities Catalog", url: "https://example.com/amenities.pdf", thumbnail: "brochure-thumb3.jpg" },
-                { title: "Location Advantages", url: "https://example.com/location.pdf", thumbnail: "brochure-thumb4.jpg" }
-            ];
-
-            const container = document.getElementById('brochuresContainer');
-            container.innerHTML = '';
-
-            brochures.forEach(brochure => {
-                const div = document.createElement('div');
-                div.className = 'brochure-item';
-                div.innerHTML = `
-            <div class="input-group">
-                <input type="text" class="brochure-title" value="${brochure.title}" required>
-                <input type="text" class="brochure-url" value="${brochure.url}" required>
-                <input type="text" class="brochure-thumbnail" value="${brochure.thumbnail}">
-                <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        // Nearby Locations Functions
-        function addNearbyLocation() {
-            const container = document.getElementById('nearbyLocationsContainer');
-            const locationDiv = document.createElement('div');
-            locationDiv.className = 'nearby-location-item';
-            locationDiv.innerHTML = `
-        <div class="input-group">
-            <select class="location-type" required>
-                <option value="">Select Type</option>
-                <option value="EDUCATION">Education</option>
-                <option value="HEALTHCARE">Healthcare</option>
-                <option value="SHOPPING">Shopping</option>
-                <option value="TRANSPORT">Transport</option>
-                <option value="ENTERTAINMENT">Entertainment</option>
-                <option value="BUSINESS">Business Hub</option>
-            </select>
-            <input type="text" class="location-name" placeholder="Location Name" required>
-            <input type="text" class="location-distance" placeholder="Distance (km)" required>
-            <input type="text" class="location-duration" placeholder="Time Duration (mins)">
-            <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-        </div>
-    `;
-            container.appendChild(locationDiv);
-        }
-
-        function addSampleNearbyLocations() {
-            const locations = [
-                { type: "EDUCATION", name: "International School", distance: "2", duration: "10" },
-                { type: "HEALTHCARE", name: "Multi-Specialty Hospital", distance: "3", duration: "15" },
-                { type: "SHOPPING", name: "Central Mall", distance: "1.5", duration: "8" },
-                { type: "TRANSPORT", name: "Metro Station", distance: "0.5", duration: "5" },
-                { type: "ENTERTAINMENT", name: "Multiplex", distance: "2.5", duration: "12" },
-                { type: "BUSINESS", name: "IT Park", distance: "4", duration: "20" }
-            ];
-
-            const container = document.getElementById('nearbyLocationsContainer');
-            container.innerHTML = '';
-
-            locations.forEach(location => {
-                const div = document.createElement('div');
-                div.className = 'nearby-location-item';
-                div.innerHTML = `
-            <div class="input-group">
-                <select class="location-type" required>
-                    <option value="">Select Type</option>
-                    <option value="EDUCATION" ${location.type === 'EDUCATION' ? 'selected' : ''}>Education</option>
-                    <option value="HEALTHCARE" ${location.type === 'HEALTHCARE' ? 'selected' : ''}>Healthcare</option>
-                    <option value="SHOPPING" ${location.type === 'SHOPPING' ? 'selected' : ''}>Shopping</option>
-                    <option value="TRANSPORT" ${location.type === 'TRANSPORT' ? 'selected' : ''}>Transport</option>
-                    <option value="ENTERTAINMENT" ${location.type === 'ENTERTAINMENT' ? 'selected' : ''}>Entertainment</option>
-                    <option value="BUSINESS" ${location.type === 'BUSINESS' ? 'selected' : ''}>Business Hub</option>
-                </select>
-                <input type="text" class="location-name" value="${location.name}" required>
-                <input type="text" class="location-distance" value="${location.distance}" required>
-                <input type="text" class="location-duration" value="${location.duration}">
-                <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        // Common Functions
-        function removeItem(button) {
-            button.closest('.highlight-item, .brochure-item, .nearby-location-item').remove();
-        }
-
-        // Data Collection Functions
-        function getHighlightsData() {
-            return Array.from(document.querySelectorAll('.highlight-item')).map(item => ({
-                title: item.querySelector('.highlight-title').value,
-                description: item.querySelector('.highlight-description').value,
-                icon: item.querySelector('.highlight-icon').value || null
-            })).filter(highlight => highlight.title && highlight.description);
-        }
-
-        function getBrochuresData() {
-            return Array.from(document.querySelectorAll('.brochure-item')).map(item => ({
-                title: item.querySelector('.brochure-title').value,
-                url: item.querySelector('.brochure-url').value,
-                thumbnail: item.querySelector('.brochure-thumbnail').value || null
-            })).filter(brochure => brochure.title && brochure.url);
-        }
-
-        function getNearbyLocationsData() {
-            return Array.from(document.querySelectorAll('.nearby-location-item')).map(item => ({
-                type: item.querySelector('.location-type').value,
-                name: item.querySelector('.location-name').value,
-                distance: parseFloat(item.querySelector('.location-distance').value),
-                duration: parseInt(item.querySelector('.location-duration').value) || null
-            })).filter(location => location.type && location.name && location.distance);
-        }
-
         // Helper function to handle map marker placement
         // Update the marker placement function
         function placeProjectMarker(location) {
@@ -3417,7 +3016,7 @@
                 .filter(cat => cat.category && cat.items.length > 0);
         }
 
-
+        
 
         // Function to add amenity category
         function addAmenityCategory() {
@@ -3447,10 +3046,10 @@
 
 
         function addGalleryCategory() {
-            const container = document.getElementById('galleryContainer');
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'gallery-category';
-            categoryDiv.innerHTML = `
+    const container = document.getElementById('galleryContainer');
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'gallery-category';
+    categoryDiv.innerHTML = `
         <div class="category-header">
             <input type="text" placeholder="Category Name" class="category-input" required>
             <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
@@ -3461,42 +3060,42 @@
             <div class="gallery-preview"></div>
         </div>
     `;
-            container.appendChild(categoryDiv);
-        }
+    container.appendChild(categoryDiv);
+}
 
-        // Function to handle gallery image uploads
-        function handleGalleryImages(input) {
-            const previewDiv = input.parentElement.querySelector('.gallery-preview');
-            previewDiv.innerHTML = ''; // Clear existing previews
+// Function to handle gallery image uploads
+function handleGalleryImages(input) {
+    const previewDiv = input.parentElement.querySelector('.gallery-preview');
+    previewDiv.innerHTML = ''; // Clear existing previews
 
-            if (input.files && input.files.length > 0) {
-                Array.from(input.files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const imgContainer = document.createElement('div');
-                        imgContainer.className = 'gallery-image-container';
-                        imgContainer.innerHTML = `
+    if (input.files && input.files.length > 0) {
+        Array.from(input.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgContainer = document.createElement('div');
+                imgContainer.className = 'gallery-image-container';
+                imgContainer.innerHTML = `
                     <img src="${e.target.result}" alt="Gallery Preview" class="gallery-preview-image">
                     <button type="button" onclick="removeGalleryImage(this)" class="remove-button">×</button>
                 `;
-                        previewDiv.appendChild(imgContainer);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
+                previewDiv.appendChild(imgContainer);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+}
 
-        // Function to remove a gallery image
-        function removeGalleryImage(button) {
-            button.parentElement.remove();
-        }
+// Function to remove a gallery image
+function removeGalleryImage(button) {
+    button.parentElement.remove();
+}
 
-        // Function to add a new specification category
-        function addSpecificationCategory() {
-            const container = document.getElementById('specificationsContainer');
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'specification-category';
-            categoryDiv.innerHTML = `
+// Function to add a new specification category
+function addSpecificationCategory() {
+    const container = document.getElementById('specificationsContainer');
+    const categoryDiv = document.createElement('div');
+    categoryDiv.className = 'specification-category';
+    categoryDiv.innerHTML = `
         <div class="category-header">
             <input type="text" placeholder="Category Name" class="category-input" required>
             <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
@@ -3509,73 +3108,73 @@
         </div>
         <button type="button" onclick="addSpecificationItem(this)" class="secondary-button">Add Item</button>
     `;
-            container.appendChild(categoryDiv);
-        }
+    container.appendChild(categoryDiv);
+}
 
-        // Function to add a new specification item
-        function addSpecificationItem(button) {
-            const itemsContainer = button.previousElementSibling;
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'specification-item';
-            itemDiv.innerHTML = `
+// Function to add a new specification item
+function addSpecificationItem(button) {
+    const itemsContainer = button.previousElementSibling;
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'specification-item';
+    itemDiv.innerHTML = `
         <input type="text" placeholder="Specification Detail" class="specification-input" required>
         <button type="button" onclick="removeSpecificationItem(this)" class="remove-button">×</button>
     `;
-            itemsContainer.appendChild(itemDiv);
-        }
+    itemsContainer.appendChild(itemDiv);
+}
 
-        // Function to remove a specification item
-        function removeSpecificationItem(button) {
-            button.parentElement.remove();
-        }
+// Function to remove a specification item
+function removeSpecificationItem(button) {
+    button.parentElement.remove();
+}
 
-        // Function to remove a category (works for both gallery and specifications)
-        function removeCategory(button) {
-            const category = button.closest('.gallery-category, .specification-category, .amenity-category');
-            if (category) {
-                category.remove();
-            }
-        }
+// Function to remove a category (works for both gallery and specifications)
+function removeCategory(button) {
+    const category = button.closest('.gallery-category, .specification-category, .amenity-category');
+    if (category) {
+        category.remove();
+    }
+}
 
-        // Updated function to get specification data
-        function getSpecificationData() {
-            const container = document.getElementById('specificationsContainer');
-            if (!container) return [];
+// Updated function to get specification data
+function getSpecificationData() {
+    const container = document.getElementById('specificationsContainer');
+    if (!container) return [];
 
-            return Array.from(container.querySelectorAll('.specification-category'))
-                .map(category => {
-                    const categoryName = category.querySelector('.category-input')?.value?.trim();
-                    const items = Array.from(category.querySelectorAll('.specification-input'))
-                        .map(input => input.value.trim())
-                        .filter(Boolean);
+    return Array.from(container.querySelectorAll('.specification-category'))
+        .map(category => {
+            const categoryName = category.querySelector('.category-input')?.value?.trim();
+            const items = Array.from(category.querySelectorAll('.specification-input'))
+                .map(input => input.value.trim())
+                .filter(Boolean);
 
-                    return {
-                        category: categoryName,
-                        details: items
-                    };
-                })
-                .filter(cat => cat.category && cat.details.length > 0);
-        }
+            return {
+                category: categoryName,
+                details: items
+            };
+        })
+        .filter(cat => cat.category && cat.details.length > 0);
+}
 
-        // Updated function to get gallery data
-        function getGalleryData() {
-            const container = document.getElementById('galleryContainer');
-            if (!container) return [];
+// Updated function to get gallery data
+function getGalleryData() {
+    const container = document.getElementById('galleryContainer');
+    if (!container) return [];
 
-            return Array.from(container.querySelectorAll('.gallery-category'))
-                .map(category => {
-                    const categoryName = category.querySelector('.category-input')?.value?.trim();
-                    const images = Array.from(category.querySelectorAll('.gallery-preview-image'))
-                        .map(img => img.src)
-                        .filter(Boolean);
+    return Array.from(container.querySelectorAll('.gallery-category'))
+        .map(category => {
+            const categoryName = category.querySelector('.category-input')?.value?.trim();
+            const images = Array.from(category.querySelectorAll('.gallery-preview-image'))
+                .map(img => img.src)
+                .filter(Boolean);
 
-                    return {
-                        category: categoryName,
-                        images: images
-                    };
-                })
-                .filter(cat => cat.category && cat.images.length > 0);
-        }
+            return {
+                category: categoryName,
+                images: images
+            };
+        })
+        .filter(cat => cat.category && cat.images.length > 0);
+}
 
 
         // Modified submitProjectForm function with proper amenities and gallery handling
@@ -3625,12 +3224,10 @@
                     amenities: getAmenitiesData(),
                     specification: getSpecificationData() || [],
                     gallery: getGalleryData(),
-                    highlights: getHighlightsData(),
-                    brochures: getBrochuresData(),
-                    nearbyLocations: getNearbyLocationsData(),
-
+                    highlights: [],
+                    brochures: [],
                     paymentPlan: [],
-
+                    nearbyLocations: [],
                     phases: []
                 };
 
@@ -3804,6 +3401,31 @@
             }
         }
 
+
+
+
+
+
+        function getAmenitiesData() {
+            const amenities = [];
+            const amenityCategories = document.querySelectorAll('.amenity-category');
+
+            amenityCategories.forEach(category => {
+                const categoryName = category.querySelector('.category-input').value;
+                const items = Array.from(category.querySelectorAll('.amenity-input'))
+                    .map(input => input.value)
+                    .filter(Boolean);
+
+                if (categoryName && items.length > 0) {
+                    amenities.push({
+                        category: categoryName,
+                        items: items
+                    });
+                }
+            });
+
+            return amenities;
+        }
 
 
         function validateProjectData(projectData) {

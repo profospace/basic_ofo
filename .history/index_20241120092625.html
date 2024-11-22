@@ -771,23 +771,6 @@
             display: none;
         }
 
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, .3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         .header-image-preview {
             max-width: 300px;
             margin: 10px 0;
@@ -958,67 +941,6 @@
             }
         }
 
-        .gallery-category,
-        .specification-category {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-        }
-
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .gallery-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .gallery-image-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-        }
-
-        .gallery-preview-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .specification-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .remove-button {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .secondary-button {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
         .notification.success {
             background: #28a745;
         }
@@ -1065,7 +987,7 @@
         <!-- Project Upload Form -->
         <div class="project-form-section">
             <h2>Create/Edit Project</h2>
-            <form id="projectUploadForm" enctype="multipart/form-data">
+            <form id="projectUploadForm">
                 <input type="hidden" id="projectEditId">
 
                 <!-- Basic Information -->
@@ -1074,7 +996,7 @@
                     <div class="grid-2-cols">
                         <div>
                             <label for="projectName">Project Name*:</label>
-                            <input type="text" id="projectNames" name="name" required>
+                            <input type="text" id="projectName" name="name" required>
                         </div>
                         <div>
                             <label for="projectType">Project Type*:</label>
@@ -1086,7 +1008,7 @@
                         </div>
                         <div>
                             <label for="projectStatus">Status:</label>
-                            <select id="projectStatus" name="projectStatus">
+                            <select id="projectStatus" name="status">
                                 <option value="UPCOMING">Upcoming</option>
                                 <option value="UNDER_CONSTRUCTION">Under Construction</option>
                                 <option value="COMPLETED">Completed</option>
@@ -1094,14 +1016,14 @@
                         </div>
                         <div>
                             <label for="builderSelect">Builder*:</label>
-                            <select id="builderSelect" name="builderSelect" required>
+                            <select id="builderSelect" name="builder" required>
                                 <option value="">Select Builder</option>
                             </select>
                         </div>
                     </div>
 
                     <label for="projectDescription">Description:</label>
-                    <textarea id="projectDescription" name="projectDescription" rows="4"></textarea>
+                    <textarea id="projectDescription" name="description" rows="4"></textarea>
                 </div>
 
                 <!-- Overview Section -->
@@ -1110,19 +1032,19 @@
                     <div class="grid-2-cols">
                         <div>
                             <label for="totalUnits">Total Units:</label>
-                            <input type="number" id="totalUnits" name="totalUnits">
+                            <input type="number" id="totalUnits" name="overview.totalUnits">
                         </div>
                         <div>
                             <label for="totalTowers">Total Towers:</label>
-                            <input type="number" id="totalTowers" name="totalTowers">
+                            <input type="number" id="totalTowers" name="overview.totalTowers">
                         </div>
                         <div>
                             <label for="launchDate">Launch Date:</label>
-                            <input type="date" id="launchDate" name="launchDate">
+                            <input type="date" id="launchDate" name="overview.launchDate">
                         </div>
                         <div>
                             <label for="possessionDate">Possession Date:</label>
-                            <input type="date" id="possessionDate" name="possessionDate">
+                            <input type="date" id="possessionDate" name="overview.possessionDate">
                         </div>
                     </div>
 
@@ -1131,15 +1053,15 @@
                     <div class="grid-3-cols">
                         <div>
                             <label for="priceMin">Minimum Price (₹):</label>
-                            <input type="number" id="priceMin" name="priceMin">
+                            <input type="number" id="priceMin" name="overview.priceRange.min">
                         </div>
                         <div>
                             <label for="priceMax">Maximum Price (₹):</label>
-                            <input type="number" id="priceMax" name="priceMax">
+                            <input type="number" id="priceMax" name="overview.priceRange.max">
                         </div>
                         <div>
                             <label for="pricePerSqFt">Price per sq.ft (₹):</label>
-                            <input type="number" id="pricePerSqFt" name="pricePerSqFt">
+                            <input type="number" id="pricePerSqFt" name="overview.priceRange.pricePerSqFt">
                         </div>
                     </div>
                 </div>
@@ -1150,24 +1072,24 @@
                     <div class="grid-2-cols">
                         <div class="full-width">
                             <label for="projectAddress">Address*:</label>
-                            <input type="text" id="projectAddress" name="projectAddress" required
+                            <input type="text" id="projectAddress" name="location.address" required
                                 placeholder="Search or click on map to set location">
                         </div>
                         <div>
                             <label for="projectLandmark">Landmark:</label>
-                            <input type="text" id="projectLandmark" name="projectLandmark">
+                            <input type="text" id="projectLandmark" name="location.landmark">
                         </div>
                         <div>
                             <label for="projectCity">City*:</label>
-                            <input type="text" id="projectCity" name="projectCity" required>
+                            <input type="text" id="projectCity" name="location.city" required>
                         </div>
                         <div>
                             <label for="projectState">State*:</label>
-                            <input type="text" id="projectState" name="projectState" required>
+                            <input type="text" id="projectState" name="location.state" required>
                         </div>
                         <div>
                             <label for="projectPincode">Pincode:</label>
-                            <input type="text" id="projectPincode" name="projectPincode">
+                            <input type="text" id="projectPincode" name="location.pincode">
                         </div>
                     </div>
 
@@ -1180,8 +1102,8 @@
                         </button>
                         <div id="projectMap" class="map-container"></div>
                         <!-- Hidden coordinate inputs -->
-                        <input type="hidden" id="projectLatitude" name="projectLatitude">
-                        <input type="hidden" id="projectLongitude" name="projectLongitude">
+                        <input type="hidden" id="projectLatitude" name="location.coordinates.latitude">
+                        <input type="hidden" id="projectLongitude" name="location.coordinates.longitude">
                         <p id="locationDisplay" class="location-display"></p>
                     </div>
 
@@ -1220,11 +1142,14 @@
                 </div>
 
                 <!-- Gallery Section -->
-                <!-- Gallery Section -->
                 <div class="form-section">
                     <h3>Project Gallery</h3>
                     <div id="galleryContainer">
-                        <!-- Gallery categories will be added dynamically -->
+                        <div class="gallery-category">
+                            <input type="text" placeholder="Category Name" class="category-input">
+                            <input type="file" multiple accept="image/*" class="gallery-input">
+                            <div class="gallery-preview"></div>
+                        </div>
                     </div>
                     <button type="button" onclick="addGalleryCategory()" class="secondary-button">Add Gallery
                         Category</button>
@@ -1236,52 +1161,6 @@
                     <div id="phasesContainer"></div>
                     <button type="button" onclick="addPhase()" class="secondary-button">Add Phase</button>
                 </div>
-
-                <div class="form-section">
-                    <h3>Project Highlights</h3>
-                    <div id="highlightsContainer">
-                        <!-- Highlights will be added dynamically -->
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="addHighlight()" class="secondary-button">Add Highlight</button>
-                        <button type="button" onclick="addSampleHighlights()" class="secondary-button">Add Sample
-                            Highlights</button>
-                    </div>
-                </div>
-
-                <!-- Brochures Section -->
-                <div class="form-section">
-                    <h3>Project Brochures</h3>
-                    <div id="brochuresContainer">
-                        <!-- Brochures will be added dynamically -->
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="addBrochure()" class="secondary-button">Add Brochure</button>
-                        <button type="button" onclick="addSampleBrochures()" class="secondary-button">Add Sample
-                            Brochures</button>
-                    </div>
-                </div>
-
-                <!-- Nearby Locations Section -->
-                <div class="form-section">
-                    <h3>Nearby Locations</h3>
-                    <div id="nearbyLocationsContainer">
-                        <!-- Nearby locations will be added dynamically -->
-                    </div>
-                    <div class="button-group">
-                        <button type="button" onclick="addNearbyLocation()" class="secondary-button">Add
-                            Location</button>
-                        <button type="button" onclick="addSampleNearbyLocations()" class="secondary-button">Add Sample
-                            Locations</button>
-                    </div>
-                </div>
-
-                const sampleButton = `
-                <button type="button" onclick="addSampleSpecifications()" class="secondary-button"
-                    style="margin-left: 10px;">
-                    Add Sample Specifications
-                </button>
-                `;
 
                 <!-- Form Actions -->
                 <div class="form-actions">
@@ -1789,7 +1668,7 @@
 
                     <div>
                         <label for="edit_floor_plan_image">Floor Plan:</label>
-                        <input type="file" name="floorPlan" accept="image/*">
+                        <input type="file" id="edit_floor_plan_image" name="floor_plan_image" accept="image/*">
                         <img id="edit_floor_plan_preview" class="image-preview" src="" alt="Current Floor Plan">
                     </div>
 
@@ -2523,6 +2402,10 @@
 
 
 
+
+
+
+
     <div id="popup" class="popup">
         <div class="popup-content">
             <span class="close-button" onclick="closePopup()">&times;</span>
@@ -2787,300 +2670,6 @@
             }
         }
 
-
-        function addSampleSpecifications() {
-            const specifications = [
-                {
-                    category: "Structure",
-                    details: [
-                        "RCC framed structure with earthquake resistant design",
-                        "External walls with 6-inch blocks and internal walls with 4-inch blocks",
-                        "Floor-to-floor height of 10 feet",
-                        "High-quality waterproofing in wet areas and terraces"
-                    ]
-                },
-                {
-                    category: "Flooring",
-                    details: [
-                        "Living/Dining: 800x800mm premium vitrified tiles",
-                        "Bedrooms: Laminated wooden flooring",
-                        "Kitchen: Anti-skid ceramic tiles",
-                        "Balconies: Matt finish ceramic tiles",
-                        "Bathrooms: Anti-skid ceramic tiles"
-                    ]
-                },
-                {
-                    category: "Kitchen",
-                    details: [
-                        "Granite platform with stainless steel sink",
-                        "2 feet height ceramic tile dado above platform",
-                        "Provision for water purifier",
-                        "Premium quality CP fittings",
-                        "Modular kitchen cabinets"
-                    ]
-                },
-                {
-                    category: "Bathrooms",
-                    details: [
-                        "Premium sanitary ware from Kohler/American Standard",
-                        "Chrome plated fittings from Grohe/Jaquar",
-                        "Concealed plumbing with premium quality CPVC pipes",
-                        "Wall-mounted WC with concealed flush tank",
-                        "Shower partition in master bathroom",
-                        "Hot water provision in all bathrooms"
-                    ]
-                },
-                {
-                    category: "Doors & Windows",
-                    details: [
-                        "Main door: Teak wood frame with designer shutters",
-                        "Internal doors: Hardwood frames with flush shutters",
-                        "Windows: UPVC frames with mosquito mesh",
-                        "Hardware: Premium quality locks and handles",
-                        "Double-glazed windows for sound insulation"
-                    ]
-                },
-                {
-                    category: "Electrical",
-                    details: [
-                        "Concealed copper wiring in PVC conduits",
-                        "Modular switches from Legrand/Schneider",
-                        "TV and telephone points in living and master bedroom",
-                        "AC points in all bedrooms",
-                        "100% power backup",
-                        "LED lighting in common areas"
-                    ]
-                },
-                {
-                    category: "Painting & Finishes",
-                    details: [
-                        "Interior walls: Premium emulsion paint",
-                        "Exterior walls: Weather-proof exterior paint",
-                        "Ceiling: Oil bound distemper",
-                        "Anti-termite treatment",
-                        "Textured paint in lift lobbies"
-                    ]
-                },
-                {
-                    category: "Security & Automation",
-                    details: [
-                        "Video door phone with intercom facility",
-                        "CCTV surveillance in common areas",
-                        "24x7 manned security",
-                        "Smart home automation-ready",
-                        "Biometric access control for main entrance"
-                    ]
-                }
-            ];
-
-            const container = document.getElementById('specificationsContainer');
-            container.innerHTML = ''; // Clear existing specifications
-
-            specifications.forEach(spec => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'specification-category';
-                categoryDiv.innerHTML = `
-            <div class="category-header">
-                <input type="text" value="${spec.category}" class="category-input" required>
-                <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
-            </div>
-            <div class="specification-items">
-                ${spec.details.map(detail => `
-                    <div class="specification-item">
-                        <input type="text" value="${detail}" class="specification-input" required>
-                        <button type="button" onclick="removeSpecificationItem(this)" class="remove-button">×</button>
-                    </div>
-                `).join('')}
-            </div>
-            <button type="button" onclick="addSpecificationItem(this)" class="secondary-button">Add Item</button>
-        `;
-                container.appendChild(categoryDiv);
-            });
-        }
-
-
-
-
-
-        // Highlights Functions
-        function addHighlight() {
-            const container = document.getElementById('highlightsContainer');
-            const highlightDiv = document.createElement('div');
-            highlightDiv.className = 'highlight-item';
-            highlightDiv.innerHTML = `
-        <div class="input-group">
-            <input type="text" class="highlight-title" placeholder="Highlight Title" required>
-            <input type="text" class="highlight-description" placeholder="Highlight Description" required>
-            <input type="text" class="highlight-icon" placeholder="Icon URL">
-            <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-        </div>
-    `;
-            container.appendChild(highlightDiv);
-        }
-
-        function addSampleHighlights() {
-            const highlights = [
-                { title: "Strategic Location", description: "Prime location with excellent connectivity", icon: "location-icon.png" },
-                { title: "Green Living", description: "80% open space with landscaped gardens", icon: "nature-icon.png" },
-                { title: "Smart Homes", description: "IoT enabled home automation systems", icon: "smart-icon.png" },
-                { title: "Premium Amenities", description: "World-class lifestyle amenities", icon: "amenities-icon.png" },
-                { title: "Sustainable Design", description: "IGBC Green Building certified", icon: "green-icon.png" },
-                { title: "Security", description: "Multi-layer security system", icon: "security-icon.png" }
-            ];
-
-            const container = document.getElementById('highlightsContainer');
-            container.innerHTML = ''; // Clear existing highlights
-
-            highlights.forEach(highlight => {
-                const div = document.createElement('div');
-                div.className = 'highlight-item';
-                div.innerHTML = `
-            <div class="input-group">
-                <input type="text" class="highlight-title" value="${highlight.title}" required>
-                <input type="text" class="highlight-description" value="${highlight.description}" required>
-                <input type="text" class="highlight-icon" value="${highlight.icon}">
-                <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        // Brochures Functions
-        function addBrochure() {
-            const container = document.getElementById('brochuresContainer');
-            const brochureDiv = document.createElement('div');
-            brochureDiv.className = 'brochure-item';
-            brochureDiv.innerHTML = `
-        <div class="input-group">
-            <input type="text" class="brochure-title" placeholder="Brochure Title" required>
-            <input type="text" class="brochure-url" placeholder="Brochure URL/Link" required>
-            <input type="text" class="brochure-thumbnail" placeholder="Thumbnail Image URL">
-            <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-        </div>
-    `;
-            container.appendChild(brochureDiv);
-        }
-
-        function addSampleBrochures() {
-            const brochures = [
-                { title: "Master Brochure", url: "https://example.com/master-brochure.pdf", thumbnail: "brochure-thumb1.jpg" },
-                { title: "Floor Plans", url: "https://example.com/floor-plans.pdf", thumbnail: "brochure-thumb2.jpg" },
-                { title: "Amenities Catalog", url: "https://example.com/amenities.pdf", thumbnail: "brochure-thumb3.jpg" },
-                { title: "Location Advantages", url: "https://example.com/location.pdf", thumbnail: "brochure-thumb4.jpg" }
-            ];
-
-            const container = document.getElementById('brochuresContainer');
-            container.innerHTML = '';
-
-            brochures.forEach(brochure => {
-                const div = document.createElement('div');
-                div.className = 'brochure-item';
-                div.innerHTML = `
-            <div class="input-group">
-                <input type="text" class="brochure-title" value="${brochure.title}" required>
-                <input type="text" class="brochure-url" value="${brochure.url}" required>
-                <input type="text" class="brochure-thumbnail" value="${brochure.thumbnail}">
-                <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        // Nearby Locations Functions
-        function addNearbyLocation() {
-            const container = document.getElementById('nearbyLocationsContainer');
-            const locationDiv = document.createElement('div');
-            locationDiv.className = 'nearby-location-item';
-            locationDiv.innerHTML = `
-        <div class="input-group">
-            <select class="location-type" required>
-                <option value="">Select Type</option>
-                <option value="EDUCATION">Education</option>
-                <option value="HEALTHCARE">Healthcare</option>
-                <option value="SHOPPING">Shopping</option>
-                <option value="TRANSPORT">Transport</option>
-                <option value="ENTERTAINMENT">Entertainment</option>
-                <option value="BUSINESS">Business Hub</option>
-            </select>
-            <input type="text" class="location-name" placeholder="Location Name" required>
-            <input type="text" class="location-distance" placeholder="Distance (km)" required>
-            <input type="text" class="location-duration" placeholder="Time Duration (mins)">
-            <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-        </div>
-    `;
-            container.appendChild(locationDiv);
-        }
-
-        function addSampleNearbyLocations() {
-            const locations = [
-                { type: "EDUCATION", name: "International School", distance: "2", duration: "10" },
-                { type: "HEALTHCARE", name: "Multi-Specialty Hospital", distance: "3", duration: "15" },
-                { type: "SHOPPING", name: "Central Mall", distance: "1.5", duration: "8" },
-                { type: "TRANSPORT", name: "Metro Station", distance: "0.5", duration: "5" },
-                { type: "ENTERTAINMENT", name: "Multiplex", distance: "2.5", duration: "12" },
-                { type: "BUSINESS", name: "IT Park", distance: "4", duration: "20" }
-            ];
-
-            const container = document.getElementById('nearbyLocationsContainer');
-            container.innerHTML = '';
-
-            locations.forEach(location => {
-                const div = document.createElement('div');
-                div.className = 'nearby-location-item';
-                div.innerHTML = `
-            <div class="input-group">
-                <select class="location-type" required>
-                    <option value="">Select Type</option>
-                    <option value="EDUCATION" ${location.type === 'EDUCATION' ? 'selected' : ''}>Education</option>
-                    <option value="HEALTHCARE" ${location.type === 'HEALTHCARE' ? 'selected' : ''}>Healthcare</option>
-                    <option value="SHOPPING" ${location.type === 'SHOPPING' ? 'selected' : ''}>Shopping</option>
-                    <option value="TRANSPORT" ${location.type === 'TRANSPORT' ? 'selected' : ''}>Transport</option>
-                    <option value="ENTERTAINMENT" ${location.type === 'ENTERTAINMENT' ? 'selected' : ''}>Entertainment</option>
-                    <option value="BUSINESS" ${location.type === 'BUSINESS' ? 'selected' : ''}>Business Hub</option>
-                </select>
-                <input type="text" class="location-name" value="${location.name}" required>
-                <input type="text" class="location-distance" value="${location.distance}" required>
-                <input type="text" class="location-duration" value="${location.duration}">
-                <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
-            </div>
-        `;
-                container.appendChild(div);
-            });
-        }
-
-        // Common Functions
-        function removeItem(button) {
-            button.closest('.highlight-item, .brochure-item, .nearby-location-item').remove();
-        }
-
-        // Data Collection Functions
-        function getHighlightsData() {
-            return Array.from(document.querySelectorAll('.highlight-item')).map(item => ({
-                title: item.querySelector('.highlight-title').value,
-                description: item.querySelector('.highlight-description').value,
-                icon: item.querySelector('.highlight-icon').value || null
-            })).filter(highlight => highlight.title && highlight.description);
-        }
-
-        function getBrochuresData() {
-            return Array.from(document.querySelectorAll('.brochure-item')).map(item => ({
-                title: item.querySelector('.brochure-title').value,
-                url: item.querySelector('.brochure-url').value,
-                thumbnail: item.querySelector('.brochure-thumbnail').value || null
-            })).filter(brochure => brochure.title && brochure.url);
-        }
-
-        function getNearbyLocationsData() {
-            return Array.from(document.querySelectorAll('.nearby-location-item')).map(item => ({
-                type: item.querySelector('.location-type').value,
-                name: item.querySelector('.location-name').value,
-                distance: parseFloat(item.querySelector('.location-distance').value),
-                duration: parseInt(item.querySelector('.location-duration').value) || null
-            })).filter(location => location.type && location.name && location.distance);
-        }
-
         // Helper function to handle map marker placement
         // Update the marker placement function
         function placeProjectMarker(location) {
@@ -3303,26 +2892,8 @@
                     'Error: Your browser doesn\'t support geolocation.'
             );
         }
-
-
-        function getFloorPlansData() {
-            return Array.from(document.querySelectorAll('.floor-plan-item')).map(container => ({
-                name: container.querySelector('input[name="floorPlans[][name]"]')?.value || '',
-                type: container.querySelector('input[name="floorPlans[][type]"]')?.value || '',
-                bedrooms: parseInt(container.querySelector('input[name="floorPlans[][bedrooms]"]')?.value) || 0,
-                bathrooms: parseInt(container.querySelector('input[name="floorPlans[][bathrooms]"]')?.value) || 0,
-                superArea: parseFloat(container.querySelector('input[name="floorPlans[][superArea]"]')?.value) || 0,
-                carpetArea: parseFloat(container.querySelector('input[name="floorPlans[][carpetArea]"]')?.value) || 0,
-                price: parseFloat(container.querySelector('input[name="floorPlans[][price]"]')?.value) || 0,
-                image: container.querySelector('input[type="file"]')?.value || '',
-                isActive: true
-            }));
-        }
-
         function addFloorPlan() {
             const container = document.getElementById('floorPlansContainer');
-            if (!container) return;
-
             const floorPlanDiv = document.createElement('div');
             floorPlanDiv.className = 'floor-plan-item';
             floorPlanDiv.innerHTML = `
@@ -3334,14 +2905,6 @@
             <div>
                 <label>Type:</label>
                 <input type="text" name="floorPlans[][type]" placeholder="e.g., 2BHK, 3BHK" required>
-            </div>
-            <div>
-                <label>Bedrooms:</label>
-                <input type="number" name="floorPlans[][bedrooms]" required>
-            </div>
-            <div>
-                <label>Bathrooms:</label>
-                <input type="number" name="floorPlans[][bathrooms]" required>
             </div>
             <div>
                 <label>Super Area (sq.ft):</label>
@@ -3368,7 +2931,7 @@
 
 
 
-        // Get coordinates from hidden inputs
+          // Get coordinates from hidden inputs
 
         //   const latitude = document.getElementById('projectLatitude').value;
         //         const longitude = document.getElementById('projectLongitude').value;
@@ -3391,353 +2954,122 @@
         //             throw new Error('Invalid coordinate values. Please select location again.');
         //         }
 
-        // coordinates: [lng, lat],
-
-        //////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////
+       // coordinates: [lng, lat],
 
 
 
-        function getAmenitiesData() {
-            const amenitiesContainer = document.getElementById('amenitiesContainer');
-            if (!amenitiesContainer) return [];
 
-            return Array.from(amenitiesContainer.querySelectorAll('.amenity-category'))
-                .map(category => {
-                    const categoryName = category.querySelector('.category-input')?.value?.trim();
-                    const items = Array.from(category.querySelectorAll('.amenity-input'))
-                        .map(input => input.value.trim())
-                        .filter(Boolean);
+        // Add other functions for handling amenities, specifications, gallery, and phases...
 
-                    return {
-                        category: categoryName,
-                        items: items
-                    };
-                })
-                .filter(cat => cat.category && cat.items.length > 0);
-        }
-
-
-
-        // Function to add amenity category
-        function addAmenityCategory() {
-            const container = document.getElementById('amenitiesContainer');
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'amenity-category';
-            categoryDiv.innerHTML = `
-        <input type="text" placeholder="Category Name" class="category-input">
-        <div class="amenity-items">
-            <input type="text" placeholder="Amenity Item" class="amenity-input">
-        </div>
-        <button type="button" onclick="addAmenityItem(this)" class="small-button">Add Item</button>
-        <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
-    `;
-            container.appendChild(categoryDiv);
-        }
-
-        // Function to add amenity item
-        function addAmenityItem(button) {
-            const itemsContainer = button.previousElementSibling;
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = 'Amenity Item';
-            input.className = 'amenity-input';
-            itemsContainer.appendChild(input);
-        }
-
-
-        function addGalleryCategory() {
-            const container = document.getElementById('galleryContainer');
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'gallery-category';
-            categoryDiv.innerHTML = `
-        <div class="category-header">
-            <input type="text" placeholder="Category Name" class="category-input" required>
-            <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
-        </div>
-        <div class="image-upload-section">
-            <input type="file" accept="image/*" multiple class="gallery-file-input" 
-                   onchange="handleGalleryImages(this)">
-            <div class="gallery-preview"></div>
-        </div>
-    `;
-            container.appendChild(categoryDiv);
-        }
-
-        // Function to handle gallery image uploads
-        function handleGalleryImages(input) {
-            const previewDiv = input.parentElement.querySelector('.gallery-preview');
-            previewDiv.innerHTML = ''; // Clear existing previews
-
-            if (input.files && input.files.length > 0) {
-                Array.from(input.files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const imgContainer = document.createElement('div');
-                        imgContainer.className = 'gallery-image-container';
-                        imgContainer.innerHTML = `
-                    <img src="${e.target.result}" alt="Gallery Preview" class="gallery-preview-image">
-                    <button type="button" onclick="removeGalleryImage(this)" class="remove-button">×</button>
-                `;
-                        previewDiv.appendChild(imgContainer);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
-
-        // Function to remove a gallery image
-        function removeGalleryImage(button) {
-            button.parentElement.remove();
-        }
-
-        // Function to add a new specification category
-        function addSpecificationCategory() {
-            const container = document.getElementById('specificationsContainer');
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'specification-category';
-            categoryDiv.innerHTML = `
-        <div class="category-header">
-            <input type="text" placeholder="Category Name" class="category-input" required>
-            <button type="button" onclick="removeCategory(this)" class="remove-button">Remove Category</button>
-        </div>
-        <div class="specification-items">
-            <div class="specification-item">
-                <input type="text" placeholder="Specification Detail" class="specification-input" required>
-                <button type="button" onclick="removeSpecificationItem(this)" class="remove-button">×</button>
-            </div>
-        </div>
-        <button type="button" onclick="addSpecificationItem(this)" class="secondary-button">Add Item</button>
-    `;
-            container.appendChild(categoryDiv);
-        }
-
-        // Function to add a new specification item
-        function addSpecificationItem(button) {
-            const itemsContainer = button.previousElementSibling;
-            const itemDiv = document.createElement('div');
-            itemDiv.className = 'specification-item';
-            itemDiv.innerHTML = `
-        <input type="text" placeholder="Specification Detail" class="specification-input" required>
-        <button type="button" onclick="removeSpecificationItem(this)" class="remove-button">×</button>
-    `;
-            itemsContainer.appendChild(itemDiv);
-        }
-
-        // Function to remove a specification item
-        function removeSpecificationItem(button) {
-            button.parentElement.remove();
-        }
-
-        // Function to remove a category (works for both gallery and specifications)
-        function removeCategory(button) {
-            const category = button.closest('.gallery-category, .specification-category, .amenity-category');
-            if (category) {
-                category.remove();
-            }
-        }
-
-        // Updated function to get specification data
-        function getSpecificationData() {
-            const container = document.getElementById('specificationsContainer');
-            if (!container) return [];
-
-            return Array.from(container.querySelectorAll('.specification-category'))
-                .map(category => {
-                    const categoryName = category.querySelector('.category-input')?.value?.trim();
-                    const items = Array.from(category.querySelectorAll('.specification-input'))
-                        .map(input => input.value.trim())
-                        .filter(Boolean);
-
-                    return {
-                        category: categoryName,
-                        details: items
-                    };
-                })
-                .filter(cat => cat.category && cat.details.length > 0);
-        }
-
-        // Updated function to get gallery data
-        function getGalleryData() {
-            const container = document.getElementById('galleryContainer');
-            if (!container) return [];
-
-            return Array.from(container.querySelectorAll('.gallery-category'))
-                .map(category => {
-                    const categoryName = category.querySelector('.category-input')?.value?.trim();
-                    const images = Array.from(category.querySelectorAll('.gallery-preview-image'))
-                        .map(img => img.src)
-                        .filter(Boolean);
-
-                    return {
-                        category: categoryName,
-                        images: images
-                    };
-                })
-                .filter(cat => cat.category && cat.images.length > 0);
-        }
-
-
-        // Modified submitProjectForm function with proper amenities and gallery handling
+        // Project form submission handler
         async function submitProjectForm(formElement) {
-            try {
-                const submitButton = formElement.querySelector('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.innerHTML = '<span class="spinner"></span> Uploading...';
-                }
+    try {
+        // Get coordinates from hidden inputs
+        const latitude = document.getElementById('projectLatitude').value;
+        const longitude = document.getElementById('projectLongitude').value;
 
-                // Collect all form data
-                const projectData = {
-                    projectId: `PRJ${Date.now()}`,
-                    name: document.getElementById('projectNames').value,
-                    type: document.getElementById('projectType').value,
-                    builder: document.getElementById('builderSelect').value,
-                    status: document.getElementById('projectStatus').value,
-                    description: document.getElementById('projectDescription').value,
-                    availabilityStatus: 'COMING_SOON',
-                    overview: {
-                        totalUnits: parseInt(document.getElementById('totalUnits').value) || 0,
-                        totalTowers: parseInt(document.getElementById('totalTowers').value) || 0,
-                        launchDate: document.getElementById('launchDate').value,
-                        possessionDate: document.getElementById('possessionDate').value,
-                        priceRange: {
-                            min: parseFloat(document.getElementById('priceMin').value) || 0,
-                            max: parseFloat(document.getElementById('priceMax').value) || 0,
-                            pricePerSqFt: parseFloat(document.getElementById('pricePerSqFt').value) || 0
-                        }
-                    },
-                    location: {
-                        coordinates: {
-                            type: 'Point',
-                            coordinates: [
-                                parseFloat(document.getElementById('projectLongitude').value),
-                                parseFloat(document.getElementById('projectLatitude').value)
-                            ]
-                        },
-                        address: document.getElementById('projectAddress').value,
-                        landmark: document.getElementById('projectLandmark').value,
-                        city: document.getElementById('projectCity').value,
-                        state: document.getElementById('projectState').value,
-                        pincode: document.getElementById('projectPincode').value
-                    },
-                    floorPlans: getFloorPlansData(),
-                    amenities: getAmenitiesData(),
-                    specification: getSpecificationData() || [],
-                    gallery: getGalleryData(),
-                    highlights: getHighlightsData(),
-                    brochures: getBrochuresData(),
-                    nearbyLocations: getNearbyLocationsData(),
+        console.log('Raw coordinates:', { latitude, longitude });
 
-                    paymentPlan: [],
+        // Validate coordinates exist
+        if (!latitude || !longitude) {
+            throw new Error('Please select a location on the map');
+        }
 
-                    phases: []
-                };
+        // Parse coordinates to numbers
+        const lat = parseFloat(latitude);
+        const lng = parseFloat(longitude);
 
-                // Validate required fields
-                if (!projectData.name || !projectData.builder || !projectData.type) {
-                    throw new Error('Please fill in all required fields');
-                }
+        // Create FormData object
+        const formData = new FormData(formElement);
 
-                const response = await fetch('https://propertify.onrender.com/api/projects', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(projectData)
-                });
+        // Debug: Log all form data
+        for (let [key, value] of formData.entries()) {
+            console.log(`Form field - ${key}: ${value}`);
+        }
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                showPopup('Project created successfully!');
-                formElement.reset();
-
-                // Reset map marker if it exists
-                if (projectMarker) projectMarker.setPosition(null);
-                document.getElementById('locationDisplay').textContent = '';
-
-            } catch (error) {
-                console.error('Error creating project:', error);
-                showPopup(`Failed to create project: ${error.message}`);
-            } finally {
-                const submitButton = formElement.querySelector('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Save Project';
+        // Create the project data object with required fields first
+        const projectData = {
+            projectId: `PRJ${Date.now()}`,
+            name: formData.get('name'),
+            type: formData.get('type'),
+            builder: formData.get('builder'),
+            status: formData.get('status') || 'UNDER_CONSTRUCTION',
+            description: formData.get('description') || '',
+            location: {
+                address: formData.get('address') || '',
+                landmark: formData.get('landmark') || '',
+                city: formData.get('city') || '',
+                state: formData.get('state') || '',
+                pincode: formData.get('pincode') || '',
+                coordinates: {
+                    type: 'Point',
+                    coordinates: [lng, lat]
                 }
             }
-        }
+        };
 
+        // Debug: Log the project data before sending
+        console.log('Project data to be sent:', JSON.stringify(projectData, null, 2));
 
+        // Basic validation
+        if (!projectData.name) throw new Error('Project name is required');
+        if (!projectData.type) throw new Error('Project type is required');
+        if (!projectData.projectId) throw new Error('Project ID is required');
 
+        // Get gallery images
+        const galleryInput = formElement.querySelector('input[name="galleryList"]');
+        const galleryImages = galleryInput ? galleryInput.files : null;
 
-        function getFileExtension(filename) {
-            return filename.slice((filename.lastIndexOf('.') - 1 >>> 0) + 2);
-        }
-
-        // Helper function to validate images before upload
-        function validateImage(file) {
-            // Check file type
-            if (!file.type.startsWith('image/')) {
-                throw new Error(`File '${file.name}' is not an image`);
-            }
-
-            // Check file size (e.g., max 5MB)
-            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-            if (file.size > maxSize) {
-                throw new Error(`File '${file.name}' exceeds 5MB size limit`);
-            }
-
-            return true;
-        }
-
-        function logFormData(formData) {
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + (pair[1] instanceof File ? pair[1].name : pair[1]));
+        // Create a new FormData for the API request
+        const apiFormData = new FormData();
+        
+        // Important: Send the stringified project data
+        apiFormData.append('data', JSON.stringify(projectData));
+        
+        // Append gallery images if they exist
+        if (galleryImages && galleryImages.length > 0) {
+            for (let i = 0; i < galleryImages.length; i++) {
+                apiFormData.append('galleryList', galleryImages[i]);
             }
         }
 
+        // Debug: Log the API request
+        console.log('Sending API request...');
+        
+        // Send to API
+        const response = await fetch('https://propertify.onrender.com/api/projects', {
+            method: 'POST',
+            body: apiFormData
+        });
 
-        function validateProjectData(data) {
-            // Basic required fields
-            if (!data.name) throw new Error('Project name is required');
-            if (!data.builder) throw new Error('Builder is required');
-            if (!data.type) throw new Error('Project type is required');
-            if (!data.location.address) throw new Error('Project address is required');
-
-            // Floor plans validation
-            if (data.floorPlans.length > 0) {
-                data.floorPlans.forEach((plan, index) => {
-                    if (!plan.name || !plan.type) {
-                        throw new Error(`Floor plan ${index + 1} must have name and type`);
-                    }
-                    if (!plan.specifications || typeof plan.specifications !== 'object') {
-                        throw new Error(`Floor plan ${index + 1} must have valid specifications`);
-                    }
-                });
-            }
-
-            // Amenities validation
-            if (data.amenities.length > 0) {
-                data.amenities.forEach((amenity, index) => {
-                    if (!amenity.name) {
-                        throw new Error(`Amenity category ${index + 1} must have a name`);
-                    }
-                    if (!Array.isArray(amenity.items)) {
-                        throw new Error(`Amenity category ${index + 1} must have items array`);
-                    }
-                });
-            }
-
-            return true;
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('API Error Response:', errorData);
+            throw new Error(errorData.error || 'Failed to create project');
         }
 
+        const result = await response.json();
+        console.log('API Success Response:', result);
+        
+        showPopup('Project created successfully!');
 
+        // Reset form
+        formElement.reset();
+        if (typeof projectMarker !== 'undefined' && projectMarker) {
+            projectMarker.setPosition(null);
+        }
+        if (document.getElementById('locationDisplay')) {
+            document.getElementById('locationDisplay').textContent = '';
+        }
 
+        return result;
+
+    } catch (error) {
+        console.error('Error creating project:', error);
+        showPopup(`Failed to create project: ${error.message}`);
+        throw error;
+    }
+}
 
         // Update the marker placement function
         function placeProjectMarker(location) {
@@ -3804,7 +3136,70 @@
             }
         }
 
+        // Helper functions for collecting form data
+        function getFloorPlansData() {
+            const floorPlans = [];
+            const floorPlanContainers = document.querySelectorAll('.floor-plan-item');
 
+            floorPlanContainers.forEach(container => {
+                const floorPlan = {
+                    name: container.querySelector('[name$="[name]"]').value,
+                    type: container.querySelector('[name$="[type]"]').value,
+                    bedrooms: parseInt(container.querySelector('[name$="[bedrooms]"]').value) || 0,
+                    bathrooms: parseInt(container.querySelector('[name$="[bathrooms]"]').value) || 0,
+                    superArea: parseFloat(container.querySelector('[name$="[superArea]"]').value) || 0,
+                    carpetArea: parseFloat(container.querySelector('[name$="[carpetArea]"]').value) || 0,
+                    price: parseFloat(container.querySelector('[name$="[price]"]').value) || 0,
+                    image: container.querySelector('[name$="[image]"]').value,
+                    isActive: true
+                };
+                floorPlans.push(floorPlan);
+            });
+
+            return floorPlans;
+        }
+
+        function getAmenitiesData() {
+            const amenities = [];
+            const amenityCategories = document.querySelectorAll('.amenity-category');
+
+            amenityCategories.forEach(category => {
+                const categoryName = category.querySelector('.category-input').value;
+                const items = Array.from(category.querySelectorAll('.amenity-input'))
+                    .map(input => input.value)
+                    .filter(Boolean);
+
+                if (categoryName && items.length > 0) {
+                    amenities.push({
+                        category: categoryName,
+                        items: items
+                    });
+                }
+            });
+
+            return amenities;
+        }
+
+        function getSpecificationData() {
+            const specifications = [];
+            const specificationCategories = document.querySelectorAll('.specification-category');
+
+            specificationCategories.forEach(category => {
+                const categoryName = category.querySelector('.category-input').value;
+                const details = Array.from(category.querySelectorAll('.specification-input'))
+                    .map(input => input.value)
+                    .filter(Boolean);
+
+                if (categoryName && details.length > 0) {
+                    specifications.push({
+                        category: categoryName,
+                        details: details
+                    });
+                }
+            });
+
+            return specifications;
+        }
 
         function validateProjectData(projectData) {
             // Required fields validation
@@ -4058,7 +3453,7 @@
             }
 
             // Basic Information
-            setValue('projectNames', 'Green Valley Residences');
+            setValue('projectName', 'Green Valley Residences');
             setValue('projectType', 'RESIDENTIAL');
             setValue('projectStatus', 'UNDER_CONSTRUCTION');
             setValue('builderSelect', '1'); // Assuming builder ID
@@ -4181,6 +3576,9 @@
             });
         }
 
+
+
+        /////////////////
         function placeProjectMarker(location) {
             projectMarker.setPosition(location);
             projectMap.setCenter(location);
@@ -4192,13 +3590,40 @@
             document.getElementById('projectLongitude').value = location.lng();
         }
 
-
-
-        function removeFloorPlan(button) {
-            const floorPlanItem = button.closest('.floor-plan-item');
-            if (floorPlanItem) {
-                floorPlanItem.remove();
-            }
+        function addFloorPlan() {
+            const container = document.getElementById('floorPlansContainer');
+            const floorPlanDiv = document.createElement('div');
+            floorPlanDiv.className = 'floor-plan-item';
+            floorPlanDiv.innerHTML = `
+        <div class="grid-2-cols">
+            <div>
+                <label>Plan Name:</label>
+                <input type="text" name="floorPlans[][name]" required>
+            </div>
+            <div>
+                <label>Type:</label>
+                <input type="text" name="floorPlans[][type]" placeholder="e.g., 2BHK, 3BHK" required>
+            </div>
+            <div>
+                <label>Super Area (sq.ft):</label>
+                <input type="number" name="floorPlans[][superArea]" required>
+            </div>
+            <div>
+                <label>Carpet Area (sq.ft):</label>
+                <input type="number" name="floorPlans[][carpetArea]" required>
+            </div>
+            <div>
+                <label>Price:</label>
+                <input type="number" name="floorPlans[][price]" required>
+            </div>
+            <div>
+                <label>Floor Plan Image:</label>
+                <input type="file" name="floorPlans[][image]" accept="image/*">
+            </div>
+        </div>
+        <button type="button" onclick="removeFloorPlan(this)" class="remove-button">Remove Floor Plan</button>
+    `;
+            container.appendChild(floorPlanDiv);
         }
 
         // Add other functions for handling amenities, specifications, gallery, and phases...

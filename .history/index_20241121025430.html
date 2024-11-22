@@ -1244,11 +1244,10 @@
                     </div>
                     <div class="button-group">
                         <button type="button" onclick="addHighlight()" class="secondary-button">Add Highlight</button>
-                        <button type="button" onclick="addSampleHighlights()" class="secondary-button">Add Sample
-                            Highlights</button>
+                        <button type="button" onclick="addSampleHighlights()" class="secondary-button">Add Sample Highlights</button>
                     </div>
                 </div>
-
+                
                 <!-- Brochures Section -->
                 <div class="form-section">
                     <h3>Project Brochures</h3>
@@ -1257,11 +1256,10 @@
                     </div>
                     <div class="button-group">
                         <button type="button" onclick="addBrochure()" class="secondary-button">Add Brochure</button>
-                        <button type="button" onclick="addSampleBrochures()" class="secondary-button">Add Sample
-                            Brochures</button>
+                        <button type="button" onclick="addSampleBrochures()" class="secondary-button">Add Sample Brochures</button>
                     </div>
                 </div>
-
+                
                 <!-- Nearby Locations Section -->
                 <div class="form-section">
                     <h3>Nearby Locations</h3>
@@ -1269,10 +1267,8 @@
                         <!-- Nearby locations will be added dynamically -->
                     </div>
                     <div class="button-group">
-                        <button type="button" onclick="addNearbyLocation()" class="secondary-button">Add
-                            Location</button>
-                        <button type="button" onclick="addSampleNearbyLocations()" class="secondary-button">Add Sample
-                            Locations</button>
+                        <button type="button" onclick="addNearbyLocation()" class="secondary-button">Add Location</button>
+                        <button type="button" onclick="addSampleNearbyLocations()" class="secondary-button">Add Sample Locations</button>
                     </div>
                 </div>
 
@@ -2902,12 +2898,12 @@
 
 
 
-        // Highlights Functions
-        function addHighlight() {
-            const container = document.getElementById('highlightsContainer');
-            const highlightDiv = document.createElement('div');
-            highlightDiv.className = 'highlight-item';
-            highlightDiv.innerHTML = `
+        / Highlights Functions
+function addHighlight() {
+    const container = document.getElementById('highlightsContainer');
+    const highlightDiv = document.createElement('div');
+    highlightDiv.className = 'highlight-item';
+    highlightDiv.innerHTML = `
         <div class="input-group">
             <input type="text" class="highlight-title" placeholder="Highlight Title" required>
             <input type="text" class="highlight-description" placeholder="Highlight Description" required>
@@ -2915,26 +2911,26 @@
             <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
         </div>
     `;
-            container.appendChild(highlightDiv);
-        }
+    container.appendChild(highlightDiv);
+}
 
-        function addSampleHighlights() {
-            const highlights = [
-                { title: "Strategic Location", description: "Prime location with excellent connectivity", icon: "location-icon.png" },
-                { title: "Green Living", description: "80% open space with landscaped gardens", icon: "nature-icon.png" },
-                { title: "Smart Homes", description: "IoT enabled home automation systems", icon: "smart-icon.png" },
-                { title: "Premium Amenities", description: "World-class lifestyle amenities", icon: "amenities-icon.png" },
-                { title: "Sustainable Design", description: "IGBC Green Building certified", icon: "green-icon.png" },
-                { title: "Security", description: "Multi-layer security system", icon: "security-icon.png" }
-            ];
+function addSampleHighlights() {
+    const highlights = [
+        { title: "Strategic Location", description: "Prime location with excellent connectivity", icon: "location-icon.png" },
+        { title: "Green Living", description: "80% open space with landscaped gardens", icon: "nature-icon.png" },
+        { title: "Smart Homes", description: "IoT enabled home automation systems", icon: "smart-icon.png" },
+        { title: "Premium Amenities", description: "World-class lifestyle amenities", icon: "amenities-icon.png" },
+        { title: "Sustainable Design", description: "IGBC Green Building certified", icon: "green-icon.png" },
+        { title: "Security", description: "Multi-layer security system", icon: "security-icon.png" }
+    ];
 
-            const container = document.getElementById('highlightsContainer');
-            container.innerHTML = ''; // Clear existing highlights
-
-            highlights.forEach(highlight => {
-                const div = document.createElement('div');
-                div.className = 'highlight-item';
-                div.innerHTML = `
+    const container = document.getElementById('highlightsContainer');
+    container.innerHTML = ''; // Clear existing highlights
+    
+    highlights.forEach(highlight => {
+        const div = document.createElement('div');
+        div.className = 'highlight-item';
+        div.innerHTML = `
             <div class="input-group">
                 <input type="text" class="highlight-title" value="${highlight.title}" required>
                 <input type="text" class="highlight-description" value="${highlight.description}" required>
@@ -2942,16 +2938,16 @@
                 <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
             </div>
         `;
-                container.appendChild(div);
-            });
-        }
+        container.appendChild(div);
+    });
+}
 
-        // Brochures Functions
-        function addBrochure() {
-            const container = document.getElementById('brochuresContainer');
-            const brochureDiv = document.createElement('div');
-            brochureDiv.className = 'brochure-item';
-            brochureDiv.innerHTML = `
+// Brochures Functions
+function addBrochure() {
+    const container = document.getElementById('brochuresContainer');
+    const brochureDiv = document.createElement('div');
+    brochureDiv.className = 'brochure-item';
+    brochureDiv.innerHTML = `
         <div class="input-group">
             <input type="text" class="brochure-title" placeholder="Brochure Title" required>
             <input type="text" class="brochure-url" placeholder="Brochure URL/Link" required>
@@ -2959,24 +2955,24 @@
             <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
         </div>
     `;
-            container.appendChild(brochureDiv);
-        }
+    container.appendChild(brochureDiv);
+}
 
-        function addSampleBrochures() {
-            const brochures = [
-                { title: "Master Brochure", url: "https://example.com/master-brochure.pdf", thumbnail: "brochure-thumb1.jpg" },
-                { title: "Floor Plans", url: "https://example.com/floor-plans.pdf", thumbnail: "brochure-thumb2.jpg" },
-                { title: "Amenities Catalog", url: "https://example.com/amenities.pdf", thumbnail: "brochure-thumb3.jpg" },
-                { title: "Location Advantages", url: "https://example.com/location.pdf", thumbnail: "brochure-thumb4.jpg" }
-            ];
+function addSampleBrochures() {
+    const brochures = [
+        { title: "Master Brochure", url: "https://example.com/master-brochure.pdf", thumbnail: "brochure-thumb1.jpg" },
+        { title: "Floor Plans", url: "https://example.com/floor-plans.pdf", thumbnail: "brochure-thumb2.jpg" },
+        { title: "Amenities Catalog", url: "https://example.com/amenities.pdf", thumbnail: "brochure-thumb3.jpg" },
+        { title: "Location Advantages", url: "https://example.com/location.pdf", thumbnail: "brochure-thumb4.jpg" }
+    ];
 
-            const container = document.getElementById('brochuresContainer');
-            container.innerHTML = '';
+    const container = document.getElementById('brochuresContainer');
+    container.innerHTML = '';
 
-            brochures.forEach(brochure => {
-                const div = document.createElement('div');
-                div.className = 'brochure-item';
-                div.innerHTML = `
+    brochures.forEach(brochure => {
+        const div = document.createElement('div');
+        div.className = 'brochure-item';
+        div.innerHTML = `
             <div class="input-group">
                 <input type="text" class="brochure-title" value="${brochure.title}" required>
                 <input type="text" class="brochure-url" value="${brochure.url}" required>
@@ -2984,16 +2980,16 @@
                 <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
             </div>
         `;
-                container.appendChild(div);
-            });
-        }
+        container.appendChild(div);
+    });
+}
 
-        // Nearby Locations Functions
-        function addNearbyLocation() {
-            const container = document.getElementById('nearbyLocationsContainer');
-            const locationDiv = document.createElement('div');
-            locationDiv.className = 'nearby-location-item';
-            locationDiv.innerHTML = `
+// Nearby Locations Functions
+function addNearbyLocation() {
+    const container = document.getElementById('nearbyLocationsContainer');
+    const locationDiv = document.createElement('div');
+    locationDiv.className = 'nearby-location-item';
+    locationDiv.innerHTML = `
         <div class="input-group">
             <select class="location-type" required>
                 <option value="">Select Type</option>
@@ -3010,26 +3006,26 @@
             <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
         </div>
     `;
-            container.appendChild(locationDiv);
-        }
+    container.appendChild(locationDiv);
+}
 
-        function addSampleNearbyLocations() {
-            const locations = [
-                { type: "EDUCATION", name: "International School", distance: "2", duration: "10" },
-                { type: "HEALTHCARE", name: "Multi-Specialty Hospital", distance: "3", duration: "15" },
-                { type: "SHOPPING", name: "Central Mall", distance: "1.5", duration: "8" },
-                { type: "TRANSPORT", name: "Metro Station", distance: "0.5", duration: "5" },
-                { type: "ENTERTAINMENT", name: "Multiplex", distance: "2.5", duration: "12" },
-                { type: "BUSINESS", name: "IT Park", distance: "4", duration: "20" }
-            ];
+function addSampleNearbyLocations() {
+    const locations = [
+        { type: "EDUCATION", name: "International School", distance: "2", duration: "10" },
+        { type: "HEALTHCARE", name: "Multi-Specialty Hospital", distance: "3", duration: "15" },
+        { type: "SHOPPING", name: "Central Mall", distance: "1.5", duration: "8" },
+        { type: "TRANSPORT", name: "Metro Station", distance: "0.5", duration: "5" },
+        { type: "ENTERTAINMENT", name: "Multiplex", distance: "2.5", duration: "12" },
+        { type: "BUSINESS", name: "IT Park", distance: "4", duration: "20" }
+    ];
 
-            const container = document.getElementById('nearbyLocationsContainer');
-            container.innerHTML = '';
+    const container = document.getElementById('nearbyLocationsContainer');
+    container.innerHTML = '';
 
-            locations.forEach(location => {
-                const div = document.createElement('div');
-                div.className = 'nearby-location-item';
-                div.innerHTML = `
+    locations.forEach(location => {
+        const div = document.createElement('div');
+        div.className = 'nearby-location-item';
+        div.innerHTML = `
             <div class="input-group">
                 <select class="location-type" required>
                     <option value="">Select Type</option>
@@ -3046,40 +3042,47 @@
                 <button type="button" onclick="removeItem(this)" class="remove-button">×</button>
             </div>
         `;
-                container.appendChild(div);
-            });
-        }
+        container.appendChild(div);
+    });
+}
 
-        // Common Functions
-        function removeItem(button) {
-            button.closest('.highlight-item, .brochure-item, .nearby-location-item').remove();
-        }
+// Common Functions
+function removeItem(button) {
+    button.closest('.highlight-item, .brochure-item, .nearby-location-item').remove();
+}
 
-        // Data Collection Functions
-        function getHighlightsData() {
-            return Array.from(document.querySelectorAll('.highlight-item')).map(item => ({
-                title: item.querySelector('.highlight-title').value,
-                description: item.querySelector('.highlight-description').value,
-                icon: item.querySelector('.highlight-icon').value || null
-            })).filter(highlight => highlight.title && highlight.description);
-        }
+// Data Collection Functions
+function getHighlightsData() {
+    return Array.from(document.querySelectorAll('.highlight-item')).map(item => ({
+        title: item.querySelector('.highlight-title').value,
+        description: item.querySelector('.highlight-description').value,
+        icon: item.querySelector('.highlight-icon').value || null
+    })).filter(highlight => highlight.title && highlight.description);
+}
 
-        function getBrochuresData() {
-            return Array.from(document.querySelectorAll('.brochure-item')).map(item => ({
-                title: item.querySelector('.brochure-title').value,
-                url: item.querySelector('.brochure-url').value,
-                thumbnail: item.querySelector('.brochure-thumbnail').value || null
-            })).filter(brochure => brochure.title && brochure.url);
-        }
+function getBrochuresData() {
+    return Array.from(document.querySelectorAll('.brochure-item')).map(item => ({
+        title: item.querySelector('.brochure-title').value,
+        url: item.querySelector('.brochure-url').value,
+        thumbnail: item.querySelector('.brochure-thumbnail').value || null
+    })).filter(brochure => brochure.title && brochure.url);
+}
 
-        function getNearbyLocationsData() {
-            return Array.from(document.querySelectorAll('.nearby-location-item')).map(item => ({
-                type: item.querySelector('.location-type').value,
-                name: item.querySelector('.location-name').value,
-                distance: parseFloat(item.querySelector('.location-distance').value),
-                duration: parseInt(item.querySelector('.location-duration').value) || null
-            })).filter(location => location.type && location.name && location.distance);
-        }
+function getNearbyLocationsData() {
+    return Array.from(document.querySelectorAll('.nearby-location-item')).map(item => ({
+        type: item.querySelector('.location-type').value,
+        name: item.querySelector('.location-name').value,
+        distance: parseFloat(item.querySelector('.location-distance').value),
+        duration: parseInt(item.querySelector('.location-duration').value) || null
+    })).filter(location => location.type && location.name && location.distance);
+}
+
+
+
+
+
+
+
 
         // Helper function to handle map marker placement
         // Update the marker placement function
@@ -3625,12 +3628,10 @@
                     amenities: getAmenitiesData(),
                     specification: getSpecificationData() || [],
                     gallery: getGalleryData(),
-                    highlights: getHighlightsData(),
-                    brochures: getBrochuresData(),
-                    nearbyLocations: getNearbyLocationsData(),
-
+                    highlights: [],
+                    brochures: [],
                     paymentPlan: [],
-
+                    nearbyLocations: [],
                     phases: []
                 };
 
