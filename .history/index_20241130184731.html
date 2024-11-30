@@ -3996,22 +3996,39 @@
         },
 
         async loadConnectedProperties() {
-            if (!this.state.selectedProjectId) return;
+        if (!this.state.selectedProjectId) return;
 
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
-                if (!response.ok) throw new Error('Failed to fetch connected properties');
+        try {
+            const response = await fetch(`https://propertify.onrender.com/api/projects/${this.state.selectedProjectId}/properties`);
+            if (!response.ok) throw new Error('Failed to fetch connected properties');
 
-                const properties = await response.json();
-                this.state.connectedProperties = properties;
-                this.displayConnectedProperties();
-            } catch (error) {
-                console.error('Error loading connected properties:', error);
-                showPopup('Failed to load connected properties: == '+ error);
-            }
-        },
+            const properties = await response.json();
+            // Ensure we're setting an array
+            this.state.connectedProperties = Array.isArray(properties) ? properties : [];
+            this.displayConnectedProperties();
+        } catch (error) {
+            console.error('Error loading connected properties:', error);
+            this.showError('Failed to load connected properties');
+        }
+    },
 
-        
+    displayConnectedProperties() {
+        const container = document.querySelector(this.config.selectors.connectedList);
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        if (!Array.isArray(this.state.connectedProperties) || this.state.connectedProperties.length === 0) {
+            container.innerHTML = '<div class="empty-state">No connected properties</div>';
+            return;
+        }
+
+        this.state.connectedProperties.forEach(property => {
+            container.appendChild(this.createPropertyElement(property, false));
+        });
+    },
+
+
         // UI Updates
         populateProjectSelector(projects) {
             const selector = document.querySelector(this.config.selectors.projectSelector);

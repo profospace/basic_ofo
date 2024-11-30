@@ -2,127 +2,11 @@
 <html lang="en">
 <link rel="stylesheet" href="./styles.css">
 
-
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OFO Core</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="projectPropertiesManager.js" defer></script>
-
-
-
-
-    <style>
-        #ProjectPropertiesTab {
-            padding: 20px;
-        }
-
-        .project-property-connections {
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .search-and-filter {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .search-input,
-        .project-select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100%;
-        }
-
-        .properties-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .property-list {
-            border: 1px solid #eee;
-            border-radius: 4px;
-            padding: 10px;
-            min-height: 200px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .property-item {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: #f9f9f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .property-item button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            color: white;
-            margin-left: 10px;
-        }
-
-        .connect-button {
-            background-color: #4CAF50;
-        }
-
-        .disconnect-button {
-            background-color: #f44336;
-        }
-
-        .property-details {
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        .property-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .property-info {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
-            color: #666;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-style: italic;
-        }
-
-        /* Additional responsive styles */
-        @media (max-width: 768px) {
-
-            .search-and-filter,
-            .properties-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 
     <style>
         .project-form-section {
@@ -1163,21 +1047,9 @@
         <button class="tablinks" onclick="openTab(event, 'CarouselManagement')">Carousel Management</button>
         <button class="tablinks" onclick="openTab(event, 'BuilderUpload')">Builder Upload</button>
         <button class="tablinks" onclick="openTab(event, 'ProjectManagement')">Project Management</button>
-        <button class="tablinks" onclick="openTab(event, 'ProjectPropertiesTab')">Project Properties</button>
-
     </div>
 
 
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (typeof ProjectPropertiesManager !== 'undefined') {
-                ProjectPropertiesManager.init();
-            } else {
-                console.error('ProjectPropertiesManager failed to load');
-            }
-        });
-    </script>
 
 
     <div id="ProjectManagement" class="tabcontent">
@@ -1225,16 +1097,6 @@
                             <select id="builderSelect" name="builderSelect" required>
                                 <option value="">Select Builder</option>
                             </select>
-                        </div>
-                        <div>
-                            <label for="reraNumber">RERA Number*:</label>
-                            <input type="text" id="reraNumber" name="reraNumber" required
-                                placeholder="Enter RERA registration number">
-                        </div>
-                        <div>
-                            <label for="reraValidUpto">RERA Validity*:</label>
-                            <input type="text" id="reravalidity" name="reravalidity" required
-                                placeholder="Enter rera Validity">
                         </div>
                     </div>
 
@@ -1427,39 +1289,6 @@
                     <button type="button" class="cancel-button" onclick="resetProjectForm()">Reset</button>
                 </div>
             </form>
-        </div>
-
-    </div>
-
-
-    <!-- Add this new tab content div -->
-    <div id="ProjectPropertiesTab" class="tabcontent">
-        <h1>Project Properties Management</h1>
-        <div class="grid-container">
-            <div class="project-property-connections">
-                <h2>Project Properties</h2>
-                <div class="search-and-filter">
-                    <input type="text" id="projectPropertySearch" placeholder="Search properties..."
-                        class="search-input">
-                    <select id="projectSelector" class="project-select">
-                        <option value="">Select Project</option>
-                    </select>
-                </div>
-
-                <div class="properties-grid">
-                    <!-- Available Properties Section -->
-                    <div class="available-properties">
-                        <h3>Available Properties</h3>
-                        <div id="availablePropertiesList" class="property-list"></div>
-                    </div>
-
-                    <!-- Connected Properties Section -->
-                    <div class="connected-properties">
-                        <h3>Connected Properties</h3>
-                        <div id="connectedPropertiesList" class="property-list"></div>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </div>
@@ -2883,8 +2712,6 @@
         ////////////////
 
 
-
-
         async function saveListDetails() {
             try {
                 console.log('Starting save operation...');
@@ -3118,23 +2945,6 @@
                 container.appendChild(div);
             });
         }
-
-
-        // Add this to ensure ProjectPropertiesManager is initialized when the page loads
-        document.addEventListener('DOMContentLoaded', function () {
-            // Set the default tab
-            const defaultTab = document.getElementById("defaultOpen");
-            if (defaultTab) {
-                defaultTab.click();
-            }
-
-            // Ensure ProjectPropertiesManager is available
-            if (typeof window.ProjectPropertiesManager === 'undefined') {
-                console.error('ProjectPropertiesManager is not loaded!');
-            } else {
-                console.log('ProjectPropertiesManager is ready');
-            }
-        });
 
         // Brochures Functions
         function addBrochure() {
@@ -3771,8 +3581,6 @@
         // Modified submitProjectForm function with proper amenities and gallery handling
         async function submitProjectForm(formElement) {
             try {
-                const formData = new FormData();
-
                 const submitButton = formElement.querySelector('button[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
@@ -3787,9 +3595,6 @@
                     builder: document.getElementById('builderSelect').value,
                     status: document.getElementById('projectStatus').value,
                     description: document.getElementById('projectDescription').value,
-                    reraNumber: document.getElementById('reraNumber').value, // Add this line
-                    reraValidity: document.getElementById('reravalidity').value, // Add this line
-
                     availabilityStatus: 'COMING_SOON',
                     overview: {
                         totalUnits: parseInt(document.getElementById('totalUnits').value) || 0,
@@ -3829,30 +3634,18 @@
                     phases: []
                 };
 
-
-
                 // Validate required fields
                 if (!projectData.name || !projectData.builder || !projectData.type) {
                     throw new Error('Please fill in all required fields');
                 }
 
-                formData.append('data', JSON.stringify(projectData));
-                // Add gallery images
-                const galleryContainer = document.getElementById('galleryContainer');
-                const galleryInputs = galleryContainer.querySelectorAll('input[type="file"]');
-                galleryInputs.forEach(input => {
-                    if (input.files.length) {
-                        Array.from(input.files).forEach(file => {
-                            formData.append('galleryList', file);
-                        });
-                    }
-                });
-
                 const response = await fetch('https://propertify.onrender.com/api/projects', {
                     method: 'POST',
-                    body: formData // Send as FormData instead of JSON
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(projectData)
                 });
-
 
                 if (!response.ok) {
                     const errorData = await response.json();
@@ -3878,360 +3671,6 @@
                 }
             }
         }
-
-
-        window.ProjectPropertiesManager = (function() {
-    const ProjectPropertiesManager = {
-        // State variables
-        state: {
-            selectedProjectId: null,
-            availableProperties: [],
-            connectedProperties: []
-        },
-
-        // Configuration
-        config: {
-            apiBaseUrl: 'https://propertify.onrender.com/api',
-            selectors: {
-                projectSelector: '#projectSelector',
-                searchInput: '#projectPropertySearch',
-                availableList: '#availablePropertiesList',
-                connectedList: '#connectedPropertiesList'
-            }
-        },
-
-        init() {
-            console.log('ProjectPropertiesManager init called');
-
-            console.log('Testing element connections:');
-            console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
-            console.log('connectedPropertiesList exists:', !!document.getElementById('connectedPropertiesList'));
-
-            // Also test query selectors:
-            console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
-            console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
-            // Debug check for elements
-            const searchInput = document.querySelector(this.config.selectors.searchInput);
-            console.log('Search input found:', !!searchInput);
-
-            const projectSelector = document.querySelector(this.config.selectors.projectSelector);
-            console.log('Project selector found:', !!projectSelector);
-
-            // Try to make an API call immediately
-            this.testApiConnection();
-
-            this.attachEventListeners();
-            this.loadProjects();
-        },
-
-
-        async testApiConnection() {
-            try {
-                console.log('Testing API connection...');
-                const response = await fetch(`${this.config.apiBaseUrl}/projects`);
-                console.log('API test response:', response);
-                const data = await response.json();
-                console.log('API test data:', data);
-            } catch (error) {
-                console.error('API test failed:', error);
-            }
-        },
-
-        // Event listeners
-        attachEventListeners() {
-            document.querySelector(this.config.selectors.searchInput)
-                ?.addEventListener('input', (e) => this.handlePropertySearch(e));
-
-            document.querySelector(this.config.selectors.projectSelector)
-                ?.addEventListener('change', (e) => this.handleProjectSelection(e));
-        },
-
-        // Add this at the start of loadProjects method
-        async loadProjects() {
-            console.log('Loading projects...');
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/projects`);
-                console.log('Projects response:', response);
-                const projects = await response.json();
-                console.log('Projects loaded:', projects);
-                this.populateProjectSelector(projects);
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                showPopup('Failed to load projects');
-            }
-        },
-
-        showLoading() {
-            [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
-                const container = document.querySelector(selector);
-                if (container) {
-                    container.innerHTML = '<div class="loading">Loading properties...</div>';
-                }
-            });
-        },
-
-        showError(message) {
-            [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
-                const container = document.querySelector(selector);
-                if (container) {
-                    container.innerHTML = `<div class="error-state">${message}</div>`;
-                }
-            });
-        },
-
-        async loadAvailableProperties() {
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
-                if (!response.ok) throw new Error('Failed to fetch available properties');
-
-                const properties = await response.json();
-                this.state.availableProperties = properties.filter(property =>
-                    !property.projectId
-                );
-                this.displayAvailableProperties();
-            } catch (error) {
-                console.error('Error loading available properties:', error);
-                showPopup('Failed to load available properties');
-            }
-        },
-
-        async loadConnectedProperties() {
-            if (!this.state.selectedProjectId) return;
-
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
-                if (!response.ok) throw new Error('Failed to fetch connected properties');
-
-                const properties = await response.json();
-                this.state.connectedProperties = properties;
-                this.displayConnectedProperties();
-            } catch (error) {
-                console.error('Error loading connected properties:', error);
-                showPopup('Failed to load connected properties: == '+ error);
-            }
-        },
-
-        
-        // UI Updates
-        populateProjectSelector(projects) {
-            const selector = document.querySelector(this.config.selectors.projectSelector);
-            if (!selector) return;
-
-            selector.innerHTML = '<option value="">Select Project</option>';
-            projects.forEach(project => {
-                const option = document.createElement('option');
-                option.value = project._id;
-                option.textContent = project.name;
-                selector.appendChild(option);
-            });
-        },
-
-        createPropertyElement(property, isAvailable) {
-            const div = document.createElement('div');
-            div.className = 'property-item';
-            div.innerHTML = `
-            <div class="property-details">
-                <div class="property-title">${property.post_title}</div>
-                <div class="property-info">
-                    ID: ${property.post_id} | Type: ${property.type_name} | 
-                    Price: ₹${property.price?.toLocaleString() || 'N/A'}
-                </div>
-            </div>
-            <button onclick="ProjectPropertiesManager.${isAvailable ? 'connectProperty' : 'disconnectProperty'}('${property.post_id}')" 
-                    class="${isAvailable ? 'connect-button' : 'disconnect-button'}">
-                ${isAvailable ? 'Connect' : 'Disconnect'}
-            </button>
-        `;
-            return div;
-        },
-
-        displayAvailableProperties() {
-            const container = document.querySelector(this.config.selectors.availableList);
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            if (this.state.availableProperties.length === 0) {
-                container.innerHTML = '<div class="empty-state">No available properties</div>';
-                return;
-            }
-
-            this.state.availableProperties.forEach(property => {
-                container.appendChild(this.createPropertyElement(property, true));
-            });
-        },
-
-        displayConnectedProperties() {
-            const container = document.querySelector(this.config.selectors.connectedList);
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            if (this.state.connectedProperties.length === 0) {
-                container.innerHTML = '<div class="empty-state">No connected properties</div>';
-                return;
-            }
-
-            this.state.connectedProperties.forEach(property => {
-                container.appendChild(this.createPropertyElement(property, false));
-            });
-        },
-
-        // Event Handlers
-        async handleProjectSelection(event) {
-            this.state.selectedProjectId = event.target.value;
-            if (!this.state.selectedProjectId) {
-                this.clearPropertyLists();
-                return;
-            }
-
-            this.showLoading();
-            try {
-                await Promise.all([
-                    this.loadAvailableProperties(),
-                    this.loadConnectedProperties()
-                ]);
-            } catch (error) {
-                console.error('Error loading properties:', error);
-                showPopup('Error loading properties');
-            }
-            this.hideLoading();
-        },
-
-        handlePropertySearch(event) {
-            const searchTerm = event.target.value.toLowerCase();
-
-            const filteredAvailable = this.state.availableProperties.filter(property =>
-                property.post_title.toLowerCase().includes(searchTerm) ||
-                property.post_id.toLowerCase().includes(searchTerm)
-            );
-
-            const filteredConnected = this.state.connectedProperties.filter(property =>
-                property.post_title.toLowerCase().includes(searchTerm) ||
-                property.post_id.toLowerCase().includes(searchTerm)
-            );
-
-            this.displayFilteredProperties(filteredAvailable, filteredConnected);
-        },
-
-        // Property Connection Methods
-        async connectProperty(propertyId) {
-            if (!this.state.selectedProjectId) {
-                showPopup('Please select a project first');
-                return;
-            }
-
-            try {
-                const response = await fetch(
-                    `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }
-                    }
-                );
-
-                if (!response.ok) throw new Error('Failed to connect property');
-
-                showPopup('Property connected successfully');
-                await Promise.all([
-                    this.loadAvailableProperties(),
-                    this.loadConnectedProperties()
-                ]);
-            } catch (error) {
-                console.error('Error connecting property:', error);
-                showPopup('Failed to connect property');
-            }
-        },
-
-        async disconnectProperty(propertyId) {
-            if (!this.state.selectedProjectId) {
-                showPopup('Please select a project first');
-                return;
-            }
-
-            try {
-                const response = await fetch(
-                    `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
-                    { method: 'DELETE' }
-                );
-
-                if (!response.ok) throw new Error('Failed to disconnect property');
-
-                showPopup('Property disconnected successfully');
-                await Promise.all([
-                    this.loadAvailableProperties(),
-                    this.loadConnectedProperties()
-                ]);
-            } catch (error) {
-                console.error('Error disconnecting property:', error);
-                showPopup('Failed to disconnect property');
-            }
-        },
-
-        // Utility Methods
-        showLoading() {
-            [this.config.selectors.availableList, this.config.selectors.connectedList]
-                .forEach(selector => {
-                    const container = document.querySelector(selector);
-                    if (container) {
-                        container.innerHTML = '<div class="loading">Loading...</div>';
-                    }
-                });
-        },
-
-        hideLoading() {
-            // Loading will be hidden when properties are displayed
-        },
-
-        
-
-        clearPropertyLists() {
-            [this.config.selectors.availableList, this.config.selectors.connectedList]
-                .forEach(selector => {
-                    const container = document.querySelector(selector);
-                    if (container) {
-                        container.innerHTML = '';
-                    }
-                });
-        },
-
-        displayFilteredProperties(availableFiltered, connectedFiltered) {
-            const availableContainer = document.querySelector(this.config.selectors.availableList);
-            const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-
-            if (availableContainer) {
-                availableContainer.innerHTML = '';
-                availableFiltered.forEach(property => {
-                    availableContainer.appendChild(this.createPropertyElement(property, true));
-                });
-            }
-
-            if (connectedContainer) {
-                connectedContainer.innerHTML = '';
-                connectedFiltered.forEach(property => {
-                    connectedContainer.appendChild(this.createPropertyElement(property, false));
-                });
-            }
-        }
-    };
-
-
-    console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
-    console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
-    // Add a global error handler for fetch
-    window.addEventListener('unhandledrejection', function (event) {
-        console.error('Unhandled promise rejection:', event.reason);
-    });
-
-    // Make it globally available
-    window.ProjectPropertiesManager = ProjectPropertiesManager;
-
-    // Add this to log when the script loads
-    console.log('ProjectPropertiesManager script loaded');
-    return ProjectPropertiesManager;
-})();
-
-
 
 
 
@@ -4585,17 +4024,17 @@
         prefillProjectButton.textContent = 'Pre-fill Project Form (Testing)';
         prefillProjectButton.className = 'prefill-button';
         prefillProjectButton.style.cssText = `
-        position: fixed;
-        bottom: 80px;
-            right: 20px;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        z-index: 1000;
-    `;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 1000;
+`;
         prefillProjectButton.onclick = prefillProjectForm;
 
         // Add button to document when DOM is loaded
@@ -6537,16 +5976,6 @@
         });
 
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // This ensures the tab handler is properly set up
-            const projectTab = document.querySelector('button[onclick="openTab(event, \'ProjectPropertiesTab\')"]');
-            if (projectTab) {
-                projectTab.addEventListener('click', () => {
-                    console.log('Project tab clicked');
-                    ProjectPropertiesManager.init();
-                });
-            }
-        });
 
         function openPropertyUpload() {
             window.location.href = '/property-upload';
@@ -6557,11 +5986,6 @@
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
-            }
-
-            // Initialize ProjectPropertiesManager if it's the properties tab
-            if (tabName === 'ProjectPropertiesTab' && typeof window.ProjectPropertiesManager !== 'undefined') {
-                window.ProjectPropertiesManager.init();
             }
 
             if (tabName === 'CarouselManagement') {

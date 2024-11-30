@@ -4007,11 +4007,10 @@
                 this.displayConnectedProperties();
             } catch (error) {
                 console.error('Error loading connected properties:', error);
-                showPopup('Failed to load connected properties: == '+ error);
+                showPopup('Failed to load connected properties');
             }
         },
 
-        
         // UI Updates
         populateProjectSelector(projects) {
             const selector = document.querySelector(this.config.selectors.projectSelector);
@@ -4182,8 +4181,6 @@
         hideLoading() {
             // Loading will be hidden when properties are displayed
         },
-
-        
 
         clearPropertyLists() {
             [this.config.selectors.availableList, this.config.selectors.connectedList]

@@ -4007,11 +4007,10 @@
                 this.displayConnectedProperties();
             } catch (error) {
                 console.error('Error loading connected properties:', error);
-                showPopup('Failed to load connected properties: == '+ error);
+                showPopup('Failed to load connected properties');
             }
         },
 
-        
         // UI Updates
         populateProjectSelector(projects) {
             const selector = document.querySelector(this.config.selectors.projectSelector);
@@ -4183,7 +4182,125 @@
             // Loading will be hidden when properties are displayed
         },
 
+        handleProjectChange: async function(event) {
+    const projectId = event.target.value;
+    if (!projectId) {
+        this.clearPropertyLists();
+        return;
+    }
+
+    this.state.selectedProjectId = projectId;
+    this.showLoading();
+
+    try {
+        // Load all properties first
+        const allPropsResponse = await fetch(`${this.config.apiBaseUrl}/properties/all`);
+        if (!allPropsResponse.ok) throw new Error('Failed to fetch properties');
+        const allProperties = await allPropsResponse.json();
+
+        // Load project's connected properties
+        const connectedResponse = await fetch(`${this.config.apiBaseUrl}/projects/${projectId}/properties`);
+        if (!connectedResponse.ok) throw new Error('Failed to fetch connected properties');
+        const connectedProperties = await connectedResponse.json();
+
+        // Create a Set of connected property IDs for efficient lookup
+        const connectedIds = new Set(connectedProperties.map(prop => prop.post_id));
+
+        // Filter available properties to exclude connected ones
+        this.state.availableProperties = allProperties.filter(prop => !connectedIds.has(prop.post_id));
+        this.state.connectedProperties = connectedProperties;
+
+        // Display both lists
+        this.displayAvailableProperties();
+        this.displayConnectedProperties();
+    } catch (error) {
+        console.error('Error loading properties:', error);
+        this.showError('Failed to load properties');
+    } finally {
+        this.hideLoading();
+    }
+},
+
+connectProperty: async function(propertyId) {
+    if (!this.state.selectedProjectId) {
+        showPopup('Please select a project first');
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`,
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ propertyId })
+            }
+        );
+
+        if (!response.ok) throw new Error('Failed to connect property');
+
+        showPopup('Property connected successfully');
         
+        // Refresh the properties lists
+        await this.handleProjectChange({ target: { value: this.state.selectedProjectId } });
+    } catch (error) {
+        console.error('Error connecting property:', error);
+        showPopup('Failed to connect property');
+    }
+},
+
+disconnectProperty: async function(propertyId) {
+    if (!this.state.selectedProjectId) {
+        showPopup('Please select a project first');
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
+            { method: 'DELETE' }
+        );
+
+        if (!response.ok) throw new Error('Failed to disconnect property');
+
+        showPopup('Property disconnected successfully');
+        
+        // Refresh the properties lists
+        await this.handleProjectChange({ target: { value: this.state.selectedProjectId } });
+    } catch (error) {
+        console.error('Error disconnecting property:', error);
+        showPopup('Failed to disconnect property');
+    }
+},
+
+displayConnectedProperties: function() {
+    const container = document.querySelector(this.config.selectors.connectedList);
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    if (this.state.connectedProperties.length === 0) {
+        container.innerHTML = '<div class="empty-state">No connected properties</div>';
+        return;
+    }
+
+    this.state.connectedProperties.forEach(property => {
+        const propertyElement = document.createElement('div');
+        propertyElement.className = 'property-item';
+        propertyElement.innerHTML = `
+            <div class="property-details">
+                <div class="property-title">${property.post_title}</div>
+                <div class="property-info">
+                    ID: ${property.post_id} | Type: ${property.type_name} | 
+                    Price: ₹${property.price?.toLocaleString() || 'N/A'}
+                </div>
+            </div>
+            <button onclick="ProjectPropertiesManager.disconnectProperty('${property.post_id}')" 
+                    class="disconnect-button">Disconnect</button>
+        `;
+        container.appendChild(propertyElement);
+    });
+}
 
         clearPropertyLists() {
             [this.config.selectors.availableList, this.config.selectors.connectedList]
