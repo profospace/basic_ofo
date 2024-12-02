@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OFO Core</title>
     <link rel="stylesheet" href="./styles.css">
+    <script src="projectPropertiesManager.js" defer></script>
 
 
 
@@ -1168,6 +1169,15 @@
 
 
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof ProjectPropertiesManager !== 'undefined') {
+                ProjectPropertiesManager.init();
+            } else {
+                console.error('ProjectPropertiesManager failed to load');
+            }
+        });
+    </script>
 
 
     <div id="ProjectManagement" class="tabcontent">
@@ -3870,7 +3880,7 @@
         }
 
 
-        window.ProjectPropertiesManagers = (function () {
+        window.ProjectPropertiesManager = (function () {
             const ProjectPropertiesManager = {
                 // State variables
                 state: {
@@ -3901,12 +3911,14 @@
                     console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
                     console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
                     // Debug check for elements
-
+                    const searchInput = document.querySelector(this.config.selectors.searchInput);
+                    console.log('Search input found:', !!searchInput);
 
                     const projectSelector = document.querySelector(this.config.selectors.projectSelector);
                     console.log('Project selector found:', !!projectSelector);
 
                     // Try to make an API call immediately
+                    this.testApiConnection();
 
                     this.attachEventListeners();
                     this.loadProjects();
@@ -3990,58 +4002,13 @@
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
 
-                        const responseData = await response.json();
-
-                        // Check if the response has the new structure
-                        if (responseData.success && responseData.data && Array.isArray(responseData.data.properties)) {
-                            this.state.connectedProperties = responseData.data.properties;
-                        } else {
-                            // Fallback for empty or invalid response
-                            this.state.connectedProperties = [];
-                        }
-
+                        const properties = await response.json();
+                        this.state.connectedProperties = properties;
                         this.displayConnectedProperties();
                     } catch (error) {
                         console.error('Error loading connected properties:', error);
-                        this.showError('Failed to load connected properties');
-                        this.state.connectedProperties = [];
-                        this.displayConnectedProperties();
+                        showPopup('Failed to load connected properties: == ' + error);
                     }
-                },
-
-                displayConnectedProperties() {
-                    const container = document.querySelector(this.config.selectors.connectedList);
-                    if (!container) return;
-
-                    if (!Array.isArray(this.state.connectedProperties) || this.state.connectedProperties.length === 0) {
-                        container.innerHTML = '<div class="empty-state">No connected properties</div>';
-                        return;
-                    }
-
-                    container.innerHTML = '';
-                    this.state.connectedProperties.forEach(property => {
-                        container.appendChild(this.createPropertyElement(property, false));
-                    });
-                },
-
-                createPropertyElement(property, isAvailable) {
-                    const div = document.createElement('div');
-                    div.className = 'property-item';
-                    div.innerHTML = `
-        <div class="property-details">
-            <div class="property-title">${property.title}</div>
-            <div class="property-info">
-                ID: ${property.id} | Type: ${property.type} | 
-                Price: ₹${property.price?.toLocaleString() || 'N/A'}
-            </div>
-            ${property.location ? `<div class="property-location">${property.location}</div>` : ''}
-        </div>
-        <button onclick="ProjectPropertiesManager.${isAvailable ? 'connectProperty' : 'disconnectProperty'}('${property.id}')" 
-                class="${isAvailable ? 'connect-button' : 'disconnect-button'}">
-            ${isAvailable ? 'Connect' : 'Disconnect'}
-        </button>
-    `;
-                    return div;
                 },
 
 
@@ -4150,29 +4117,54 @@
                 // Property Connection Methods
                 async connectProperty(propertyId) {
                     if (!this.state.selectedProjectId) {
-                        showPopup('Please select a project first');
+                        this.showPopup('Please select a project first');
                         return;
                     }
+
+                    this.setState({ isConnecting: true });
 
                     try {
                         const response = await fetch(
                             `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
                             {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${this.state.authToken}`
+                                },
+                                body: JSON.stringify({
+                                    phase: this.state.selectedPhase // Optional phase assignment
+                                })
                             }
                         );
 
-                        if (!response.ok) throw new Error('Failed to connect property');
+                        const data = await response.json();
 
-                        showPopup('Property connected successfully');
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Failed to connect property');
+                        }
+
+                        // Show success message with details
+                        this.showPopup(`Successfully connected property to ${data.data.projectName}`);
+
+                        // Update local state
                         await Promise.all([
                             this.loadAvailableProperties(),
                             this.loadConnectedProperties()
                         ]);
+
+                        // Optionally update project statistics in UI
+                        if (data.data.statistics) {
+                            this.setState({
+                                projectStatistics: data.data.statistics
+                            });
+                        }
+
                     } catch (error) {
                         console.error('Error connecting property:', error);
-                        showPopup('Failed to connect property');
+                        this.showPopup(error.message || 'Failed to connect property');
+                    } finally {
+                        this.setState({ isConnecting: false });
                     }
                 },
 
@@ -4249,8 +4241,8 @@
             };
 
 
-            // console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
-            //   console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
+            console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
+            console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
             // Add a global error handler for fetch
             window.addEventListener('unhandledrejection', function (event) {
                 console.error('Unhandled promise rejection:', event.reason);
@@ -6576,7 +6568,7 @@
             if (projectTab) {
                 projectTab.addEventListener('click', () => {
                     console.log('Project tab clicked');
-                    //  ProjectPropertiesManager.init();
+                    ProjectPropertiesManager.init();
                 });
             }
         });
@@ -6594,7 +6586,7 @@
 
             // Initialize ProjectPropertiesManager if it's the properties tab
             if (tabName === 'ProjectPropertiesTab' && typeof window.ProjectPropertiesManager !== 'undefined') {
-                window.ProjectPropertiesManagers.init();
+                window.ProjectPropertiesManager.init();
             }
 
             if (tabName === 'CarouselManagement') {
@@ -6663,7 +6655,7 @@
             openTab("ImageGallery");
             console.log('Default tab opened');
         });
-        //  document.addEventListener('DOMContentLoaded', loadImages);
+        document.addEventListener('DOMContentLoaded', loadImages);
 
 
 
@@ -7560,21 +7552,6 @@
         } catch (error) {
             console.error('Error in script:', error);
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            // Add load images button to the gallery section
-            const imageGrid = document.getElementById('imageGrid');
-            const loadButton = document.createElement('button');
-            loadButton.textContent = 'Load AWS S3 Images';
-            loadButton.className = 'secondary-button';
-            loadButton.onclick = loadImages;
-
-            // Insert button before the image grid
-            imageGrid.parentNode.insertBefore(loadButton, imageGrid);
-
-            // Remove the auto-load
-            // loadImages(); <- This line should be removed or commented out
-        });
 
 
         document.getElementById('updateForm').addEventListener('submit', async function (e) {

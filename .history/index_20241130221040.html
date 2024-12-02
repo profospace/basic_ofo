@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OFO Core</title>
     <link rel="stylesheet" href="./styles.css">
+    <script src="projectPropertiesManager.js" defer></script>
 
 
 
@@ -1168,6 +1169,15 @@
 
 
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof ProjectPropertiesManager !== 'undefined') {
+                ProjectPropertiesManager.init();
+            } else {
+                console.error('ProjectPropertiesManager failed to load');
+            }
+        });
+    </script>
 
 
     <div id="ProjectManagement" class="tabcontent">
@@ -3870,7 +3880,7 @@
         }
 
 
-        window.ProjectPropertiesManagers = (function () {
+        window.ProjectPropertiesManager = (function () {
             const ProjectPropertiesManager = {
                 // State variables
                 state: {
@@ -3901,7 +3911,7 @@
                     console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
                     console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
                     // Debug check for elements
-
+                  
 
                     const projectSelector = document.querySelector(this.config.selectors.projectSelector);
                     console.log('Project selector found:', !!projectSelector);
@@ -3990,58 +4000,13 @@
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
 
-                        const responseData = await response.json();
-
-                        // Check if the response has the new structure
-                        if (responseData.success && responseData.data && Array.isArray(responseData.data.properties)) {
-                            this.state.connectedProperties = responseData.data.properties;
-                        } else {
-                            // Fallback for empty or invalid response
-                            this.state.connectedProperties = [];
-                        }
-
+                        const properties = await response.json();
+                        this.state.connectedProperties = properties;
                         this.displayConnectedProperties();
                     } catch (error) {
                         console.error('Error loading connected properties:', error);
-                        this.showError('Failed to load connected properties');
-                        this.state.connectedProperties = [];
-                        this.displayConnectedProperties();
+                        showPopup('Failed to load connected properties: == ' + error);
                     }
-                },
-
-                displayConnectedProperties() {
-                    const container = document.querySelector(this.config.selectors.connectedList);
-                    if (!container) return;
-
-                    if (!Array.isArray(this.state.connectedProperties) || this.state.connectedProperties.length === 0) {
-                        container.innerHTML = '<div class="empty-state">No connected properties</div>';
-                        return;
-                    }
-
-                    container.innerHTML = '';
-                    this.state.connectedProperties.forEach(property => {
-                        container.appendChild(this.createPropertyElement(property, false));
-                    });
-                },
-
-                createPropertyElement(property, isAvailable) {
-                    const div = document.createElement('div');
-                    div.className = 'property-item';
-                    div.innerHTML = `
-        <div class="property-details">
-            <div class="property-title">${property.title}</div>
-            <div class="property-info">
-                ID: ${property.id} | Type: ${property.type} | 
-                Price: ₹${property.price?.toLocaleString() || 'N/A'}
-            </div>
-            ${property.location ? `<div class="property-location">${property.location}</div>` : ''}
-        </div>
-        <button onclick="ProjectPropertiesManager.${isAvailable ? 'connectProperty' : 'disconnectProperty'}('${property.id}')" 
-                class="${isAvailable ? 'connect-button' : 'disconnect-button'}">
-            ${isAvailable ? 'Connect' : 'Disconnect'}
-        </button>
-    `;
-                    return div;
                 },
 
 
@@ -4249,8 +4214,8 @@
             };
 
 
-            // console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
-            //   console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
+            console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
+            console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
             // Add a global error handler for fetch
             window.addEventListener('unhandledrejection', function (event) {
                 console.error('Unhandled promise rejection:', event.reason);
@@ -6576,7 +6541,7 @@
             if (projectTab) {
                 projectTab.addEventListener('click', () => {
                     console.log('Project tab clicked');
-                    //  ProjectPropertiesManager.init();
+                    ProjectPropertiesManager.init();
                 });
             }
         });
@@ -6594,7 +6559,7 @@
 
             // Initialize ProjectPropertiesManager if it's the properties tab
             if (tabName === 'ProjectPropertiesTab' && typeof window.ProjectPropertiesManager !== 'undefined') {
-                window.ProjectPropertiesManagers.init();
+                window.ProjectPropertiesManager.init();
             }
 
             if (tabName === 'CarouselManagement') {

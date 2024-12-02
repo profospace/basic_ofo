@@ -3990,20 +3990,14 @@
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
 
-                        const responseData = await response.json();
-
-                        // Check if the response has the new structure
-                        if (responseData.success && responseData.data && Array.isArray(responseData.data.properties)) {
-                            this.state.connectedProperties = responseData.data.properties;
-                        } else {
-                            // Fallback for empty or invalid response
-                            this.state.connectedProperties = [];
-                        }
-
+                        const data = await response.json();
+                        // Ensure we always have an array, even if empty
+                        this.state.connectedProperties = Array.isArray(data) ? data : [];
                         this.displayConnectedProperties();
                     } catch (error) {
                         console.error('Error loading connected properties:', error);
                         this.showError('Failed to load connected properties');
+                        // Initialize as empty array on error
                         this.state.connectedProperties = [];
                         this.displayConnectedProperties();
                     }
@@ -4022,26 +4016,6 @@
                     this.state.connectedProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, false));
                     });
-                },
-
-                createPropertyElement(property, isAvailable) {
-                    const div = document.createElement('div');
-                    div.className = 'property-item';
-                    div.innerHTML = `
-        <div class="property-details">
-            <div class="property-title">${property.title}</div>
-            <div class="property-info">
-                ID: ${property.id} | Type: ${property.type} | 
-                Price: ₹${property.price?.toLocaleString() || 'N/A'}
-            </div>
-            ${property.location ? `<div class="property-location">${property.location}</div>` : ''}
-        </div>
-        <button onclick="ProjectPropertiesManager.${isAvailable ? 'connectProperty' : 'disconnectProperty'}('${property.id}')" 
-                class="${isAvailable ? 'connect-button' : 'disconnect-button'}">
-            ${isAvailable ? 'Connect' : 'Disconnect'}
-        </button>
-    `;
-                    return div;
                 },
 
 
@@ -4249,15 +4223,15 @@
             };
 
 
-            // console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
-            //   console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
+           // console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
+         //   console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
             // Add a global error handler for fetch
             window.addEventListener('unhandledrejection', function (event) {
                 console.error('Unhandled promise rejection:', event.reason);
             });
 
             // Make it globally available
-            window.ProjectPropertiesManager = ProjectPropertiesManager;
+           // window.ProjectPropertiesManager = ProjectPropertiesManager;
 
             // Add this to log when the script loads
             console.log('ProjectPropertiesManager script loaded');
@@ -6576,7 +6550,7 @@
             if (projectTab) {
                 projectTab.addEventListener('click', () => {
                     console.log('Project tab clicked');
-                    //  ProjectPropertiesManager.init();
+                  //  ProjectPropertiesManager.init();
                 });
             }
         });
@@ -6594,7 +6568,7 @@
 
             // Initialize ProjectPropertiesManager if it's the properties tab
             if (tabName === 'ProjectPropertiesTab' && typeof window.ProjectPropertiesManager !== 'undefined') {
-                window.ProjectPropertiesManagers.init();
+              window.ProjectPropertiesManagers.init();
             }
 
             if (tabName === 'CarouselManagement') {
