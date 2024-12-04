@@ -985,6 +985,15 @@
             border-radius: 4px;
             font-size: 14px;
         }
+        
+        .form-group select{
+            width : 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            
+        }
 
         .image-preview {
             margin-top: 10px;
@@ -1883,6 +1892,7 @@
                 <input type="hidden" id="edit_longitude" name="longitude" required>
                 <p id="edit_locationDisplay"></p>
             </div>
+            <!-- updateEditLatLng  - call-->
 
             <!-- Description Section -->
             <div class="full-width">
@@ -2552,52 +2562,10 @@
             <button type="button" id="addNewOptionButton" class="secondary-button">Add Another Option</button>
             <button type="submit" class="primary-button">Create New List Option</button>
         </form>
+
     </div>
 
-    <div class="list-management-container">
-        <!-- List Details Section -->
-        <div class="list-details-section">
-            <h2>List Details</h2>
-            <div class="list-details-form">
-                <div class="form-group">
-                    <label for="listTitle">List Title</label>
-                    <input type="text" id="listTitle" placeholder="Enter list title">
-                </div>
-                <div class="form-group">
-                    <label for="headerImage">Header Image URL</label>
-                    <input type="url" id="headerImage" placeholder="Enter header image URL">
-                    <div class="image-preview" id="headerImagePreview"></div>
-                </div>
-                <button onclick="updateListDetails()" class="primary-button">Update List Details</button>
-            </div>
-        </div>
 
-        <!-- Options Management Section -->
-        <div class="options-section">
-            <h2>List Options</h2>
-            <div class="options-form">
-                <div class="form-group">
-                    <label for="optionImage">Option Image URL</label>
-                    <input type="url" id="optionImage" placeholder="Enter option image URL">
-                </div>
-                <div class="form-group">
-                    <label for="optionText">Option Text</label>
-                    <input type="text" id="optionText" placeholder="Enter option text">
-                </div>
-                <div class="form-group">
-                    <label for="optionLink">Option Link</label>
-                    <input type="url" id="optionLink" placeholder="Enter option link URL">
-                </div>
-                <button onclick="saveOptionDetails()" id="optionSubmitButton" class="primary-button">
-                    Add Option
-                </button>
-            </div>
-
-            <div class="options-list" id="optionsContainer">
-                <!-- Options will be dynamically inserted here -->
-            </div>
-        </div>
-    </div>
 
 
     <!-- List Options Management -->
@@ -2611,7 +2579,19 @@
                 <option value="">Select a list</option>
             </select>
             <button onclick="loadListOptions()" class="secondary-button">Load Options</button>
+            <div class="form-group">
+                <label for="optionType">Option Image Type</label>
+                <select id="optionType" name="optionType">
+                    <option value="carousel">Carousel</option>
+                    <option value="horizontal_list">Horizontal_List</option>
+                    <option value="single_item">Single_Item</option>
+                    <option value="grid_view">Grid_View</option>
+                    <option value="vertical_list">Vertical_List</option>
+                </select>
+            </div>
+            <button onclick="UpdateImageType()" class="secondary-button">Update Image Type</button>
         </div>
+
 
         <!-- List Details View -->
         <div id="listDetails" class="list-details-section" style="display: none;">
@@ -2633,6 +2613,51 @@
 
         <!-- Add/Edit Form -->
         <div class="option-form-section">
+            <!-- List OPtions -->
+            <div class="list-management-container">
+                <!-- List Details Section -->
+                <div class="list-details-section">
+                    <h2>List Details</h2>
+                    <div class="list-details-form">
+                        <div class="form-group">
+                            <label for="listTitle">List Title</label>
+                            <input type="text" id="listTitle" placeholder="Enter list title">
+                        </div>
+                        <div class="form-group">
+                            <label for="headerImage">Header Image URL</label>
+                            <input type="url" id="headerImage" placeholder="Enter header image URL">
+                            <div class="image-preview" id="headerImagePreview"></div>
+                        </div>
+                        <button onclick="updateListDetails()" class="primary-button">Update List Details</button>
+                    </div>
+                </div>
+
+                <!-- Options Management Section -->
+                <div class="options-section">
+                    <h2>List Options</h2>
+                    <div class="options-form">
+                        <div class="form-group">
+                            <label for="optionImage">Option Image URL</label>
+                            <input type="url" id="optionImage" placeholder="Enter option image URL">
+                        </div>
+                        <div class="form-group">
+                            <label for="optionText">Option Text</label>
+                            <input type="text" id="optionText" placeholder="Enter option text">
+                        </div>
+                        <div class="form-group">
+                            <label for="optionLink">Option Link</label>
+                            <input type="url" id="optionLink" placeholder="Enter option link URL">
+                        </div>
+                        <button onclick="saveOptionDetails()" id="optionSubmitButton" class="primary-button">
+                            Add Option
+                        </button>
+                    </div>
+
+                    <div class="options-list" id="optionsContainer">
+                        <!-- Options will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
             <h2>Add/Edit List Details</h2>
             <form id="listForm">
                 <div class="form-group">
@@ -2681,6 +2706,9 @@
                     <button type="button" onclick="resetForm()" class="secondary-button">Reset</button>
                 </div>
             </form>
+
+            <!-- Adding here only  -->
+
         </div>
 
         <!-- List Actions -->
@@ -3880,156 +3908,156 @@
         }
 
 
-        window.ProjectPropertiesManager = (function() {
-    const ProjectPropertiesManager = {
-        // State variables
-        state: {
-            selectedProjectId: null,
-            availableProperties: [],
-            connectedProperties: []
-        },
+        window.ProjectPropertiesManager = (function () {
+            const ProjectPropertiesManager = {
+                // State variables
+                state: {
+                    selectedProjectId: null,
+                    availableProperties: [],
+                    connectedProperties: []
+                },
 
-        // Configuration
-        config: {
-            apiBaseUrl: 'https://propertify.onrender.com/api',
-            selectors: {
-                projectSelector: '#projectSelector',
-                searchInput: '#projectPropertySearch',
-                availableList: '#availablePropertiesList',
-                connectedList: '#connectedPropertiesList'
-            }
-        },
+                // Configuration
+                config: {
+                    apiBaseUrl: 'https://propertify.onrender.com/api',
+                    selectors: {
+                        projectSelector: '#projectSelector',
+                        searchInput: '#projectPropertySearch',
+                        availableList: '#availablePropertiesList',
+                        connectedList: '#connectedPropertiesList'
+                    }
+                },
 
-        init() {
-            console.log('ProjectPropertiesManager init called');
+                init() {
+                    console.log('ProjectPropertiesManager init called');
 
-            console.log('Testing element connections:');
-            console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
-            console.log('connectedPropertiesList exists:', !!document.getElementById('connectedPropertiesList'));
+                    console.log('Testing element connections:');
+                    console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
+                    console.log('connectedPropertiesList exists:', !!document.getElementById('connectedPropertiesList'));
 
-            // Also test query selectors:
-            console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
-            console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
-            // Debug check for elements
-            const searchInput = document.querySelector(this.config.selectors.searchInput);
-            console.log('Search input found:', !!searchInput);
+                    // Also test query selectors:
+                    console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
+                    console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
+                    // Debug check for elements
+                    const searchInput = document.querySelector(this.config.selectors.searchInput);
+                    console.log('Search input found:', !!searchInput);
 
-            const projectSelector = document.querySelector(this.config.selectors.projectSelector);
-            console.log('Project selector found:', !!projectSelector);
+                    const projectSelector = document.querySelector(this.config.selectors.projectSelector);
+                    console.log('Project selector found:', !!projectSelector);
 
-            // Try to make an API call immediately
-            this.testApiConnection();
+                    // Try to make an API call immediately
+                    this.testApiConnection();
 
-            this.attachEventListeners();
-            this.loadProjects();
-        },
+                    this.attachEventListeners();
+                    this.loadProjects();
+                },
 
 
-        async testApiConnection() {
-            try {
-                console.log('Testing API connection...');
-                const response = await fetch(`${this.config.apiBaseUrl}/projects`);
-                console.log('API test response:', response);
-                const data = await response.json();
-                console.log('API test data:', data);
-            } catch (error) {
-                console.error('API test failed:', error);
-            }
-        },
+                async testApiConnection() {
+                    try {
+                        console.log('Testing API connection...');
+                        const response = await fetch(`${this.config.apiBaseUrl}/projects`);
+                        console.log('API test response:', response);
+                        const data = await response.json();
+                        console.log('API test data:', data);
+                    } catch (error) {
+                        console.error('API test failed:', error);
+                    }
+                },
 
-        // Event listeners
-        attachEventListeners() {
-            document.querySelector(this.config.selectors.searchInput)
-                ?.addEventListener('input', (e) => this.handlePropertySearch(e));
+                // Event listeners
+                attachEventListeners() {
+                    document.querySelector(this.config.selectors.searchInput)
+                        ?.addEventListener('input', (e) => this.handlePropertySearch(e));
 
-            document.querySelector(this.config.selectors.projectSelector)
-                ?.addEventListener('change', (e) => this.handleProjectSelection(e));
-        },
+                    document.querySelector(this.config.selectors.projectSelector)
+                        ?.addEventListener('change', (e) => this.handleProjectSelection(e));
+                },
 
-        // Add this at the start of loadProjects method
-        async loadProjects() {
-            console.log('Loading projects...');
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/projects`);
-                console.log('Projects response:', response);
-                const projects = await response.json();
-                console.log('Projects loaded:', projects);
-                this.populateProjectSelector(projects);
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                showPopup('Failed to load projects');
-            }
-        },
+                // Add this at the start of loadProjects method
+                async loadProjects() {
+                    console.log('Loading projects...');
+                    try {
+                        const response = await fetch(`${this.config.apiBaseUrl}/projects`);
+                        console.log('Projects response:', response);
+                        const projects = await response.json();
+                        console.log('Projects loaded:', projects);
+                        this.populateProjectSelector(projects);
+                    } catch (error) {
+                        console.error('Error loading projects:', error);
+                        showPopup('Failed to load projects');
+                    }
+                },
 
-        showLoading() {
-            [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
-                const container = document.querySelector(selector);
-                if (container) {
-                    container.innerHTML = '<div class="loading">Loading properties...</div>';
-                }
-            });
-        },
+                showLoading() {
+                    [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
+                        const container = document.querySelector(selector);
+                        if (container) {
+                            container.innerHTML = '<div class="loading">Loading properties...</div>';
+                        }
+                    });
+                },
 
-        showError(message) {
-            [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
-                const container = document.querySelector(selector);
-                if (container) {
-                    container.innerHTML = `<div class="error-state">${message}</div>`;
-                }
-            });
-        },
+                showError(message) {
+                    [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
+                        const container = document.querySelector(selector);
+                        if (container) {
+                            container.innerHTML = `<div class="error-state">${message}</div>`;
+                        }
+                    });
+                },
 
-        async loadAvailableProperties() {
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
-                if (!response.ok) throw new Error('Failed to fetch available properties');
+                async loadAvailableProperties() {
+                    try {
+                        const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
+                        if (!response.ok) throw new Error('Failed to fetch available properties');
 
-                const properties = await response.json();
-                this.state.availableProperties = properties.filter(property =>
-                    !property.projectId
-                );
-                this.displayAvailableProperties();
-            } catch (error) {
-                console.error('Error loading available properties:', error);
-                showPopup('Failed to load available properties');
-            }
-        },
+                        const properties = await response.json();
+                        this.state.availableProperties = properties.filter(property =>
+                            !property.projectId
+                        );
+                        this.displayAvailableProperties();
+                    } catch (error) {
+                        console.error('Error loading available properties:', error);
+                        showPopup('Failed to load available properties');
+                    }
+                },
 
-        async loadConnectedProperties() {
-            if (!this.state.selectedProjectId) return;
+                async loadConnectedProperties() {
+                    if (!this.state.selectedProjectId) return;
 
-            try {
-                const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
-                if (!response.ok) throw new Error('Failed to fetch connected properties');
+                    try {
+                        const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
+                        if (!response.ok) throw new Error('Failed to fetch connected properties');
 
-                const properties = await response.json();
-                this.state.connectedProperties = properties;
-                this.displayConnectedProperties();
-            } catch (error) {
-                console.error('Error loading connected properties:', error);
-                showPopup('Failed to load connected properties: == '+ error);
-            }
-        },
+                        const properties = await response.json();
+                        this.state.connectedProperties = properties;
+                        this.displayConnectedProperties();
+                    } catch (error) {
+                        console.error('Error loading connected properties:', error);
+                        showPopup('Failed to load connected properties: == ' + error);
+                    }
+                },
 
-        
-        // UI Updates
-        populateProjectSelector(projects) {
-            const selector = document.querySelector(this.config.selectors.projectSelector);
-            if (!selector) return;
 
-            selector.innerHTML = '<option value="">Select Project</option>';
-            projects.forEach(project => {
-                const option = document.createElement('option');
-                option.value = project._id;
-                option.textContent = project.name;
-                selector.appendChild(option);
-            });
-        },
+                // UI Updates
+                populateProjectSelector(projects) {
+                    const selector = document.querySelector(this.config.selectors.projectSelector);
+                    if (!selector) return;
 
-        createPropertyElement(property, isAvailable) {
-            const div = document.createElement('div');
-            div.className = 'property-item';
-            div.innerHTML = `
+                    selector.innerHTML = '<option value="">Select Project</option>';
+                    projects.forEach(project => {
+                        const option = document.createElement('option');
+                        option.value = project._id;
+                        option.textContent = project.name;
+                        selector.appendChild(option);
+                    });
+                },
+
+                createPropertyElement(property, isAvailable) {
+                    const div = document.createElement('div');
+                    div.className = 'property-item';
+                    div.innerHTML = `
             <div class="property-details">
                 <div class="property-title">${property.post_title}</div>
                 <div class="property-info">
@@ -4042,194 +4070,194 @@
                 ${isAvailable ? 'Connect' : 'Disconnect'}
             </button>
         `;
-            return div;
-        },
+                    return div;
+                },
 
-        displayAvailableProperties() {
-            const container = document.querySelector(this.config.selectors.availableList);
-            if (!container) return;
+                displayAvailableProperties() {
+                    const container = document.querySelector(this.config.selectors.availableList);
+                    if (!container) return;
 
-            container.innerHTML = '';
+                    container.innerHTML = '';
 
-            if (this.state.availableProperties.length === 0) {
-                container.innerHTML = '<div class="empty-state">No available properties</div>';
-                return;
-            }
+                    if (this.state.availableProperties.length === 0) {
+                        container.innerHTML = '<div class="empty-state">No available properties</div>';
+                        return;
+                    }
 
-            this.state.availableProperties.forEach(property => {
-                container.appendChild(this.createPropertyElement(property, true));
+                    this.state.availableProperties.forEach(property => {
+                        container.appendChild(this.createPropertyElement(property, true));
+                    });
+                },
+
+                displayConnectedProperties() {
+                    const container = document.querySelector(this.config.selectors.connectedList);
+                    if (!container) return;
+
+                    container.innerHTML = '';
+
+                    if (this.state.connectedProperties.length === 0) {
+                        container.innerHTML = '<div class="empty-state">No connected properties</div>';
+                        return;
+                    }
+
+                    this.state.connectedProperties.forEach(property => {
+                        container.appendChild(this.createPropertyElement(property, false));
+                    });
+                },
+
+                // Event Handlers
+                async handleProjectSelection(event) {
+                    this.state.selectedProjectId = event.target.value;
+                    if (!this.state.selectedProjectId) {
+                        this.clearPropertyLists();
+                        return;
+                    }
+
+                    this.showLoading();
+                    try {
+                        await Promise.all([
+                            this.loadAvailableProperties(),
+                            this.loadConnectedProperties()
+                        ]);
+                    } catch (error) {
+                        console.error('Error loading properties:', error);
+                        showPopup('Error loading properties');
+                    }
+                    this.hideLoading();
+                },
+
+                handlePropertySearch(event) {
+                    const searchTerm = event.target.value.toLowerCase();
+
+                    const filteredAvailable = this.state.availableProperties.filter(property =>
+                        property.post_title.toLowerCase().includes(searchTerm) ||
+                        property.post_id.toLowerCase().includes(searchTerm)
+                    );
+
+                    const filteredConnected = this.state.connectedProperties.filter(property =>
+                        property.post_title.toLowerCase().includes(searchTerm) ||
+                        property.post_id.toLowerCase().includes(searchTerm)
+                    );
+
+                    this.displayFilteredProperties(filteredAvailable, filteredConnected);
+                },
+
+                // Property Connection Methods
+                async connectProperty(propertyId) {
+                    if (!this.state.selectedProjectId) {
+                        showPopup('Please select a project first');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(
+                            `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
+                            {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' }
+                            }
+                        );
+
+                        if (!response.ok) throw new Error('Failed to connect property');
+
+                        showPopup('Property connected successfully');
+                        await Promise.all([
+                            this.loadAvailableProperties(),
+                            this.loadConnectedProperties()
+                        ]);
+                    } catch (error) {
+                        console.error('Error connecting property:', error);
+                        showPopup('Failed to connect property');
+                    }
+                },
+
+                async disconnectProperty(propertyId) {
+                    if (!this.state.selectedProjectId) {
+                        showPopup('Please select a project first');
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(
+                            `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
+                            { method: 'DELETE' }
+                        );
+
+                        if (!response.ok) throw new Error('Failed to disconnect property');
+
+                        showPopup('Property disconnected successfully');
+                        await Promise.all([
+                            this.loadAvailableProperties(),
+                            this.loadConnectedProperties()
+                        ]);
+                    } catch (error) {
+                        console.error('Error disconnecting property:', error);
+                        showPopup('Failed to disconnect property');
+                    }
+                },
+
+                // Utility Methods
+                showLoading() {
+                    [this.config.selectors.availableList, this.config.selectors.connectedList]
+                        .forEach(selector => {
+                            const container = document.querySelector(selector);
+                            if (container) {
+                                container.innerHTML = '<div class="loading">Loading...</div>';
+                            }
+                        });
+                },
+
+                hideLoading() {
+                    // Loading will be hidden when properties are displayed
+                },
+
+
+
+                clearPropertyLists() {
+                    [this.config.selectors.availableList, this.config.selectors.connectedList]
+                        .forEach(selector => {
+                            const container = document.querySelector(selector);
+                            if (container) {
+                                container.innerHTML = '';
+                            }
+                        });
+                },
+
+                displayFilteredProperties(availableFiltered, connectedFiltered) {
+                    const availableContainer = document.querySelector(this.config.selectors.availableList);
+                    const connectedContainer = document.querySelector(this.config.selectors.connectedList);
+
+                    if (availableContainer) {
+                        availableContainer.innerHTML = '';
+                        availableFiltered.forEach(property => {
+                            availableContainer.appendChild(this.createPropertyElement(property, true));
+                        });
+                    }
+
+                    if (connectedContainer) {
+                        connectedContainer.innerHTML = '';
+                        connectedFiltered.forEach(property => {
+                            connectedContainer.appendChild(this.createPropertyElement(property, false));
+                        });
+                    }
+                }
+            };
+
+
+            console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
+            console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
+            // Add a global error handler for fetch
+            window.addEventListener('unhandledrejection', function (event) {
+                console.error('Unhandled promise rejection:', event.reason);
             });
-        },
 
-        displayConnectedProperties() {
-            const container = document.querySelector(this.config.selectors.connectedList);
-            if (!container) return;
+            // Make it globally available
+            window.ProjectPropertiesManager = ProjectPropertiesManager;
 
-            container.innerHTML = '';
-
-            if (this.state.connectedProperties.length === 0) {
-                container.innerHTML = '<div class="empty-state">No connected properties</div>';
-                return;
-            }
-
-            this.state.connectedProperties.forEach(property => {
-                container.appendChild(this.createPropertyElement(property, false));
-            });
-        },
-
-        // Event Handlers
-        async handleProjectSelection(event) {
-            this.state.selectedProjectId = event.target.value;
-            if (!this.state.selectedProjectId) {
-                this.clearPropertyLists();
-                return;
-            }
-
-            this.showLoading();
-            try {
-                await Promise.all([
-                    this.loadAvailableProperties(),
-                    this.loadConnectedProperties()
-                ]);
-            } catch (error) {
-                console.error('Error loading properties:', error);
-                showPopup('Error loading properties');
-            }
-            this.hideLoading();
-        },
-
-        handlePropertySearch(event) {
-            const searchTerm = event.target.value.toLowerCase();
-
-            const filteredAvailable = this.state.availableProperties.filter(property =>
-                property.post_title.toLowerCase().includes(searchTerm) ||
-                property.post_id.toLowerCase().includes(searchTerm)
-            );
-
-            const filteredConnected = this.state.connectedProperties.filter(property =>
-                property.post_title.toLowerCase().includes(searchTerm) ||
-                property.post_id.toLowerCase().includes(searchTerm)
-            );
-
-            this.displayFilteredProperties(filteredAvailable, filteredConnected);
-        },
-
-        // Property Connection Methods
-        async connectProperty(propertyId) {
-            if (!this.state.selectedProjectId) {
-                showPopup('Please select a project first');
-                return;
-            }
-
-            try {
-                const response = await fetch(
-                    `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
-                    {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' }
-                    }
-                );
-
-                if (!response.ok) throw new Error('Failed to connect property');
-
-                showPopup('Property connected successfully');
-                await Promise.all([
-                    this.loadAvailableProperties(),
-                    this.loadConnectedProperties()
-                ]);
-            } catch (error) {
-                console.error('Error connecting property:', error);
-                showPopup('Failed to connect property');
-            }
-        },
-
-        async disconnectProperty(propertyId) {
-            if (!this.state.selectedProjectId) {
-                showPopup('Please select a project first');
-                return;
-            }
-
-            try {
-                const response = await fetch(
-                    `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
-                    { method: 'DELETE' }
-                );
-
-                if (!response.ok) throw new Error('Failed to disconnect property');
-
-                showPopup('Property disconnected successfully');
-                await Promise.all([
-                    this.loadAvailableProperties(),
-                    this.loadConnectedProperties()
-                ]);
-            } catch (error) {
-                console.error('Error disconnecting property:', error);
-                showPopup('Failed to disconnect property');
-            }
-        },
-
-        // Utility Methods
-        showLoading() {
-            [this.config.selectors.availableList, this.config.selectors.connectedList]
-                .forEach(selector => {
-                    const container = document.querySelector(selector);
-                    if (container) {
-                        container.innerHTML = '<div class="loading">Loading...</div>';
-                    }
-                });
-        },
-
-        hideLoading() {
-            // Loading will be hidden when properties are displayed
-        },
-
-        
-
-        clearPropertyLists() {
-            [this.config.selectors.availableList, this.config.selectors.connectedList]
-                .forEach(selector => {
-                    const container = document.querySelector(selector);
-                    if (container) {
-                        container.innerHTML = '';
-                    }
-                });
-        },
-
-        displayFilteredProperties(availableFiltered, connectedFiltered) {
-            const availableContainer = document.querySelector(this.config.selectors.availableList);
-            const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-
-            if (availableContainer) {
-                availableContainer.innerHTML = '';
-                availableFiltered.forEach(property => {
-                    availableContainer.appendChild(this.createPropertyElement(property, true));
-                });
-            }
-
-            if (connectedContainer) {
-                connectedContainer.innerHTML = '';
-                connectedFiltered.forEach(property => {
-                    connectedContainer.appendChild(this.createPropertyElement(property, false));
-                });
-            }
-        }
-    };
-
-
-    console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
-    console.log('Script location:', document.querySelector('script[src*="projectPropertiesManager.js"]')?.src);
-    // Add a global error handler for fetch
-    window.addEventListener('unhandledrejection', function (event) {
-        console.error('Unhandled promise rejection:', event.reason);
-    });
-
-    // Make it globally available
-    window.ProjectPropertiesManager = ProjectPropertiesManager;
-
-    // Add this to log when the script loads
-    console.log('ProjectPropertiesManager script loaded');
-    return ProjectPropertiesManager;
-})();
+            // Add this to log when the script loads
+            console.log('ProjectPropertiesManager script loaded');
+            return ProjectPropertiesManager;
+        })();
 
 
 
@@ -6232,7 +6260,9 @@
 
         // Function to load available lists
 
-        const BASE_URL = 'https://propertify.onrender.com';
+        // const BASE_URL = 'https://propertify.onrender.com';
+        const BASE_URL = 'https://qa-mhkj.onrender.com';
+        // const BASE_URL = 'http://localhost:5053';
 
 
         async function loadAvailableLists() {
@@ -6900,6 +6930,7 @@
                 document.getElementById('optionImage').value = '';
                 document.getElementById('optionText').value = '';
                 document.getElementById('optionLink').value = '';
+                document.getElementById('optionType').value = '';
 
                 // Reset the submit button text
                 const submitButton = document.getElementById('optionSubmitButton');
@@ -7009,21 +7040,26 @@
             // Store the current option ID
             currentOptionId = id;
         }
+
+        /* saved option */
         async function saveOptions() {
             const optionId = document.getElementById('optionId').value;
 
 
-            if (!currentListName) {
-                showPopup('Please select a list first');
-                return;
-            }
+            // popup - Please select a list first
+            // if (!currentListName) {
+            //     showPopup('Please select a list first');
+            //     return;
+            // }
 
             // Use the correct form fields
             const option = {
+                
                 imagelink: document.getElementById('optionImage').value,
                 textview: document.getElementById('optionText').value,
                 link: document.getElementById('optionLink').value
             };
+            console.log("option",option)
 
             try {
                 let response;
@@ -7057,7 +7093,7 @@
                 showPopup('Option saved successfully!');
             } catch (error) {
                 console.error('Error saving option:', error);
-                showPopup('Failed to save option. Please try again.');
+                // showPopup('Failed to save option. Please try again.');
             }
         }
 
@@ -7277,7 +7313,7 @@
                 return await response.json();
             } catch (error) {
                 console.error('Error fetching images:', error);
-                alert('Failed to fetch images. Please try again.');
+                // alert('Failed to fetch images. Please try again.');
                 return [];
             }
         }
@@ -8247,6 +8283,84 @@
             document.getElementById('separateAdForm').addEventListener('submit', saveSeparateAd);
         });
 
+
+    </script>
+    <script>
+        function getCurrentLocation() {
+            console.log("fetching location..")
+            const locationDisplay = document.getElementById("edit_locationDisplay");
+            const latitudeInput = document.getElementById("edit_latitude");
+            const longitudeInput = document.getElementById("edit_longitude");
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        console.log(latitude, longitude)
+
+                        // Display the location in the edit_locationDisplay element
+                        locationDisplay.textContent = `Latitude: ${latitude}, Longitude: ${longitude}`;
+
+                        // Update the hidden input fields with latitude and longitude
+                        latitudeInput.value = latitude;
+                        longitudeInput.value = longitude;
+
+                        // Update the map and marker
+                        const userLocation = { lat: latitude, lng: longitude };
+                        map.setCenter(userLocation); // Center the map on the user's location
+                        map.setZoom(20); // Zoom in to the location
+                        marker.setPosition(userLocation); // Update the mark
+
+                    },
+                    (error) => {
+                        console.log('error occured..', error)
+                    }
+                );
+            } else {
+                locationDisplay.textContent = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        // Attach the function to the button click
+        document
+            .getElementById("edit_getCurrentLocation")
+            .addEventListener("click", getCurrentLocation);
+    </script>
+
+    <script>
+        const selectElement = document.getElementById('optionType');
+        // const outputElement = document.getElementById('output');
+
+        let selectedValue;
+        selectElement.addEventListener('change', () => {
+            selectedValue = selectElement.value;
+            console.log(selectedValue)
+            // outputElement.textContent = `You selected: ${selectedValue}`;
+        });
+
+        async function UpdateImageType(){
+            const listName = document.getElementById('listSelector').value
+            // const optionId = document.getElementById('optionId').value
+            console.log("listName:", listName)
+            console.log("selected Value:", selectedValue)
+            try {
+                const response = await fetch(`${BASE_URL}/api/list-options/${listName}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        categoryType: selectedValue
+                    })
+                });
+                console.log( "response : " , response)
+            } catch (error) {
+                console.log("error" , error)
+            }   
+
+        } 
+        // update cat option added
     </script>
 </body>
 

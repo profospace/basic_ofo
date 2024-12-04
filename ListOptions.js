@@ -7,6 +7,7 @@ const optionSchema = new mongoose.Schema({
 });
 
 const listOptionsSchema = new mongoose.Schema({
+  categoryType: { type: String, enum: ['carousal', 'horizontal_list', 'single_item', 'grid_view', 'vertical_list'], default:'horizontal_list', required:true},
   listName: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   headerImage: { type: String, required: true },
