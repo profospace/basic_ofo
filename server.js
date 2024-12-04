@@ -15,8 +15,14 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+<<<<<<< HEAD
 // const BASE_URL = 'https://propertify.onrender.com';
 const BASE_URL = 'https://qa-mhkj.onrender.com';
+=======
+
+const BASE_URL = 'https://qa-mhkj.onrender.com';
+//const BASE_URL = 'https://qa-mhkj.onrender.com';
+>>>>>>> ddce674ed91eb47c4377eca3b6975e55c9203258
 
 
 // AWS Configuration

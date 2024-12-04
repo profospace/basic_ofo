@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 2019;
+const PORT = process.env.PORT || 2094;
 
 app.use(fileUpload());
 app.use(cors());
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const BASE_URL = 'https://propertify.onrender.com';
+const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
 // AWS Configuration
@@ -106,8 +106,6 @@ app.get('/api/list-images', (req, res) => {
         res.json(images);
     });
 });
-
-
 
 
 app.get('/api/list-options', async (req, res) => {
