@@ -985,14 +985,14 @@
             border-radius: 4px;
             font-size: 14px;
         }
-        
-        .form-group select{
-            width : 100%;
+
+        .form-group select {
+            width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
-            
+
         }
 
         .image-preview {
@@ -2537,6 +2537,17 @@
                     <button type="button" onclick="openImageSelector('newHeaderImage')" class="secondary-button">Select
                         Image</button>
                     <img id="newHeaderImagePreview" class="image-preview" src="" alt="Header Image Preview">
+                </div>
+
+                <div class="form-group">
+                    <label for="optionType">Option Image Type</label>
+                    <select id="optionType" name="optionType">
+                        <option value="carousel">Carousel</option>
+                        <option value="horizontal_list">Horizontal_List</option>
+                        <option value="single_item">Single_Item</option>
+                        <option value="grid_view">Grid_View</option>
+                        <option value="vertical_list">Vertical_List</option>
+                    </select>
                 </div>
             </div>
 
@@ -6208,6 +6219,10 @@
             e.preventDefault();
 
             const listName = document.getElementById('newListName').value;
+            const categoryType = document.getElementById('optionType').value;
+            const newListTitle = document.getElementById('newListTitle').value;
+            const headerImage = document.getElementById('newHeaderImage').value;
+
             const options = [];
 
             for (let i = 0; i < newOptionCount; i++) {
@@ -6224,7 +6239,7 @@
                 const response = await fetch(`${BASE_URL}/api/list-options/add-complete`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ listName, options })
+                    body: JSON.stringify({ listName, categoryType, title: newListTitle, headerImage: headerImage, options })
                 });
 
                 if (!response.ok) {
@@ -6262,7 +6277,7 @@
 
         // const BASE_URL = 'https://propertify.onrender.com';
         const BASE_URL = 'https://qa-mhkj.onrender.com';
-        // const BASE_URL = 'http://localhost:5053';
+        // const BASE_URL = 'http://localhost:5053';  // testing
 
 
         async function loadAvailableLists() {
@@ -7054,12 +7069,12 @@
 
             // Use the correct form fields
             const option = {
-                
+
                 imagelink: document.getElementById('optionImage').value,
                 textview: document.getElementById('optionText').value,
                 link: document.getElementById('optionLink').value
             };
-            console.log("option",option)
+            console.log("option", option)
 
             try {
                 let response;
@@ -8339,7 +8354,7 @@
             // outputElement.textContent = `You selected: ${selectedValue}`;
         });
 
-        async function UpdateImageType(){
+        async function UpdateImageType() {
             const listName = document.getElementById('listSelector').value
             // const optionId = document.getElementById('optionId').value
             console.log("listName:", listName)
@@ -8354,10 +8369,10 @@
                         categoryType: selectedValue
                     })
                 });
-                console.log( "response : " , response)
+                console.log("response : ", response)
             } catch (error) {
-                console.log("error" , error)
-            }   
+                console.log("error", error)
+            }
 
         } 
     </script>
