@@ -2579,6 +2579,17 @@
                 <option value="">Select a list</option>
             </select>
             <button onclick="loadListOptions()" class="secondary-button">Load Options</button>
+            <div class="form-group">
+                <label for="optionType">Option Image Type</label>
+                <select id="optionType" name="optionType">
+                    <option value="carousel">Carousel</option>
+                    <option value="horizontal_list">Horizontal_List</option>
+                    <option value="single_item">Single_Item</option>
+                    <option value="grid_view">Grid_View</option>
+                    <option value="vertical_list">Vertical_List</option>
+                </select>
+            </div>
+            <button onclick="UpdateImageType()" class="secondary-button">Update Image Type</button>
         </div>
 
 
@@ -2625,16 +2636,6 @@
                 <div class="options-section">
                     <h2>List Options</h2>
                     <div class="options-form">
-                        <div class="form-group">
-                            <label for="optionType">Option Image Type</label>
-                            <select id="optionType" name="optionType">
-                                <option value="carousel">Carousel</option>
-                                <option value="horizontal_list">Horizontal_List</option>
-                                <option value="single_item">Single_Item</option>
-                                <option value="grid_view">Grid_View</option>
-                                <option value="vertical_list">Vertical_List</option>
-                            </select>
-                        </div>
                         <div class="form-group">
                             <label for="optionImage">Option Image URL</label>
                             <input type="url" id="optionImage" placeholder="Enter option image URL">
@@ -6259,7 +6260,9 @@
 
         // Function to load available lists
 
-        const BASE_URL = 'https://propertify.onrender.com';
+        // const BASE_URL = 'https://propertify.onrender.com';
+        const BASE_URL = 'https://qa-mhkj.onrender.com';
+        // const BASE_URL = 'http://localhost:5053';
 
 
         async function loadAvailableLists() {
@@ -7051,7 +7054,7 @@
 
             // Use the correct form fields
             const option = {
-                categoryType: document.getElementById('optionType').value,
+                
                 imagelink: document.getElementById('optionImage').value,
                 textview: document.getElementById('optionText').value,
                 link: document.getElementById('optionLink').value
@@ -8329,11 +8332,34 @@
         const selectElement = document.getElementById('optionType');
         // const outputElement = document.getElementById('output');
 
+        let selectedValue;
         selectElement.addEventListener('change', () => {
-            const selectedValue = selectElement.value;
+            selectedValue = selectElement.value;
             console.log(selectedValue)
             // outputElement.textContent = `You selected: ${selectedValue}`;
         });
+
+        async function UpdateImageType(){
+            const listName = document.getElementById('listSelector').value
+            // const optionId = document.getElementById('optionId').value
+            console.log("listName:", listName)
+            console.log("selected Value:", selectedValue)
+            try {
+                const response = await fetch(`${BASE_URL}/api/list-options/${listName}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        categoryType: selectedValue
+                    })
+                });
+                console.log( "response : " , response)
+            } catch (error) {
+                console.log("error" , error)
+            }   
+
+        } 
     </script>
 </body>
 
