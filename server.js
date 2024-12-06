@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 2094;
+const PORT = process.env.PORT || 2095;
 
 app.use(fileUpload());
 app.use(cors());
@@ -15,7 +15,8 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const BASE_URL = 'https://propertify.onrender.com';
+// const BASE_URL = 'https://propertify.onrender.com';
+const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
 // AWS Configuration
@@ -125,7 +126,7 @@ app.get('/api/list-options/:listName', async (req, res) => {
     try {
         const response = await axios.get(`${BASE_URL}/api/list-options/${req.params.listName}`);
         res.json(response.data);
-    } catch (error) {
+    } catch (error) { 
         console.error('Error fetching list options:', error);
         res.status(error.response?.status || 500).json({ message: 'Error fetching list options', error: error.message });
     }
