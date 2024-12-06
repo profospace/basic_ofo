@@ -3094,7 +3094,11 @@
                         "Chrome plated fittings from Grohe/Jaquar",
                         "Concealed plumbing with premium quality CPVC pipes",
                         "Wall-mounted WC with concealed flush tank",
-                        "Shower partition in master bathroom",
+                        "Shower partition in 
+
+
+
+bathroom",
                         "Hot water provision in all bathrooms"
                     ]
                 },
@@ -3974,8 +3978,8 @@
             }
         }
 
-
         window.ProjectPropertiesManager = (function () {
+
             const ProjectPropertiesManager = {
                 // State variables
                 state: {
@@ -4021,11 +4025,10 @@
                     console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
                     console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
                     // Debug check for elements
+
                     const searchInput = document.querySelector(this.config.selectors.searchInput);
                     console.log('Search input found:', !!searchInput);
 
-                    const projectSelector = document.querySelector(this.config.selectors.projectSelector);
-                    console.log('Project selector found:', !!projectSelector);
                     const projectSelector = document.querySelector(this.config.selectors.projectSelector);
                     console.log('Project selector found:', !!projectSelector);
 
@@ -4053,10 +4056,6 @@
                 attachEventListeners() {
                     document.querySelector(this.config.selectors.searchInput)
                         ?.addEventListener('input', (e) => this.handlePropertySearch(e));
-                // Event listeners
-                attachEventListeners() {
-                    document.querySelector(this.config.selectors.searchInput)
-                        ?.addEventListener('input', (e) => this.handlePropertySearch(e));
 
                     document.querySelector(this.config.selectors.projectSelector)
                         ?.addEventListener('change', (e) => this.handleProjectSelection(e));
@@ -4078,23 +4077,6 @@
                 },
 
                 showLoading() {
-                    [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
-                        const container = document.querySelector(selector);
-                        if (container) {
-                            container.innerHTML = '<div class="loading">Loading properties...</div>';
-                        }
-                    });
-                },
-                showLoading() {
-                    [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
-                        const container = document.querySelector(selector);
-                        if (container) {
-                            container.innerHTML = '<div class="loading">Loading properties...</div>';
-                        }
-                    });
-                },
-
-                showError(message) {
                     [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
                         const container = document.querySelector(selector);
                         if (container) {
@@ -4156,11 +4138,6 @@
                     const selector = document.querySelector(this.config.selectors.projectSelector);
                     if (!selector) return;
 
-                // UI Updates
-                populateProjectSelector(projects) {
-                    const selector = document.querySelector(this.config.selectors.projectSelector);
-                    if (!selector) return;
-
                     selector.innerHTML = '<option value="">Select Project</option>';
                     projects.forEach(project => {
                         const option = document.createElement('option');
@@ -4192,8 +4169,7 @@
         `;
                     return div;
                 },
-                    return div;
-                },
+
 
                 displayAvailableProperties() {
                     const container = document.querySelector(this.config.selectors.availableList);
@@ -4307,16 +4283,8 @@
                                 headers: { 'Content-Type': 'application/json' }
                             }
                         );
-                    try {
-                        const response = await fetch(
-                            `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
-                            {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' }
-                            }
-                        );
 
-                        if (!response.ok) throw new Error('Failed to connect property');
+
                         if (!response.ok) throw new Error('Failed to connect property');
 
                         showPopup('Property connected successfully');
@@ -4360,6 +4328,7 @@
                         showPopup('Failed to disconnect property');
                     }
                 },
+
 
                 // Utility Methods
                 showLoading() {
@@ -4416,14 +4385,7 @@
                     }
                 }
             };
-                    if (connectedContainer) {
-                        connectedContainer.innerHTML = '';
-                        connectedFiltered.forEach(property => {
-                            connectedContainer.appendChild(this.createPropertyElement(property, false));
-                        });
-                    }
-                }
-            };
+
 
 
             console.log('ProjectPropertiesManager loaded:', !!window.ProjectPropertiesManager);
