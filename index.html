@@ -3094,11 +3094,7 @@
                         "Chrome plated fittings from Grohe/Jaquar",
                         "Concealed plumbing with premium quality CPVC pipes",
                         "Wall-mounted WC with concealed flush tank",
-                        "Shower partition in 
-
-
-
-bathroom",
+                        "Shower partition in bathroom",
                         "Hot water provision in all bathrooms"
                     ]
                 },
@@ -3998,32 +3994,18 @@ bathroom",
                         connectedList: '#connectedPropertiesList'
                     }
                 },
-                // Configuration
-                config: {
-                    apiBaseUrl: 'https://propertify.onrender.com/api',
-                    selectors: {
-                        projectSelector: '#projectSelector',
-                        searchInput: '#projectPropertySearch',
-                        availableList: '#availablePropertiesList',
-                        connectedList: '#connectedPropertiesList'
-                    }
-                },
+                
 
                 init() {
                     console.log('ProjectPropertiesManager init called');
-                init() {
-                    console.log('ProjectPropertiesManager init called');
+              
 
+                    
                     console.log('Testing element connections:');
                     console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
-                    console.log('connectedPropertiesList exists:', !!document.getElementById('connectedPropertiesList'));
-                    console.log('Testing element connections:');
-                    console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
-                    console.log('connectedPropertiesList exists:', !!document.getElementById('connectedPropertiesList'));
 
                     // Also test query selectors:
                     console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
-                    console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
                     // Debug check for elements
 
                     const searchInput = document.querySelector(this.config.selectors.searchInput);
@@ -4093,10 +4075,7 @@ bathroom",
                     });
                 },
 
-                async loadAvailableProperties() {
-                    try {
-                        const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
-                        if (!response.ok) throw new Error('Failed to fetch available properties');
+             
                 async loadAvailableProperties() {
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
@@ -4116,9 +4095,7 @@ bathroom",
                 async loadConnectedProperties() {
                     if (!this.state.selectedProjectId) return;
 
-                    try {
-                        const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
-                        if (!response.ok) throw new Error('Failed to fetch connected properties');
+                    
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
@@ -4147,10 +4124,7 @@ bathroom",
                     });
                 },
 
-                createPropertyElement(property, isAvailable) {
-                    const div = document.createElement('div');
-                    div.className = 'property-item';
-                    div.innerHTML = `
+          
                 createPropertyElement(property, isAvailable) {
                     const div = document.createElement('div');
                     div.className = 'property-item';
@@ -4171,52 +4145,35 @@ bathroom",
                 },
 
 
-                displayAvailableProperties() {
-                    const container = document.querySelector(this.config.selectors.availableList);
-                    if (!container) return;
+                
                 displayAvailableProperties() {
                     const container = document.querySelector(this.config.selectors.availableList);
                     if (!container) return;
 
-                    container.innerHTML = '';
                     container.innerHTML = '';
 
                     if (this.state.availableProperties.length === 0) {
                         container.innerHTML = '<div class="empty-state">No available properties</div>';
                         return;
                     }
-                    if (this.state.availableProperties.length === 0) {
-                        container.innerHTML = '<div class="empty-state">No available properties</div>';
-                        return;
-                    }
-
-                    this.state.availableProperties.forEach(property => {
-                        container.appendChild(this.createPropertyElement(property, true));
-                    });
-                },
+                    
                     this.state.availableProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, true));
                     });
                 },
 
-                displayConnectedProperties() {
-                    const container = document.querySelector(this.config.selectors.connectedList);
-                    if (!container) return;
+                
                 displayConnectedProperties() {
                     const container = document.querySelector(this.config.selectors.connectedList);
                     if (!container) return;
 
-                    container.innerHTML = '';
                     container.innerHTML = '';
 
                     if (this.state.connectedProperties.length === 0) {
                         container.innerHTML = '<div class="empty-state">No connected properties</div>';
                         return;
                     }
-                    if (this.state.connectedProperties.length === 0) {
-                        container.innerHTML = '<div class="empty-state">No connected properties</div>';
-                        return;
-                    }
+                    
 
                     this.state.connectedProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, false));
@@ -4251,15 +4208,7 @@ bathroom",
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
                     );
-                    const filteredAvailable = this.state.availableProperties.filter(property =>
-                        property.post_title.toLowerCase().includes(searchTerm) ||
-                        property.post_id.toLowerCase().includes(searchTerm)
-                    );
-
-                    const filteredConnected = this.state.connectedProperties.filter(property =>
-                        property.post_title.toLowerCase().includes(searchTerm) ||
-                        property.post_id.toLowerCase().includes(searchTerm)
-                    );
+                    
                     const filteredConnected = this.state.connectedProperties.filter(property =>
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
@@ -4304,18 +4253,13 @@ bathroom",
                         return;
                     }
 
-                    try {
-                        const response = await fetch(
-                            `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
-                            { method: 'DELETE' }
-                        );
+                    
                     try {
                         const response = await fetch(
                             `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
                             { method: 'DELETE' }
                         );
 
-                        if (!response.ok) throw new Error('Failed to disconnect property');
                         if (!response.ok) throw new Error('Failed to disconnect property');
 
                         showPopup('Property disconnected successfully');
@@ -4360,16 +4304,8 @@ bathroom",
                 displayFilteredProperties(availableFiltered, connectedFiltered) {
                     const availableContainer = document.querySelector(this.config.selectors.availableList);
                     const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-                displayFilteredProperties(availableFiltered, connectedFiltered) {
-                    const availableContainer = document.querySelector(this.config.selectors.availableList);
-                    const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-
-                    if (availableContainer) {
-                        availableContainer.innerHTML = '';
-                        availableFiltered.forEach(property => {
-                            availableContainer.appendChild(this.createPropertyElement(property, true));
-                        });
-                    }
+                
+                    
                     if (availableContainer) {
                         availableContainer.innerHTML = '';
                         availableFiltered.forEach(property => {
@@ -4395,15 +4331,11 @@ bathroom",
                 console.error('Unhandled promise rejection:', event.reason);
             });
 
-            // Make it globally available
-            window.ProjectPropertiesManager = ProjectPropertiesManager;
+            
             // Make it globally available
             window.ProjectPropertiesManager = ProjectPropertiesManager;
 
-            // Add this to log when the script loads
-            console.log('ProjectPropertiesManager script loaded');
-            return ProjectPropertiesManager;
-        })();
+            
             // Add this to log when the script loads
             console.log('ProjectPropertiesManager script loaded');
             return ProjectPropertiesManager;
