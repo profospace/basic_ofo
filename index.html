@@ -2596,8 +2596,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="optionType">Option Image Type</label>
-                    <select id="optionType" name="optionType">
+                    <label for="newOptionType">Option Image Type</label>
+                    <select id="newOptionType" name="newOptionType">
                         <option value="carousel">Carousel</option>
                         <option value="horizontal_list">Horizontal_List</option>
                         <option value="single_item">Single_Item</option>
@@ -2649,7 +2649,7 @@
             <div class="form-group">
                 <label for="optionType">Option Image Type</label>
                 <select id="optionType" name="optionType">
-                    <option value="carousel">Carousel</option>
+                    <option value="carousal">Carousel</option>
                     <option value="horizontal_list">Horizontal_List</option>
                     <option value="single_item">Single_Item</option>
                     <option value="grid_view">Grid_View</option>
@@ -3094,11 +3094,7 @@
                         "Chrome plated fittings from Grohe/Jaquar",
                         "Concealed plumbing with premium quality CPVC pipes",
                         "Wall-mounted WC with concealed flush tank",
-                        "Shower partition in 
-
-
-
-bathroom",
+                        "Shower partition in bathroom",
                         "Hot water provision in all bathrooms"
                     ]
                 },
@@ -3998,17 +3994,18 @@ bathroom",
                         connectedList: '#connectedPropertiesList'
                     }
                 },
+                
 
                 init() {
                     console.log('ProjectPropertiesManager init called');
+              
 
+                    
                     console.log('Testing element connections:');
                     console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
-                    console.log('connectedPropertiesList exists:', !!document.getElementById('connectedPropertiesList'));
 
                     // Also test query selectors:
                     console.log('Available list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.availableList));
-                    console.log('Connected list (querySelector):', !!document.querySelector(ProjectPropertiesManager.config.selectors.connectedList));
                     // Debug check for elements
 
                     const searchInput = document.querySelector(this.config.selectors.searchInput);
@@ -4065,11 +4062,10 @@ bathroom",
                     [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
                         const container = document.querySelector(selector);
                         if (container) {
-                            container.innerHTML = '<div class="loading">Loading properties...</div>';
+                            container.innerHTML = `<div class="error-state">${message}</div>`;
                         }
                     });
                 },
-
                 showError(message) {
                     [this.config.selectors.availableList, this.config.selectors.connectedList].forEach(selector => {
                         const container = document.querySelector(selector);
@@ -4079,6 +4075,7 @@ bathroom",
                     });
                 },
 
+             
                 async loadAvailableProperties() {
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
@@ -4098,6 +4095,7 @@ bathroom",
                 async loadConnectedProperties() {
                     if (!this.state.selectedProjectId) return;
 
+                    
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
@@ -4126,6 +4124,7 @@ bathroom",
                     });
                 },
 
+          
                 createPropertyElement(property, isAvailable) {
                     const div = document.createElement('div');
                     div.className = 'property-item';
@@ -4146,6 +4145,7 @@ bathroom",
                 },
 
 
+                
                 displayAvailableProperties() {
                     const container = document.querySelector(this.config.selectors.availableList);
                     if (!container) return;
@@ -4156,12 +4156,13 @@ bathroom",
                         container.innerHTML = '<div class="empty-state">No available properties</div>';
                         return;
                     }
-
+                    
                     this.state.availableProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, true));
                     });
                 },
 
+                
                 displayConnectedProperties() {
                     const container = document.querySelector(this.config.selectors.connectedList);
                     if (!container) return;
@@ -4172,6 +4173,7 @@ bathroom",
                         container.innerHTML = '<div class="empty-state">No connected properties</div>';
                         return;
                     }
+                    
 
                     this.state.connectedProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, false));
@@ -4206,7 +4208,7 @@ bathroom",
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
                     );
-
+                    
                     const filteredConnected = this.state.connectedProperties.filter(property =>
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
@@ -4251,6 +4253,7 @@ bathroom",
                         return;
                     }
 
+                    
                     try {
                         const response = await fetch(
                             `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
@@ -4301,7 +4304,8 @@ bathroom",
                 displayFilteredProperties(availableFiltered, connectedFiltered) {
                     const availableContainer = document.querySelector(this.config.selectors.availableList);
                     const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-
+                
+                    
                     if (availableContainer) {
                         availableContainer.innerHTML = '';
                         availableFiltered.forEach(property => {
@@ -4327,9 +4331,11 @@ bathroom",
                 console.error('Unhandled promise rejection:', event.reason);
             });
 
+            
             // Make it globally available
             window.ProjectPropertiesManager = ProjectPropertiesManager;
 
+            
             // Add this to log when the script loads
             console.log('ProjectPropertiesManager script loaded');
             return ProjectPropertiesManager;
@@ -6289,7 +6295,7 @@ bathroom",
             e.preventDefault();
 
             const listName = document.getElementById('newListName').value;
-            const categoryType = document.getElementById('optionType').value;
+            const categoryType = document.getElementById('newOptionType').value;
             const newListTitle = document.getElementById('newListTitle').value;
             const headerImage = document.getElementById('newHeaderImage').value;
 
@@ -6346,7 +6352,7 @@ bathroom",
         // Function to load available lists
 
         // const BASE_URL = 'https://propertify.onrender.com';
-        // const BASE_URL = 'http://localhost:5053';  // testing
+        //const BASE_URL = 'http://localhost:5053';  // testing
         const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
@@ -8432,6 +8438,7 @@ bathroom",
 
     <script>
         const selectElement = document.getElementById('optionType');
+        console.log("selectElement", selectElement)
         // const outputElement = document.getElementById('output');
 
         let selectedValue;
