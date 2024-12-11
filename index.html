@@ -1151,7 +1151,7 @@
             background: #dc3545;
         }
 
-        .location-title{
+        .location-title {
             font-weight: 800;
         }
     </style>
@@ -1203,7 +1203,7 @@
             transform: translateX(20px);
         }
     </style>
-    
+
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
@@ -2153,12 +2153,13 @@
                 <textarea id="address" name="address" required></textarea>
             </div>
             <div class="full-width">
-                <label style="display: flex; align-items: center; gap:1rem">Location:<p id="locationDisplay" style="display: flex; align-items: center; gap: 0.5rem;"></p></label>
+                <label style="display: flex; align-items: center; gap:1rem">Location:<p id="locationDisplay"
+                        style="display: flex; align-items: center; gap: 0.5rem;"></p></label>
                 <button type="button" id="getCurrentLocation">Get Current Location</button>
                 <div id="map" class="map-container"></div>
                 <input type="hidden" id="latitude" name="latitude" required>
                 <input type="hidden" id="longitude" name="longitude" required>
-                
+
             </div>
             <div class="full-width">
                 <label for="post_description">Description:</label>
@@ -3994,13 +3995,13 @@
                         connectedList: '#connectedPropertiesList'
                     }
                 },
-                
+
 
                 init() {
                     console.log('ProjectPropertiesManager init called');
-              
 
-                    
+
+
                     console.log('Testing element connections:');
                     console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
 
@@ -4075,7 +4076,7 @@
                     });
                 },
 
-             
+
                 async loadAvailableProperties() {
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
@@ -4095,7 +4096,7 @@
                 async loadConnectedProperties() {
                     if (!this.state.selectedProjectId) return;
 
-                    
+
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
@@ -4124,7 +4125,7 @@
                     });
                 },
 
-          
+
                 createPropertyElement(property, isAvailable) {
                     const div = document.createElement('div');
                     div.className = 'property-item';
@@ -4145,7 +4146,7 @@
                 },
 
 
-                
+
                 displayAvailableProperties() {
                     const container = document.querySelector(this.config.selectors.availableList);
                     if (!container) return;
@@ -4156,13 +4157,13 @@
                         container.innerHTML = '<div class="empty-state">No available properties</div>';
                         return;
                     }
-                    
+
                     this.state.availableProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, true));
                     });
                 },
 
-                
+
                 displayConnectedProperties() {
                     const container = document.querySelector(this.config.selectors.connectedList);
                     if (!container) return;
@@ -4173,7 +4174,7 @@
                         container.innerHTML = '<div class="empty-state">No connected properties</div>';
                         return;
                     }
-                    
+
 
                     this.state.connectedProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, false));
@@ -4208,7 +4209,7 @@
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
                     );
-                    
+
                     const filteredConnected = this.state.connectedProperties.filter(property =>
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
@@ -4253,7 +4254,7 @@
                         return;
                     }
 
-                    
+
                     try {
                         const response = await fetch(
                             `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
@@ -4304,8 +4305,8 @@
                 displayFilteredProperties(availableFiltered, connectedFiltered) {
                     const availableContainer = document.querySelector(this.config.selectors.availableList);
                     const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-                
-                    
+
+
                     if (availableContainer) {
                         availableContainer.innerHTML = '';
                         availableFiltered.forEach(property => {
@@ -4331,11 +4332,11 @@
                 console.error('Unhandled promise rejection:', event.reason);
             });
 
-            
+
             // Make it globally available
             window.ProjectPropertiesManager = ProjectPropertiesManager;
 
-            
+
             // Add this to log when the script loads
             console.log('ProjectPropertiesManager script loaded');
             return ProjectPropertiesManager;
@@ -6352,8 +6353,8 @@
         // Function to load available lists
 
         // const BASE_URL = 'https://propertify.onrender.com';
-        //const BASE_URL = 'http://localhost:5053';  // testing
-        const BASE_URL = 'https://qa-mhkj.onrender.com';
+        const BASE_URL = 'http://localhost:5053';  // testing
+        // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
         async function loadAvailableLists() {
@@ -6961,10 +6962,10 @@
 
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const BASE_URL = 'https://propertify.onrender.com';
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const BASE_URL = 'https://propertify.onrender.com';
 
-        });
+        // });
 
 
         async function loadListOptions() {
@@ -7710,27 +7711,27 @@
                     isStrokeFilter: formData.get('constantData.isStrokeFilter') === 'true',
                     isMaterialElevation: formData.get('constantData.isMaterialElevation') === 'true',
                     headerHeight: parseInt(formData.get('constantData.headerHeight')) || 400,
-                    appPackageName: formData.get('constantData.appPackageName') || "",
-                    defaultLanguage: formData.get('constantData.defaultLanguage') || "",
-                    currencyCode: formData.get('constantData.currencyCode') || "",
-                    appName: formData.get('constantData.appName') || "",
-                    appEmail: formData.get('constantData.appEmail') || "",
-                    appLogo: formData.get('constantData.appLogo') || "",
-                    appCompany: formData.get('constantData.appCompany') || "",
-                    appWebsite: formData.get('constantData.appWebsite') || "",
-                    appContact: formData.get('constantData.appContact') || "",
-                    facebookLink: formData.get('constantData.facebookLink') || "",
-                    twitterLink: formData.get('constantData.twitterLink') || "",
-                    instagramLink: formData.get('constantData.instagramLink') || "",
-                    youtubeLink: formData.get('constantData.youtubeLink') || "",
-                    googlePlayLink: formData.get('constantData.googlePlayLink') || "",
-                    appleStoreLink: formData.get('constantData.appleStoreLink') || "",
-                    appVersion: formData.get('constantData.appVersion') || "",
-                    appUpdateHideShow: formData.get('constantData.appUpdateHideShow') || "",
+                    appPackageName: formData.get('constantData.appPackageName') || "NA",
+                    defaultLanguage: formData.get('constantData.defaultLanguage') || "NA",
+                    currencyCode: formData.get('constantData.currencyCode') || "NA",
+                    appName: formData.get('constantData.appName') || "NA",
+                    appEmail: formData.get('constantData.appEmail') || "NA",
+                    appLogo: formData.get('constantData.appLogo') || "NA",
+                    appCompany: formData.get('constantData.appCompany') || "NA",
+                    appWebsite: formData.get('constantData.appWebsite') || "NA",
+                    appContact: formData.get('constantData.appContact') || "NA",
+                    facebookLink: formData.get('constantData.facebookLink') || "NA",
+                    twitterLink: formData.get('constantData.twitterLink') || "NA",
+                    instagramLink: formData.get('constantData.instagramLink') || "NA",
+                    youtubeLink: formData.get('constantData.youtubeLink') || "NA",
+                    googlePlayLink: formData.get('constantData.googlePlayLink') || "NA",
+                    appleStoreLink: formData.get('constantData.appleStoreLink') || "NA",
+                    appVersion: formData.get('constantData.appVersion') || "NA",
+                    appUpdateHideShow: formData.get('constantData.appUpdateHideShow') || "NA",
                     appUpdateVersionCode: parseInt(formData.get('constantData.appUpdateVersionCode')) || 0,
-                    appUpdateDesc: formData.get('constantData.appUpdateDesc') || "",
-                    appUpdateLink: formData.get('constantData.appUpdateLink') || "",
-                    appUpdateCancelOption: formData.get('constantData.appUpdateCancelOption') || "",
+                    appUpdateDesc: formData.get('constantData.appUpdateDesc') || "NA",
+                    appUpdateLink: formData.get('constantData.appUpdateLink') || "NA",
+                    appUpdateCancelOption: formData.get('constantData.appUpdateCancelOption') || "NA",
                     priceColor: formData.get('constantData.priceColor') || "#000000",
                     callButtonColor: formData.get('constantData.callButtonColor') || "#e1faeb",
                     DetailPageButtonColor: {
@@ -7747,10 +7748,10 @@
             };
             console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
 
-            console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
+            // console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
 
             try {
-                const response = await fetch('https://propertify.onrender.com/api/colors/update', {
+                const response = await fetch(`${BASE_URL}/api/colors/update`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8095,71 +8096,71 @@
 
         console.log('Event listener added');
 
-        document.getElementById('updateForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            console.log('Form submission started');
+        // document.getElementById('updateForm').addEventListener('submit', async function (e) {
+        //     e.preventDefault();
+        //     console.log('Form submission started');
 
-            try {
-                const formData = new FormData(this);
-                const jsonData = {
-                    header: {
-                        startColor: formData.get('header.startColor') || "#ffffff",
-                        endColor: formData.get('header.endColor') || "#ffffff"
-                    },
-                    button: {
-                        startColor: formData.get('button.startColor') || "#ee0979",
-                        endColor: formData.get('button.endColor') || "#ff6a00"
-                    },
-                    buttonBackground: {
-                        startColor: formData.get('buttonBackground.startColor') || "#ee0979",
-                        endColor: formData.get('buttonBackground.endColor') || "#ff6a00"
-                    },
-                    list_title_size: {
-                        color: formData.get('list_title_size.color') || "#333333",
-                        backgroundColor: formData.get('list_title_size.backgroundColor') || "#f2f2f2"
-                    },
-                    listbackground: {
-                        backgroundColor: formData.get('listbackground.backgroundColor') || "#ededed"
-                    },
-                    search_filter: {
-                        backgroundColor: formData.get('search_filter.backgroundColor') || "#000000"
-                    },
-                    list_price_size: parseInt(formData.get('list_price_size')) || 14,
-                    markerColor: formData.get('markerColor') || "#e1faeb",
-                    constantData: {
-                        // ... (keep all the constantData fields as they were)
-                    }
-                };
+        //     try {
+        //         const formData = new FormData(this);
+        //         const jsonData = {
+        //             header: {
+        //                 startColor: formData.get('header.startColor') || "#ffffff",
+        //                 endColor: formData.get('header.endColor') || "#ffffff"
+        //             },
+        //             button: {
+        //                 startColor: formData.get('button.startColor') || "#ee0979",
+        //                 endColor: formData.get('button.endColor') || "#ff6a00"
+        //             },
+        //             buttonBackground: {
+        //                 startColor: formData.get('buttonBackground.startColor') || "#ee0979",
+        //                 endColor: formData.get('buttonBackground.endColor') || "#ff6a00"
+        //             },
+        //             list_title_size: {
+        //                 color: formData.get('list_title_size.color') || "#333333",
+        //                 backgroundColor: formData.get('list_title_size.backgroundColor') || "#f2f2f2"
+        //             },
+        //             listbackground: {
+        //                 backgroundColor: formData.get('listbackground.backgroundColor') || "#ededed"
+        //             },
+        //             search_filter: {
+        //                 backgroundColor: formData.get('search_filter.backgroundColor') || "#000000"
+        //             },
+        //             list_price_size: parseInt(formData.get('list_price_size')) || 14,
+        //             markerColor: formData.get('markerColor') || "#e1faeb",
+        //             constantData: {
+        //                 // ... (keep all the constantData fields as they were)
+        //             }
+        //         };
 
-                // Check if ads data is not empty
-                const adsData = getAdsData();
-                if (adsData.length > 0 && adsData.some(ad => Object.values(ad).some(value => value !== ''))) {
-                    jsonData.ads = adsData;
-                }
+        //         // Check if ads data is not empty
+        //         const adsData = getAdsData();
+        //         if (adsData.length > 0 && adsData.some(ad => Object.values(ad).some(value => value !== ''))) {
+        //             jsonData.ads = adsData;
+        //         }
 
-                console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
+        //         console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
 
-                const response = await fetch('https://propertify.onrender.com/api/colors/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(jsonData)
-                });
+        //         const response = await fetch('https://propertify.onrender.com/api/colors/update', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify(jsonData)
+        //         });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
-                }
+        //         if (!response.ok) {
+        //             const errorData = await response.json();
+        //             throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
+        //         }
 
-                const data = await response.json();
-                console.log('Success:', data);
-                showPopup('Form submitted successfully!');
-            } catch (error) {
-                console.error('Error:', error);
-                showPopup(`An error occurred while submitting the form: ${error.message}`);
-            }
-        });
+        //         const data = await response.json();
+        //         console.log('Success:', data);
+        //         showPopup('Form submitted successfully!');
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //         showPopup(`An error occurred while submitting the form: ${error.message}`);
+        //     }
+        // });
 
 
 
@@ -8270,7 +8271,7 @@
 
             try {
                 // Fetch existing ads
-                const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                const response = await fetch(`${BASE_URL}/api/colors/ads`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -8288,11 +8289,13 @@
                 }
 
                 // Update all ads
-                const updateResponse = await fetch('https://propertify.onrender.com/api/colors/update-ads', {
+                console.log("Helllo")
+                const updateResponse = await fetch(`${BASE_URL}/api/colors/update-ads`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ads: ads })
                 });
+                console.log(updateResponse)
 
                 if (!updateResponse.ok) {
                     throw new Error(`HTTP error! status: ${updateResponse.status}`);
@@ -8310,7 +8313,8 @@
         // Function to list all ads
         async function listSeparateAds() {
             try {
-                const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                // const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                const response = await fetch(`${BASE_URL}/api/colors/ads`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -8408,7 +8412,7 @@
                         // Display the location in the locationDisplay element <p>
                         locationDisplay.innerHTML = `Latitude:${latitude.toFixed(6)},Longitude:${longitude.toFixed(6)}`;
                         console.log(`Latitude: ${latitude.toFixed(6)},Longitude: ${longitude.toFixed(6)}`)
-                        
+
 
                         // Update the hidden input fields with latitude and longitude
                         latitudeInput.value = latitude;
