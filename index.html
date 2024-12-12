@@ -1151,7 +1151,7 @@
             background: #dc3545;
         }
 
-        .location-title{
+        .location-title {
             font-weight: 800;
         }
     </style>
@@ -1203,7 +1203,7 @@
             transform: translateX(20px);
         }
     </style>
-    
+
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
@@ -2153,12 +2153,13 @@
                 <textarea id="address" name="address" required></textarea>
             </div>
             <div class="full-width">
-                <label style="display: flex; align-items: center; gap:1rem">Location:<p id="locationDisplay" style="display: flex; align-items: center; gap: 0.5rem;"></p></label>
+                <label style="display: flex; align-items: center; gap:1rem">Location:<p id="locationDisplay"
+                        style="display: flex; align-items: center; gap: 0.5rem;"></p></label>
                 <button type="button" id="getCurrentLocation">Get Current Location</button>
                 <div id="map" class="map-container"></div>
                 <input type="hidden" id="latitude" name="latitude" required>
                 <input type="hidden" id="longitude" name="longitude" required>
-                
+
             </div>
             <div class="full-width">
                 <label for="post_description">Description:</label>
@@ -2343,57 +2344,68 @@
         <div id="imageGrid"></div>
     </div>
 
+    <!-- Update colors API Form -->
     <div id="UpdateColors" class="tabcontent">
         <h1>Update Colors API Form</h1>
         <form id="updateForm">
             <h2>Header</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="headerStartColor" value="#ffffff">
                 <input type="text" name="header.startColor" value="#ffffff">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="headerEndColor" value="#ffffff">
                 <input type="text" name="header.endColor" value="#ffffff">
             </div>
-
+            
             <h2>Button</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="buttonStartColor" value="#ee0979">
                 <input type="text" name="button.startColor" value="#ee0979">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="buttonEndColor" value="#ff6a00">
                 <input type="text" name="button.endColor" value="#ff6a00">
             </div>
-
+            
             <h2>Button Background</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="buttonBgStartColor" value="#ee0979">
                 <input type="text" name="buttonBackground.startColor" value="#ee0979">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="buttonBgEndColor" value="#ff6a00">
                 <input type="text" name="buttonBackground.endColor" value="#ff6a00">
             </div>
-
+            
             <h2>List Title Size</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="listTitleColor" value="#333333">
                 <input type="text" name="list_title_size.color" value="#333333">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="listTitleBgColor" value="#f2f2f2">
                 <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
             </div>
-
+            
             <h2>List Background</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Background Color</label>
                 <input type="color" id="listBgColor" value="#ededed">
                 <input type="text" name="listbackground.backgroundColor" value="#ededed">
             </div>
-
+            
             <h2>Search Filter</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Background Color</label>
                 <input type="color" id="searchFilterBgColor" value="#000000">
                 <input type="text" name="search_filter.backgroundColor" value="#000000">
             </div>
@@ -2401,8 +2413,9 @@
             <h2>Other Settings</h2>
             <label for="listPriceSize">List Price Size:</label>
             <input type="number" id="listPriceSize" name="list_price_size" value="14">
-
+            
             <div class="color-input">
+                <label style="min-width: 5rem;">Marker Color</label>
                 <input type="color" id="markerColor" value="#e1faeb">
                 <input type="text" name="markerColor" value="#e1faeb">
             </div>
@@ -2488,21 +2501,28 @@
             <input type="text" id="appUpdateCancelOption" name="constantData.appUpdateCancelOption" value="">
 
             <div class="color-input">
+                <!-- priceColor -->
+                <label style="min-width: 5rem;">Price Color</label>
                 <input type="color" id="priceColor" value="#000000">
                 <input type="text" name="constantData.priceColor" value="#000000">
             </div>
-
+            
             <div class="color-input">
+                <!-- callButtonColor -->
+                
+                <label style="min-width: 5rem;">Call Button Color</label>
                 <input type="color" id="callButtonColor" value="#e1faeb">
                 <input type="text" name="constantData.callButtonColor" value="#e1faeb">
             </div>
-
+            
             <h3>Detail Page Button Color</h3>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="detailPageButtonStartColor" value="#e1faeb">
                 <input type="text" name="constantData.DetailPageButtonColor.startColor" value="#e1faeb">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="detailPageButtonEndColor" value="#e1faeb">
                 <input type="text" name="constantData.DetailPageButtonColor.endColor" value="#e1faeb">
             </div>
@@ -2572,7 +2592,17 @@
 
             <button type="submit">Submit</button>
         </form>
+
+        <div id="separateAdsManagement">
+            <h2>Separate Ads Management</h2>
+            <button type="button" id="addNewAdButton">Add New Ad</button>
+            <button type="button" id="listAdsButton">List All Ads</button>
+            <div id="adsList"></div>
+        </div>
     </div>
+
+
+
 
 
 
@@ -2796,12 +2826,7 @@
         </div>
     </div>
 
-    <div id="separateAdsManagement">
-        <h2>Separate Ads Management</h2>
-        <button type="button" id="addNewAdButton">Add New Ad</button>
-        <button type="button" id="listAdsButton">List All Ads</button>
-        <div id="adsList"></div>
-    </div>
+    
 
     <div id="adFormPopup" class="popup">
         <div class="popup-content">
@@ -3994,13 +4019,13 @@
                         connectedList: '#connectedPropertiesList'
                     }
                 },
-                
+
 
                 init() {
                     console.log('ProjectPropertiesManager init called');
-              
 
-                    
+
+
                     console.log('Testing element connections:');
                     console.log('availablePropertiesList exists:', !!document.getElementById('availablePropertiesList'));
 
@@ -4075,7 +4100,7 @@
                     });
                 },
 
-             
+
                 async loadAvailableProperties() {
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/properties/all`);
@@ -4095,7 +4120,7 @@
                 async loadConnectedProperties() {
                     if (!this.state.selectedProjectId) return;
 
-                    
+
                     try {
                         const response = await fetch(`${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties`);
                         if (!response.ok) throw new Error('Failed to fetch connected properties');
@@ -4124,7 +4149,7 @@
                     });
                 },
 
-          
+
                 createPropertyElement(property, isAvailable) {
                     const div = document.createElement('div');
                     div.className = 'property-item';
@@ -4145,7 +4170,7 @@
                 },
 
 
-                
+
                 displayAvailableProperties() {
                     const container = document.querySelector(this.config.selectors.availableList);
                     if (!container) return;
@@ -4156,13 +4181,13 @@
                         container.innerHTML = '<div class="empty-state">No available properties</div>';
                         return;
                     }
-                    
+
                     this.state.availableProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, true));
                     });
                 },
 
-                
+
                 displayConnectedProperties() {
                     const container = document.querySelector(this.config.selectors.connectedList);
                     if (!container) return;
@@ -4173,7 +4198,7 @@
                         container.innerHTML = '<div class="empty-state">No connected properties</div>';
                         return;
                     }
-                    
+
 
                     this.state.connectedProperties.forEach(property => {
                         container.appendChild(this.createPropertyElement(property, false));
@@ -4208,7 +4233,7 @@
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
                     );
-                    
+
                     const filteredConnected = this.state.connectedProperties.filter(property =>
                         property.post_title.toLowerCase().includes(searchTerm) ||
                         property.post_id.toLowerCase().includes(searchTerm)
@@ -4253,7 +4278,7 @@
                         return;
                     }
 
-                    
+
                     try {
                         const response = await fetch(
                             `${this.config.apiBaseUrl}/projects/${this.state.selectedProjectId}/properties/${propertyId}`,
@@ -4304,8 +4329,8 @@
                 displayFilteredProperties(availableFiltered, connectedFiltered) {
                     const availableContainer = document.querySelector(this.config.selectors.availableList);
                     const connectedContainer = document.querySelector(this.config.selectors.connectedList);
-                
-                    
+
+
                     if (availableContainer) {
                         availableContainer.innerHTML = '';
                         availableFiltered.forEach(property => {
@@ -4331,11 +4356,11 @@
                 console.error('Unhandled promise rejection:', event.reason);
             });
 
-            
+
             // Make it globally available
             window.ProjectPropertiesManager = ProjectPropertiesManager;
 
-            
+
             // Add this to log when the script loads
             console.log('ProjectPropertiesManager script loaded');
             return ProjectPropertiesManager;
@@ -6352,8 +6377,8 @@
         // Function to load available lists
 
         // const BASE_URL = 'https://propertify.onrender.com';
-        //const BASE_URL = 'http://localhost:5053';  // testing
-        const BASE_URL = 'https://qa-mhkj.onrender.com';
+        const BASE_URL = 'http://localhost:5053';  // testing
+        // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
         async function loadAvailableLists() {
@@ -6961,10 +6986,10 @@
 
 
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const BASE_URL = 'https://propertify.onrender.com';
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     const BASE_URL = 'https://propertify.onrender.com';
 
-        });
+        // });
 
 
         async function loadListOptions() {
@@ -7675,10 +7700,8 @@
             e.preventDefault();
             console.log('Form submission started');
 
-
-
-
             const formData = new FormData(this);
+            console.log(this)
             const jsonData = {
                 header: {
                     startColor: formData.get('header.startColor') || "#ffffff",
@@ -7710,27 +7733,27 @@
                     isStrokeFilter: formData.get('constantData.isStrokeFilter') === 'true',
                     isMaterialElevation: formData.get('constantData.isMaterialElevation') === 'true',
                     headerHeight: parseInt(formData.get('constantData.headerHeight')) || 400,
-                    appPackageName: formData.get('constantData.appPackageName') || "",
-                    defaultLanguage: formData.get('constantData.defaultLanguage') || "",
-                    currencyCode: formData.get('constantData.currencyCode') || "",
-                    appName: formData.get('constantData.appName') || "",
-                    appEmail: formData.get('constantData.appEmail') || "",
-                    appLogo: formData.get('constantData.appLogo') || "",
-                    appCompany: formData.get('constantData.appCompany') || "",
-                    appWebsite: formData.get('constantData.appWebsite') || "",
-                    appContact: formData.get('constantData.appContact') || "",
-                    facebookLink: formData.get('constantData.facebookLink') || "",
-                    twitterLink: formData.get('constantData.twitterLink') || "",
-                    instagramLink: formData.get('constantData.instagramLink') || "",
-                    youtubeLink: formData.get('constantData.youtubeLink') || "",
-                    googlePlayLink: formData.get('constantData.googlePlayLink') || "",
-                    appleStoreLink: formData.get('constantData.appleStoreLink') || "",
-                    appVersion: formData.get('constantData.appVersion') || "",
-                    appUpdateHideShow: formData.get('constantData.appUpdateHideShow') || "",
+                    appPackageName: formData.get('constantData.appPackageName') || "NA",
+                    defaultLanguage: formData.get('constantData.defaultLanguage') || "NA",
+                    currencyCode: formData.get('constantData.currencyCode') || "NA",
+                    appName: formData.get('constantData.appName') || "NA",
+                    appEmail: formData.get('constantData.appEmail') || "NA",
+                    appLogo: formData.get('constantData.appLogo') || "NA",
+                    appCompany: formData.get('constantData.appCompany') || "NA",
+                    appWebsite: formData.get('constantData.appWebsite') || "NA",
+                    appContact: formData.get('constantData.appContact') || "NA",
+                    facebookLink: formData.get('constantData.facebookLink') || "NA",
+                    twitterLink: formData.get('constantData.twitterLink') || "NA",
+                    instagramLink: formData.get('constantData.instagramLink') || "NA",
+                    youtubeLink: formData.get('constantData.youtubeLink') || "NA",
+                    googlePlayLink: formData.get('constantData.googlePlayLink') || "NA",
+                    appleStoreLink: formData.get('constantData.appleStoreLink') || "NA",
+                    appVersion: formData.get('constantData.appVersion') || "NA",
+                    appUpdateHideShow: formData.get('constantData.appUpdateHideShow') || "NA",
                     appUpdateVersionCode: parseInt(formData.get('constantData.appUpdateVersionCode')) || 0,
-                    appUpdateDesc: formData.get('constantData.appUpdateDesc') || "",
-                    appUpdateLink: formData.get('constantData.appUpdateLink') || "",
-                    appUpdateCancelOption: formData.get('constantData.appUpdateCancelOption') || "",
+                    appUpdateDesc: formData.get('constantData.appUpdateDesc') || "NA",
+                    appUpdateLink: formData.get('constantData.appUpdateLink') || "NA",
+                    appUpdateCancelOption: formData.get('constantData.appUpdateCancelOption') || "NA",
                     priceColor: formData.get('constantData.priceColor') || "#000000",
                     callButtonColor: formData.get('constantData.callButtonColor') || "#e1faeb",
                     DetailPageButtonColor: {
@@ -7747,10 +7770,10 @@
             };
             console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
 
-            console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
+            // console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
 
             try {
-                const response = await fetch('https://propertify.onrender.com/api/colors/update', {
+                const response = await fetch(`${BASE_URL}/api/colors/update`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -8095,71 +8118,73 @@
 
         console.log('Event listener added');
 
-        document.getElementById('updateForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            console.log('Form submission started');
 
-            try {
-                const formData = new FormData(this);
-                const jsonData = {
-                    header: {
-                        startColor: formData.get('header.startColor') || "#ffffff",
-                        endColor: formData.get('header.endColor') || "#ffffff"
-                    },
-                    button: {
-                        startColor: formData.get('button.startColor') || "#ee0979",
-                        endColor: formData.get('button.endColor') || "#ff6a00"
-                    },
-                    buttonBackground: {
-                        startColor: formData.get('buttonBackground.startColor') || "#ee0979",
-                        endColor: formData.get('buttonBackground.endColor') || "#ff6a00"
-                    },
-                    list_title_size: {
-                        color: formData.get('list_title_size.color') || "#333333",
-                        backgroundColor: formData.get('list_title_size.backgroundColor') || "#f2f2f2"
-                    },
-                    listbackground: {
-                        backgroundColor: formData.get('listbackground.backgroundColor') || "#ededed"
-                    },
-                    search_filter: {
-                        backgroundColor: formData.get('search_filter.backgroundColor') || "#000000"
-                    },
-                    list_price_size: parseInt(formData.get('list_price_size')) || 14,
-                    markerColor: formData.get('markerColor') || "#e1faeb",
-                    constantData: {
-                        // ... (keep all the constantData fields as they were)
-                    }
-                };
+        /* comment reason - repeated code with less fields*/
+        // document.getElementById('updateForm').addEventListener('submit', async function (e) {
+        //     e.preventDefault();
+        //     console.log('Form submission started');
 
-                // Check if ads data is not empty
-                const adsData = getAdsData();
-                if (adsData.length > 0 && adsData.some(ad => Object.values(ad).some(value => value !== ''))) {
-                    jsonData.ads = adsData;
-                }
+        //     try {
+        //         const formData = new FormData(this);
+        //         const jsonData = {
+        //             header: {
+        //                 startColor: formData.get('header.startColor') || "#ffffff",
+        //                 endColor: formData.get('header.endColor') || "#ffffff"
+        //             },
+        //             button: {
+        //                 startColor: formData.get('button.startColor') || "#ee0979",
+        //                 endColor: formData.get('button.endColor') || "#ff6a00"
+        //             },
+        //             buttonBackground: {
+        //                 startColor: formData.get('buttonBackground.startColor') || "#ee0979",
+        //                 endColor: formData.get('buttonBackground.endColor') || "#ff6a00"
+        //             },
+        //             list_title_size: {
+        //                 color: formData.get('list_title_size.color') || "#333333",
+        //                 backgroundColor: formData.get('list_title_size.backgroundColor') || "#f2f2f2"
+        //             },
+        //             listbackground: {
+        //                 backgroundColor: formData.get('listbackground.backgroundColor') || "#ededed"
+        //             },
+        //             search_filter: {
+        //                 backgroundColor: formData.get('search_filter.backgroundColor') || "#000000"
+        //             },
+        //             list_price_size: parseInt(formData.get('list_price_size')) || 14,
+        //             markerColor: formData.get('markerColor') || "#e1faeb",
+        //             constantData: {
+        //                 // ... (keep all the constantData fields as they were)
+        //             }
+        //         };
 
-                console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
+        //         // Check if ads data is not empty
+        //         const adsData = getAdsData();
+        //         if (adsData.length > 0 && adsData.some(ad => Object.values(ad).some(value => value !== ''))) {
+        //             jsonData.ads = adsData;
+        //         }
 
-                const response = await fetch('https://propertify.onrender.com/api/colors/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(jsonData)
-                });
+        //         console.log('Prepared JSON data:', JSON.stringify(jsonData, null, 2));
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
-                }
+        //         const response = await fetch('https://propertify.onrender.com/api/colors/update', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify(jsonData)
+        //         });
 
-                const data = await response.json();
-                console.log('Success:', data);
-                showPopup('Form submitted successfully!');
-            } catch (error) {
-                console.error('Error:', error);
-                showPopup(`An error occurred while submitting the form: ${error.message}`);
-            }
-        });
+        //         if (!response.ok) {
+        //             const errorData = await response.json();
+        //             throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
+        //         }
+
+        //         const data = await response.json();
+        //         console.log('Success:', data);
+        //         showPopup('Form submitted successfully!');
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //         showPopup(`An error occurred while submitting the form: ${error.message}`);
+        //     }
+        // });
 
 
 
@@ -8270,7 +8295,7 @@
 
             try {
                 // Fetch existing ads
-                const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                const response = await fetch(`${BASE_URL}/api/colors/ads`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -8288,11 +8313,13 @@
                 }
 
                 // Update all ads
-                const updateResponse = await fetch('https://propertify.onrender.com/api/colors/update-ads', {
+                console.log("adData", adData)
+                const updateResponse = await fetch(`${BASE_URL}/api/colors/update-ads`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ads: ads })
+                    body: JSON.stringify({ ads: adData })
                 });
+                console.log(updateResponse)
 
                 if (!updateResponse.ok) {
                     throw new Error(`HTTP error! status: ${updateResponse.status}`);
@@ -8310,7 +8337,8 @@
         // Function to list all ads
         async function listSeparateAds() {
             try {
-                const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                // const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                const response = await fetch(`${BASE_URL}/api/colors/ads`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -8408,7 +8436,7 @@
                         // Display the location in the locationDisplay element <p>
                         locationDisplay.innerHTML = `Latitude:${latitude.toFixed(6)},Longitude:${longitude.toFixed(6)}`;
                         console.log(`Latitude: ${latitude.toFixed(6)},Longitude: ${longitude.toFixed(6)}`)
-                        
+
 
                         // Update the hidden input fields with latitude and longitude
                         latitudeInput.value = latitude;
@@ -8485,6 +8513,146 @@
             // negotiationValueDisplay.textContent = `Current Value: ${negotiationToggle.value}`;
         });
     </script>
+
+
+    <!-- updateColors script - Update Colors Api form -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // getting all the color-inputs
+            const colorInputs = document.querySelectorAll('.color-input');
+
+            colorInputs.forEach((container) => {
+                // getting the colorpicker which is first child and inputtextx which is second child from each .color-input
+                const colorPicker = container.children[1];
+                const textField = container.children[2];
+
+                // now we can sync both the fields 
+                if (colorPicker && textField) {
+                    // if color inpput field chnage then it will also chnage the text field according to change in color-field value
+                    colorPicker.addEventListener('input', () => {
+                        textField.value = colorPicker.value;
+                    });
+
+                    // if inpput-text field chnage then it will also chnage the color field according to change in text-field value
+                    textField.addEventListener('input', () => {
+                        colorPicker.value = textField.value;
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- filling the fields of Colors API Form color Fields -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const apiUrl = `${BASE_URL}/api/colors`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data", data)
+                    if (data.header) {
+                        document.getElementById("headerStartColor").value = data.header.startColor || "#ffffff";
+                        document.querySelector("input[name='header.startColor']").value = data.header.startColor || "#ffffff";
+
+                        document.getElementById("headerEndColor").value = data.header.endColor || "#ffffff";
+                        document.querySelector("input[name='header.endColor']").value = data.header.endColor || "#ffffff";
+                    }
+
+                    if (data.button) {
+                        document.getElementById("buttonStartColor").value = data.button.startColor || "#ee0979";
+                        document.querySelector("input[name='button.startColor']").value = data.button.startColor || "#ee0979";
+
+                        document.getElementById("buttonEndColor").value = data.button.endColor || "#ff6a00";
+                        document.querySelector("input[name='button.endColor']").value = data.button.endColor || "#ff6a00";
+                    }
+
+                    if (data.buttonBackground) {
+                        document.getElementById("buttonBgStartColor").value = data.buttonBackground.startColor || "#ee0979";
+                        document.querySelector("input[name='buttonBackground.startColor']").value = data.buttonBackground.startColor || "#ee0979";
+
+                        document.getElementById("buttonBgEndColor").value = data.buttonBackground.endColor || "#ff6a00";
+                        document.querySelector("input[name='buttonBackground.endColor']").value = data.buttonBackground.endColor || "#ff6a00";
+                    }
+
+                    if (data.list_title_size) {
+                        document.getElementById("listTitleColor").value = data.list_title_size.color || "#333333";
+                        document.querySelector("input[name='list_title_size.color']").value = data.list_title_size.color || "#333333";
+
+                        document.getElementById("listTitleBgColor").value = data.list_title_size.backgroundColor || "#f2f2f2";
+                        document.querySelector("input[name='list_title_size.backgroundColor']").value = data.list_title_size.backgroundColor || "#f2f2f2";
+                    }
+
+                    if (data.listbackground) {
+                        document.getElementById("listBgColor").value = data.listbackground.backgroundColor || "#ededed";
+                        document.querySelector("input[name='listbackground.backgroundColor']").value = data.listbackground.backgroundColor || "#ededed";
+                    }
+
+                    if (data.search_filter) {
+                        document.getElementById("searchFilterBgColor").value = data.search_filter.backgroundColor || "#000000";
+                        document.querySelector("input[name='search_filter.backgroundColor']").value = data.search_filter.backgroundColor || "#000000";
+                    }
+
+                    if (data.constantData) {
+                        document.getElementById("markerColor").value = data.constantData.markerColor || "#e1faeb";
+                        document.querySelector("input[name='markerColor']").value = data.constantData.markerColor || "#e1faeb";
+
+                        document.getElementById("priceColor").value = data.constantData.priceColor || "#000000";
+                        document.querySelector("input[name='constantData.priceColor']").value = data.constantData.priceColor || "#000000";
+
+                        document.getElementById("callButtonColor").value = data.constantData.callButtonColor || "#e1faeb";
+                        document.querySelector("input[name='constantData.callButtonColor']").value = data.constantData.callButtonColor || "#e1faeb";
+                    }
+                    
+                    if(data.markerColor){
+                        document.getElementById("markerColor").value = data.markerColor || "#e1faeb";
+                        document.querySelector("input[name='markerColor']").value = data.markerColor || "#e1faeb";
+
+                    }
+
+                    // <input type="color" id="detailPageButtonStartColor" value="#e1faeb">
+                    //     <input type="text" name="constantData.DetailPageButtonColor.startColor" value="#e1faeb">
+                    // <input type="color" id="detailPageButtonEndColor" value="#e1faeb">
+                    //     <input type="text" name="constantData.DetailPageButtonColor.endColor" value="#e1faeb">
+                    
+                    if(data.markerColor){
+                        document.getElementById("detailPageButtonStartColor").value = data.constantData.DetailPageButtonColor.startColor || "#e1faeb";
+                        document.querySelector("input[name='constantData.DetailPageButtonColor.startColor']").value = data.constantData.DetailPageButtonColor.startColor || "#e1faeb";
+
+                        document.getElementById("detailPageButtonEndColor").value = data.constantData.DetailPageButtonColor.endColor || "#e1faeb";
+                        document.querySelector("input[name='constantData.DetailPageButtonColor.endColor']").value = data.constantData.DetailPageButtonColor.endColor || "#e1faeb";
+                    }
+
+                    
+
+                
+                    
+                })
+                .catch(error => {
+                    console.error("Error fetching colors:", error);
+                });
+        });
+    </script>
+
+
+
+<!-- testing load on server -->
+<!-- <script>
+    document.addEventListener('DOMContentLoaded' , async()=>{
+        for(let i=0 ; i<=1000 ; i++){
+            try {
+                const response = await fetch("https://propertify.onrender.com/api/properties/all", {
+                    method: 'GET',
+                });
+                console.log("response : ", response)
+            } catch (error) {
+                console.log("Error Occured" ,error)
+
+            }
+        }
+    })
+</script> -->
+
 </body>
 
 </html>
