@@ -1204,6 +1204,20 @@
         }
     </style>
 
+    <!-- style to remove up-down arrow in input type field number , and prevent increment /decrement using js Script -->
+    <style>
+        /* For Chrome, Safari, Edge, Opera */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* For Firefox
+        input[type="number"] {
+            -moz-appearance: textfield;
+        } */
+    </style>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
@@ -2359,7 +2373,7 @@
                 <input type="color" id="headerEndColor" value="#ffffff">
                 <input type="text" name="header.endColor" value="#ffffff">
             </div>
-            
+
             <h2>Button</h2>
             <div class="color-input">
                 <label style="min-width: 5rem;">Start Color</label>
@@ -2371,7 +2385,7 @@
                 <input type="color" id="buttonEndColor" value="#ff6a00">
                 <input type="text" name="button.endColor" value="#ff6a00">
             </div>
-            
+
             <h2>Button Background</h2>
             <div class="color-input">
                 <label style="min-width: 5rem;">Start Color</label>
@@ -2383,7 +2397,7 @@
                 <input type="color" id="buttonBgEndColor" value="#ff6a00">
                 <input type="text" name="buttonBackground.endColor" value="#ff6a00">
             </div>
-            
+
             <h2>List Title Size</h2>
             <div class="color-input">
                 <label style="min-width: 5rem;">Start Color</label>
@@ -2395,14 +2409,14 @@
                 <input type="color" id="listTitleBgColor" value="#f2f2f2">
                 <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
             </div>
-            
+
             <h2>List Background</h2>
             <div class="color-input">
                 <label style="min-width: 5rem;">Background Color</label>
                 <input type="color" id="listBgColor" value="#ededed">
                 <input type="text" name="listbackground.backgroundColor" value="#ededed">
             </div>
-            
+
             <h2>Search Filter</h2>
             <div class="color-input">
                 <label style="min-width: 5rem;">Background Color</label>
@@ -2413,7 +2427,7 @@
             <h2>Other Settings</h2>
             <label for="listPriceSize">List Price Size:</label>
             <input type="number" id="listPriceSize" name="list_price_size" value="14">
-            
+
             <div class="color-input">
                 <label style="min-width: 5rem;">Marker Color</label>
                 <input type="color" id="markerColor" value="#e1faeb">
@@ -2506,15 +2520,15 @@
                 <input type="color" id="priceColor" value="#000000">
                 <input type="text" name="constantData.priceColor" value="#000000">
             </div>
-            
+
             <div class="color-input">
                 <!-- callButtonColor -->
-                
+
                 <label style="min-width: 5rem;">Call Button Color</label>
                 <input type="color" id="callButtonColor" value="#e1faeb">
                 <input type="text" name="constantData.callButtonColor" value="#e1faeb">
             </div>
-            
+
             <h3>Detail Page Button Color</h3>
             <div class="color-input">
                 <label style="min-width: 5rem;">Start Color</label>
@@ -2826,7 +2840,7 @@
         </div>
     </div>
 
-    
+
 
     <div id="adFormPopup" class="popup">
         <div class="popup-content">
@@ -6376,8 +6390,8 @@
 
         // Function to load available lists
 
-        const BASE_URL = 'https://propertify.onrender.com';
-        // const BASE_URL = 'http://localhost:5053';  // testing
+        // const BASE_URL = 'https://propertify.onrender.com';
+        const BASE_URL = 'http://localhost:5053';  // testing
         // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
@@ -8603,8 +8617,8 @@
                         document.getElementById("callButtonColor").value = data.constantData.callButtonColor || "#e1faeb";
                         document.querySelector("input[name='constantData.callButtonColor']").value = data.constantData.callButtonColor || "#e1faeb";
                     }
-                    
-                    if(data.markerColor){
+
+                    if (data.markerColor) {
                         document.getElementById("markerColor").value = data.markerColor || "#e1faeb";
                         document.querySelector("input[name='markerColor']").value = data.markerColor || "#e1faeb";
 
@@ -8614,8 +8628,8 @@
                     //     <input type="text" name="constantData.DetailPageButtonColor.startColor" value="#e1faeb">
                     // <input type="color" id="detailPageButtonEndColor" value="#e1faeb">
                     //     <input type="text" name="constantData.DetailPageButtonColor.endColor" value="#e1faeb">
-                    
-                    if(data.markerColor){
+
+                    if (data.markerColor) {
                         document.getElementById("detailPageButtonStartColor").value = data.constantData.DetailPageButtonColor.startColor || "#e1faeb";
                         document.querySelector("input[name='constantData.DetailPageButtonColor.startColor']").value = data.constantData.DetailPageButtonColor.startColor || "#e1faeb";
 
@@ -8623,10 +8637,10 @@
                         document.querySelector("input[name='constantData.DetailPageButtonColor.endColor']").value = data.constantData.DetailPageButtonColor.endColor || "#e1faeb";
                     }
 
-                    
 
-                
-                    
+
+
+
                 })
                 .catch(error => {
                     console.error("Error fetching colors:", error);
@@ -8635,9 +8649,17 @@
     </script>
 
 
+    <!-- prevent input type = number , onscroll increment - decrement of input value-->
+    <script>
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.addEventListener('wheel', function (event) {
+                    event.preventDefault();
+                });
+            });
+    </script>
 
-<!-- testing load on server -->
-<!-- <script>
+    <!-- testing load on server -->
+    <!-- <script>
     document.addEventListener('DOMContentLoaded' , async()=>{
         for(let i=0 ; i<=1000 ; i++){
             try {
