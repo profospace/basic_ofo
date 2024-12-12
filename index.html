@@ -2577,6 +2577,9 @@
 
 
 
+
+
+
     <div id="NewListOption" class="tabcontent">
         <h1>Create New List Option</h1>
         <form id="newListOptionForm">
@@ -7676,10 +7679,8 @@
             e.preventDefault();
             console.log('Form submission started');
 
-
-
-
             const formData = new FormData(this);
+            console.log(this)
             const jsonData = {
                 header: {
                     startColor: formData.get('header.startColor') || "#ffffff",
@@ -8096,6 +8097,8 @@
 
         console.log('Event listener added');
 
+
+        /* comment reason - repeated code with less fields*/
         // document.getElementById('updateForm').addEventListener('submit', async function (e) {
         //     e.preventDefault();
         //     console.log('Form submission started');
@@ -8289,11 +8292,11 @@
                 }
 
                 // Update all ads
-                console.log("Helllo")
+                console.log("adData", adData)
                 const updateResponse = await fetch(`${BASE_URL}/api/colors/update-ads`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ads: ads })
+                    body: JSON.stringify({ ads: adData })
                 });
                 console.log(updateResponse)
 
@@ -8489,6 +8492,36 @@
             // negotiationValueDisplay.textContent = `Current Value: ${negotiationToggle.value}`;
         });
     </script>
+
+
+    <!-- updateColors script - Update Colors Api form -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // getting all the color-inputs
+            const colorInputs = document.querySelectorAll('.color-input');
+
+            colorInputs.forEach((container) => {
+                // getting the colorpicker which is first child and inputtextx which is second child from each .color-input
+                const colorPicker = container.children[0];
+                const textField = container.children[1];
+
+                // now we can sync both the fields 
+                if (colorPicker && textField) {
+                    // if color inpput field chnage then it will also chnage the text field according to change in color-field value
+                    colorPicker.addEventListener('input', () => {
+                        textField.value = colorPicker.value;
+                    });
+
+                    // if inpput-text field chnage then it will also chnage the color field according to change in text-field value
+                    textField.addEventListener('input', () => {
+                        colorPicker.value = textField.value;
+                    });
+                }
+            });
+        });
+    </script>
+
+
 </body>
 
 </html>
