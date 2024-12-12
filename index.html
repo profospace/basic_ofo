@@ -8542,8 +8542,102 @@
         });
     </script>
 
+    <!-- filling the fields of Colors API Form color Fields -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const apiUrl = `${BASE_URL}/api/colors`;
 
-<script>
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data", data)
+                    if (data.header) {
+                        document.getElementById("headerStartColor").value = data.header.startColor || "#ffffff";
+                        document.querySelector("input[name='header.startColor']").value = data.header.startColor || "#ffffff";
+
+                        document.getElementById("headerEndColor").value = data.header.endColor || "#ffffff";
+                        document.querySelector("input[name='header.endColor']").value = data.header.endColor || "#ffffff";
+                    }
+
+                    if (data.button) {
+                        document.getElementById("buttonStartColor").value = data.button.startColor || "#ee0979";
+                        document.querySelector("input[name='button.startColor']").value = data.button.startColor || "#ee0979";
+
+                        document.getElementById("buttonEndColor").value = data.button.endColor || "#ff6a00";
+                        document.querySelector("input[name='button.endColor']").value = data.button.endColor || "#ff6a00";
+                    }
+
+                    if (data.buttonBackground) {
+                        document.getElementById("buttonBgStartColor").value = data.buttonBackground.startColor || "#ee0979";
+                        document.querySelector("input[name='buttonBackground.startColor']").value = data.buttonBackground.startColor || "#ee0979";
+
+                        document.getElementById("buttonBgEndColor").value = data.buttonBackground.endColor || "#ff6a00";
+                        document.querySelector("input[name='buttonBackground.endColor']").value = data.buttonBackground.endColor || "#ff6a00";
+                    }
+
+                    if (data.list_title_size) {
+                        document.getElementById("listTitleColor").value = data.list_title_size.color || "#333333";
+                        document.querySelector("input[name='list_title_size.color']").value = data.list_title_size.color || "#333333";
+
+                        document.getElementById("listTitleBgColor").value = data.list_title_size.backgroundColor || "#f2f2f2";
+                        document.querySelector("input[name='list_title_size.backgroundColor']").value = data.list_title_size.backgroundColor || "#f2f2f2";
+                    }
+
+                    if (data.listbackground) {
+                        document.getElementById("listBgColor").value = data.listbackground.backgroundColor || "#ededed";
+                        document.querySelector("input[name='listbackground.backgroundColor']").value = data.listbackground.backgroundColor || "#ededed";
+                    }
+
+                    if (data.search_filter) {
+                        document.getElementById("searchFilterBgColor").value = data.search_filter.backgroundColor || "#000000";
+                        document.querySelector("input[name='search_filter.backgroundColor']").value = data.search_filter.backgroundColor || "#000000";
+                    }
+
+                    if (data.constantData) {
+                        document.getElementById("markerColor").value = data.constantData.markerColor || "#e1faeb";
+                        document.querySelector("input[name='markerColor']").value = data.constantData.markerColor || "#e1faeb";
+
+                        document.getElementById("priceColor").value = data.constantData.priceColor || "#000000";
+                        document.querySelector("input[name='constantData.priceColor']").value = data.constantData.priceColor || "#000000";
+
+                        document.getElementById("callButtonColor").value = data.constantData.callButtonColor || "#e1faeb";
+                        document.querySelector("input[name='constantData.callButtonColor']").value = data.constantData.callButtonColor || "#e1faeb";
+                    }
+                    
+                    if(data.markerColor){
+                        document.getElementById("markerColor").value = data.markerColor || "#e1faeb";
+                        document.querySelector("input[name='markerColor']").value = data.markerColor || "#e1faeb";
+
+                    }
+
+                    // <input type="color" id="detailPageButtonStartColor" value="#e1faeb">
+                    //     <input type="text" name="constantData.DetailPageButtonColor.startColor" value="#e1faeb">
+                    // <input type="color" id="detailPageButtonEndColor" value="#e1faeb">
+                    //     <input type="text" name="constantData.DetailPageButtonColor.endColor" value="#e1faeb">
+                    
+                    if(data.markerColor){
+                        document.getElementById("detailPageButtonStartColor").value = data.constantData.DetailPageButtonColor.startColor || "#e1faeb";
+                        document.querySelector("input[name='constantData.DetailPageButtonColor.startColor']").value = data.constantData.DetailPageButtonColor.startColor || "#e1faeb";
+
+                        document.getElementById("detailPageButtonEndColor").value = data.constantData.DetailPageButtonColor.endColor || "#e1faeb";
+                        document.querySelector("input[name='constantData.DetailPageButtonColor.endColor']").value = data.constantData.DetailPageButtonColor.endColor || "#e1faeb";
+                    }
+
+                    
+
+                
+                    
+                })
+                .catch(error => {
+                    console.error("Error fetching colors:", error);
+                });
+        });
+    </script>
+
+
+
+<!-- testing load on server -->
+<!-- <script>
     document.addEventListener('DOMContentLoaded' , async()=>{
         for(let i=0 ; i<=1000 ; i++){
             try {
@@ -8557,7 +8651,7 @@
             }
         }
     })
-</script>
+</script> -->
 
 </body>
 
