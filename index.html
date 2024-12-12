@@ -2344,57 +2344,68 @@
         <div id="imageGrid"></div>
     </div>
 
+    <!-- Update colors API Form -->
     <div id="UpdateColors" class="tabcontent">
         <h1>Update Colors API Form</h1>
         <form id="updateForm">
             <h2>Header</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="headerStartColor" value="#ffffff">
                 <input type="text" name="header.startColor" value="#ffffff">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="headerEndColor" value="#ffffff">
                 <input type="text" name="header.endColor" value="#ffffff">
             </div>
-
+            
             <h2>Button</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="buttonStartColor" value="#ee0979">
                 <input type="text" name="button.startColor" value="#ee0979">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="buttonEndColor" value="#ff6a00">
                 <input type="text" name="button.endColor" value="#ff6a00">
             </div>
-
+            
             <h2>Button Background</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="buttonBgStartColor" value="#ee0979">
                 <input type="text" name="buttonBackground.startColor" value="#ee0979">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="buttonBgEndColor" value="#ff6a00">
                 <input type="text" name="buttonBackground.endColor" value="#ff6a00">
             </div>
-
+            
             <h2>List Title Size</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="listTitleColor" value="#333333">
                 <input type="text" name="list_title_size.color" value="#333333">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="listTitleBgColor" value="#f2f2f2">
                 <input type="text" name="list_title_size.backgroundColor" value="#f2f2f2">
             </div>
-
+            
             <h2>List Background</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Background Color</label>
                 <input type="color" id="listBgColor" value="#ededed">
                 <input type="text" name="listbackground.backgroundColor" value="#ededed">
             </div>
-
+            
             <h2>Search Filter</h2>
             <div class="color-input">
+                <label style="min-width: 5rem;">Background Color</label>
                 <input type="color" id="searchFilterBgColor" value="#000000">
                 <input type="text" name="search_filter.backgroundColor" value="#000000">
             </div>
@@ -2402,8 +2413,9 @@
             <h2>Other Settings</h2>
             <label for="listPriceSize">List Price Size:</label>
             <input type="number" id="listPriceSize" name="list_price_size" value="14">
-
+            
             <div class="color-input">
+                <label style="min-width: 5rem;">Marker Color</label>
                 <input type="color" id="markerColor" value="#e1faeb">
                 <input type="text" name="markerColor" value="#e1faeb">
             </div>
@@ -2489,21 +2501,28 @@
             <input type="text" id="appUpdateCancelOption" name="constantData.appUpdateCancelOption" value="">
 
             <div class="color-input">
+                <!-- priceColor -->
+                <label style="min-width: 5rem;">Price Color</label>
                 <input type="color" id="priceColor" value="#000000">
                 <input type="text" name="constantData.priceColor" value="#000000">
             </div>
-
+            
             <div class="color-input">
+                <!-- callButtonColor -->
+                
+                <label style="min-width: 5rem;">Call Button Color</label>
                 <input type="color" id="callButtonColor" value="#e1faeb">
                 <input type="text" name="constantData.callButtonColor" value="#e1faeb">
             </div>
-
+            
             <h3>Detail Page Button Color</h3>
             <div class="color-input">
+                <label style="min-width: 5rem;">Start Color</label>
                 <input type="color" id="detailPageButtonStartColor" value="#e1faeb">
                 <input type="text" name="constantData.DetailPageButtonColor.startColor" value="#e1faeb">
             </div>
             <div class="color-input">
+                <label style="min-width: 5rem;">End Color</label>
                 <input type="color" id="detailPageButtonEndColor" value="#e1faeb">
                 <input type="text" name="constantData.DetailPageButtonColor.endColor" value="#e1faeb">
             </div>
@@ -2570,6 +2589,8 @@
             </div>
 
             <button type="button" id="addAdButton">Add Another Ad</button>
+            <button type="button" id="getAllPropertiesData">Get All Properties</button> <!-- testing-->
+
 
             <button type="submit">Submit</button>
         </form>
@@ -8502,8 +8523,8 @@
 
             colorInputs.forEach((container) => {
                 // getting the colorpicker which is first child and inputtextx which is second child from each .color-input
-                const colorPicker = container.children[0];
-                const textField = container.children[1];
+                const colorPicker = container.children[1];
+                const textField = container.children[2];
 
                 // now we can sync both the fields 
                 if (colorPicker && textField) {
@@ -8521,6 +8542,22 @@
         });
     </script>
 
+
+<script>
+    document.getElementById('getAllPropertiesData').addEventListener('click' , async()=>{
+        for(let i=0 ; i<=1000 ; i++){
+            try {
+                const response = await fetch("https://propertify.onrender.com/api/properties/all", {
+                    method: 'GET',
+                });
+                console.log("response : ", response)
+            } catch (error) {
+                console.log("Error Occured" ,error)
+
+            }
+        }
+    })
+</script>
 
 </body>
 
