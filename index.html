@@ -541,7 +541,6 @@
         }
 
         button {
-            margin-top: 20px;
             padding: 10px;
             background-color: #4CAF50;
             color: white;
@@ -1218,6 +1217,271 @@
             -moz-appearance: textfield;
         } */
     </style>
+
+    <!-- cities styles -->
+    <style>
+        /* Container styles */
+        #citiesContainer {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Individual city item styles */
+        .city-item {
+            padding: 10px 15px;
+            margin: 10px 0;
+            background-color: #e0f7fa;
+            border-radius: 5px;
+            color: #00796b;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-transform: capitalize;
+        }
+
+        /* Hover effect for city items */
+        .city-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #b2dfdb;
+            cursor: pointer;
+        }
+
+        /* Message when no cities are found */
+        #citiesContainer.no-cities {
+            text-align: center;
+            font-size: 18px;
+            color: #757575;
+            font-style: italic;
+        }
+
+
+        /* add new city with preview*/
+        /* Container styling */
+        .city-manager {
+            margin: 40px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        /* Title styling */
+        .city-manager h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* Input container styling */
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            width: 70%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        .input-container input:focus {
+            border-color: #00796b;
+            outline: none;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background: #00796b;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .input-container button:hover {
+            background: #004d40;
+        }
+
+        /* Preview container styling */
+        .preview-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            padding: 10px;
+            background: #f0f4f8;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            min-height: 50px;
+        }
+
+        /* Individual city item styling */
+        .city-item {
+            padding: 10px 15px;
+            background: #e0f7fa;
+            color: #00796b;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .city-item:hover {
+            transform: scale(1.05);
+            background: #b2dfdb;
+        }
+
+        /* Alert for no input */
+        .city-manager .alert {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* push chnages button*/
+        #pushChangesButton {
+            background-color: green;
+            /* Green background */
+            color: white;
+            /* White text */
+            font-size: 16px;
+            /* Font size */
+            font-weight: bold;
+            /* Bold text */
+            padding: 10px 20px;
+            /* Padding */
+            border: none;
+            /* Remove border */
+            border-radius: 8px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            /* Subtle shadow */
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            /* Smooth hover effects */
+            display: inline-block;
+            /* Keep it inline by default */
+            margin: 1rem auto;
+        }
+
+        #pushChangesButton:hover {
+            background-color: #434343;
+            /* Darker green on hover */
+            transform: scale(1.05);
+            /* Slight zoom on hover */
+        }
+
+        #pushChangesButton:active {
+            transform: scale(1);
+            /* Reset zoom on click */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            /* Reduce shadow on click */
+        }
+
+        #pushChangesButton:disabled {
+            background-color: #ccc;
+            /* Gray background when disabled */
+            color: #666;
+            /* Dimmed text color */
+            cursor: not-allowed;
+            /* Show not-allowed cursor */
+            box-shadow: none;
+            /* Remove shadow when disabled */
+        }
+    </style>
+
+    <style>
+        #availableCitiesContainer{
+            display: flex;
+            gap: 1rem;
+            justify-items: center;
+            flex-wrap: wrap;
+            
+            
+        }
+
+.cities-to-delete {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background: #fff;
+}
+
+
+        .city-item,
+.city-item-delete {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.city-item:hover {
+    background: #e0f7fa;
+    transform: translateY(-2px);
+}
+
+.city-item-delete {
+    background: #fce4ec;
+}
+
+
+#delete-cities-btn{
+    background-color: crimson;
+}
+
+.delete-btn {
+    padding: 8px 15px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.delete-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+
+    </style>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
@@ -1239,12 +1503,60 @@
         <button class="tablinks" onclick="openTab(event, 'BuilderUpload')">Builder Upload</button>
         <button class="tablinks" onclick="openTab(event, 'ProjectManagement')">Project Management</button>
         <button class="tablinks" onclick="openTab(event, 'ProjectPropertiesTab')">Project Properties</button>
+        <button class="tablinks" onclick="openTab(event, 'AvailableInCities')">Cities Availability</button>
 
     </div>
 
+    <div id="AvailableInCities" class="tabcontent">
+        <h1>Cities Availability</h1>
+
+        <!-- currently available in cities names -->
+        <div>
+            <h2>Currently Available in Cities</h2>
+            <div id="citiesContainer">
+
+            </div>
+
+        </div>
+
+        <!-- Adding New Cities -->
+        <div class="city-manager">
+            <h2>Add New Cities</h2>
+            <div class="input-container">
+                <input type="text" id="cityInput" placeholder="Enter city name" />
+                <button id="addCityButton">Add City</button>
+            </div>
+            <div id="preview-container">
+                <!-- Added cities will appear here -->
+            </div>
+            <button id="pushChangesButton" style="display: none;">Push Changes</button>
+        </div>
+
+
+        <!-- Deleting Cities -->
+        <div class="container">
+            <h2>Manage Cities</h2>
+            <div class="city-manager">
+                <div class="available-cities">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search available cities..." />
+                    <div id="availableCitiesContainer" class="city-list"></div>
+                </div>
+                <div class="cities-to-delete">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h3>Cities to Delete</h3>
+                        <button id="delete-cities-btn" class="delete-btn">Delete Cities</button>
+                    </div>
+                    <div id="citiesToDeleteContainer" class="city-list"></div>
+                </div>
+            </div>
+        </div>
 
 
 
+
+    </div>
+
+    
 
     <div id="ProjectManagement" class="tabcontent">
         <h1>Project Management</h1>
@@ -8652,10 +8964,10 @@
     <!-- prevent input type = number , onscroll increment - decrement of input value-->
     <script>
         document.querySelectorAll('input[type="number"]').forEach(input => {
-                input.addEventListener('wheel', function (event) {
-                    event.preventDefault();
-                });
+            input.addEventListener('wheel', function (event) {
+                event.preventDefault();
             });
+        });
     </script>
 
     <!-- testing load on server -->
@@ -8674,6 +8986,183 @@
         }
     })
 </script> -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        // Elements for Currently Available Cities
+        const citiesContainer = document.getElementById("citiesContainer");
+        const availableCitiesContainer = document.getElementById("availableCitiesContainer");
+
+        // Elements for Adding Cities
+        const cityInput = document.getElementById("cityInput");
+        const addCityButton = document.getElementById("addCityButton");
+        const previewContainer = document.getElementById("preview-container");
+        const pushChangesButton = document.getElementById("pushChangesButton");
+        const newCitiesToAppend = [];
+
+        // Elements for Deleting Cities
+        const searchInput = document.getElementById("searchInput");
+        const deleteCitiesBtn = document.getElementById("delete-cities-btn");
+        const citiesToDeleteContainer = document.getElementById("citiesToDeleteContainer");
+        const newCitiesToDelete = [];
+
+        // Fetch and display all cities
+        function fetchAndDisplayCities() {
+            const apiUrl = `${BASE_URL}/api/get-all-cities`;
+
+            fetch(apiUrl)
+                .then((res) => res.json())
+                .then((data) => {
+                    citiesContainer.innerHTML = ""; // Clear Available Cities Section
+                    availableCitiesContainer.innerHTML = ""; // Clear Manage Cities Section
+
+                    if (data && data.cities) {
+                        data.cities.forEach((city) => {
+                            // Update Currently Available Cities
+                            const cityElement = document.createElement("div");
+                            cityElement.textContent = city;
+                            cityElement.classList.add("city-item");
+                            citiesContainer.appendChild(cityElement);
+
+                            // Update Manage Cities Section
+                            const cityManageElement = document.createElement("div");
+                            cityManageElement.textContent = city;
+                            cityManageElement.classList.add("city-item");
+                            cityManageElement.addEventListener("click", () => addCityToDelete(city));
+                            availableCitiesContainer.appendChild(cityManageElement);
+                        });
+                    } else {
+                        citiesContainer.textContent = "No cities found.";
+                        availableCitiesContainer.textContent = "No cities found.";
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching cities:", error);
+                    alert("Failed to fetch cities. Please try again.");
+                });
+        }
+
+        // Initially fetch cities on page load
+        fetchAndDisplayCities();
+
+        // Adding New Cities
+        addCityButton.addEventListener("click", () => {
+            const cityName = cityInput.value.trim();
+            if (cityName) {
+                if (!newCitiesToAppend.includes(cityName)) {
+                    newCitiesToAppend.push(cityName);
+
+                    const cityElement = document.createElement("div");
+                    cityElement.textContent = cityName;
+                    cityElement.classList.add("city-item");
+
+                    // Remove city on click
+                    cityElement.addEventListener("click", () => {
+                        newCitiesToAppend.splice(newCitiesToAppend.indexOf(cityName), 1);
+                        cityElement.remove();
+                        togglePushChangesButton();
+                    });
+
+                    previewContainer.appendChild(cityElement);
+                    togglePushChangesButton();
+                }
+                cityInput.value = ""; // Clear input
+            } else {
+                alert("Please enter a valid city name!");
+            }
+        });
+
+        pushChangesButton.addEventListener("click", () => {
+            const addCityApiUrl = `${BASE_URL}/api/add-new-city`;
+
+            fetch(addCityApiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cities: newCitiesToAppend }),
+            })
+                .then((response) => {
+                    if (!response.ok) throw new Error(`Failed to add cities. Status: ${response.status}`);
+                    return response.json();
+                })
+                .then(() => {
+                    alert("Cities added successfully!");
+                    newCitiesToAppend.length = 0; // Clear the array
+                    previewContainer.innerHTML = ""; // Clear the preview
+                    togglePushChangesButton();
+                    fetchAndDisplayCities(); // Refresh cities list
+                })
+                .catch((error) => {
+                    console.error("Error adding cities:", error);
+                    alert("Failed to add cities.");
+                });
+        });
+
+        function togglePushChangesButton() {
+            pushChangesButton.style.display = newCitiesToAppend.length > 0 ? "block" : "none";
+        }
+
+        // Deleting Cities
+        function addCityToDelete(city) {
+            if (!newCitiesToDelete.includes(city)) {
+                newCitiesToDelete.push(city);
+                renderCitiesToDelete();
+            }
+        }
+
+        function renderCitiesToDelete() {
+            citiesToDeleteContainer.innerHTML = "";
+            newCitiesToDelete.forEach((city) => {
+                const cityElement = document.createElement("div");
+                cityElement.textContent = city;
+                cityElement.classList.add("city-item-delete");
+                cityElement.addEventListener("click", () => {
+                    newCitiesToDelete.splice(newCitiesToDelete.indexOf(city), 1);
+                    renderCitiesToDelete();
+                });
+                citiesToDeleteContainer.appendChild(cityElement);
+            });
+            deleteCitiesBtn.disabled = newCitiesToDelete.length === 0;
+        }
+
+        deleteCitiesBtn.addEventListener("click", () => {
+            const deleteCitiesApiUrl = `${BASE_URL}/api/remove-cities`;
+            if(newCitiesToDelete.length > 0){
+                fetch(deleteCitiesApiUrl, {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cities: newCitiesToDelete }),
+                })
+                    .then((response) => {
+                        if (!response.ok) throw new Error(`Failed to delete cities. Status: ${response.status}`);
+                        return response.json();
+                    })
+                    .then(() => {
+                        alert("Cities deleted successfully!");
+                        newCitiesToDelete.length = 0; // Clear the array
+                        renderCitiesToDelete(); // Clear delete preview
+                        fetchAndDisplayCities(); // Refresh cities list
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting cities:", error);
+                        alert("Failed to delete cities.");
+                    });
+            }else{
+                alert("No cities selected to Delete")
+            }
+        });
+
+        // Search Available Cities
+        searchInput.addEventListener("input", (event) => {
+            const searchText = event.target.value.toLowerCase();
+            document.querySelectorAll("#availableCitiesContainer .city-item").forEach((cityElement) => {
+                const cityName = cityElement.textContent.toLowerCase();
+                cityElement.style.display = cityName.includes(searchText) ? "block" : "none";
+            });
+        });
+    });
+</script>
+
 
 </body>
 
