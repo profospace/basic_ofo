@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
- const BASE_URL = 'https://propertify.onrender.com';
+ const BASE_URL = 'https://basic-ofo.onrender.com/';
 //const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
