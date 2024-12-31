@@ -2103,7 +2103,7 @@
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        
+
 
 
 
@@ -2734,6 +2734,13 @@
                 image: container.querySelector('input[type="file"]')?.value || '',
                 isActive: true
             }));
+
+            // Add floor plan images
+            const floorPlanImage = container.querySelector('input[type="file"]').files[0];
+            if (floorPlanImage) {
+                formData.append('floorPlanImages', floorPlanImage);
+            }
+
         }
 
         function addFloorPlan() {
@@ -2903,6 +2910,15 @@
             }
         }
 
+        // Add floor plan images
+        const floorPlanFiles = document.querySelectorAll('.floor-plan-item input[type="file"]');
+        floorPlanFiles.forEach(fileInput => {
+            if (fileInput.files.length > 0) {
+                formData.append('floorPlanImages', fileInput.files[0]);
+            }
+        });
+
+
         // Function to remove a gallery image
         function removeGalleryImage(button) {
             button.parentElement.remove();
@@ -3061,15 +3077,27 @@
 
                 formData.append('data', JSON.stringify(projectData));
                 // Add gallery images
+
+                // Add gallery images - get them from the gallery file inputs
                 const galleryContainer = document.getElementById('galleryContainer');
                 const galleryInputs = galleryContainer.querySelectorAll('input[type="file"]');
                 galleryInputs.forEach(input => {
-                    if (input.files.length) {
+                    if (input.files && input.files.length > 0) {
                         Array.from(input.files).forEach(file => {
                             formData.append('galleryList', file);
                         });
                     }
                 });
+
+                // Add floor plan images
+                const floorPlanContainers = document.querySelectorAll('.floor-plan-item');
+                floorPlanContainers.forEach(container => {
+                    const floorPlanImage = container.querySelector('input[type="file"]').files[0];
+                    if (floorPlanImage) {
+                        formData.append('floorPlanImages', floorPlanImage);
+                    }
+                });
+
 
                 const response = await fetch(`${BASE_URL}/api/projects`, {
                     method: 'POST',
@@ -5531,8 +5559,8 @@
 
         // Function to load available lists
 
-         const BASE_URL = 'https://propertify.onrender.com';
-       // const BASE_URL = 'http://localhost:5053';
+        const BASE_URL = 'https://propertify.onrender.com';
+        // const BASE_URL = 'http://localhost:5053';
         // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
@@ -5818,7 +5846,7 @@
 
 
 
-        
+
 
 
         document.getElementById('addNewOptionButton').addEventListener('click', function () {
@@ -9048,8 +9076,8 @@
 
                     // Add an event listener to handle button clicks
                     resetButton.addEventListener('click', async () => {
-                        const choose =  confirm('Are You Sure Want to Reset Password ?')
-                        if(choose){
+                        const choose = confirm('Are You Sure Want to Reset Password ?')
+                        if (choose) {
                             const builderId = builder._id; // Replace with the actual builder ID you want to reset the password for
 
                             try {
@@ -9072,7 +9100,7 @@
                                 console.error('Error resetting password:', error);
                                 alert('There was an error resetting the password.');
                             }
-                        }else{
+                        } else {
                             return
                         }
                     });
