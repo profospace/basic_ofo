@@ -12,1476 +12,6 @@
 
 
 
-
-    <style>
-        #ProjectPropertiesTab {
-            padding: 20px;
-        }
-
-        .project-property-connections {
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-        }
-
-        .search-and-filter {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .search-input,
-        .project-select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 100%;
-        }
-
-        .properties-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .property-list {
-            border: 1px solid #eee;
-            border-radius: 4px;
-            padding: 10px;
-            min-height: 200px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .property-item {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: #f9f9f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .property-item button {
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            color: white;
-            margin-left: 10px;
-        }
-
-        .connect-button {
-            background-color: #4CAF50;
-        }
-
-        .disconnect-button {
-            background-color: #f44336;
-        }
-
-        .property-details {
-            flex: 1;
-            margin-right: 10px;
-        }
-
-        .property-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .property-info {
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            font-style: italic;
-            color: #666;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-style: italic;
-        }
-
-        /* Additional responsive styles */
-        @media (max-width: 768px) {
-
-            .search-and-filter,
-            .properties-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-
-    <style>
-        .project-form-section {
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .grid-2-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .grid-3-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .map-container {
-            height: 300px;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
-
-        .floor-plan-item {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
-
-        .amenity-category,
-        .gallery-category {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-        }
-
-        .project-card {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 4px;
-            background: #fff;
-        }
-
-        .project-status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
-        }
-
-        .project-status.upcoming {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .project-status.under_construction {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .project-status.completed {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .secondary-button {
-            background: #6c757d;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .remove-button {
-            background: #dc3545;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .property-select-section {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-
-        .search-box {
-            margin-top: 1rem;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .form-section {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border: 1px solid #eee;
-            border-radius: 4px;
-        }
-
-        .grid-2-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .image-preview-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: cover;
-            margin-top: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .gallery-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .gallery-preview img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .save-button {
-            background: #4CAF50;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .cancel-button {
-            background: #f44336;
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .modified {
-            border-color: #4CAF50;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .imageUrl {
-            background-color: #f0f0f0;
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 0.8em;
-            word-break: break-all;
-            transition: background-color 0.3s ease;
-        }
-
-        .imageUrl:hover {
-            background-color: #e0e0e0;
-        }
-
-        .tab {
-            overflow: hidden;
-            border: 1px solid #d3fb3e;
-            background-color: #000000;
-        }
-
-        .tab button {
-            background-color: inherit;
-            float: left;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-        }
-
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-        .tabcontent {
-            display: none;
-            padding: 6px 12px;
-            border: 1px solid #ccc;
-            border-top: none;
-        }
-
-        .property-select-section {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-
-        .search-box {
-            margin-top: 1rem;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        #propertyEditForm {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            padding: 1rem;
-        }
-
-        #propertyEditForm .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-section {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            grid-column: 1 / -1;
-        }
-
-        .image-preview-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: cover;
-            margin-top: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .gallery-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .gallery-preview img {
-            width: 100%;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .form-actions {
-            grid-column: 1 / -1;
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .save-button,
-        .cancel-button {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .save-button {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .cancel-button {
-            background: #f44336;
-            color: white;
-        }
-
-        .modified {
-            border-color: #4CAF50;
-            background-color: #f0fff0;
-        }
-
-        .chip-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .chip {
-            background: #e0e0e0;
-            padding: 0.25rem 0.5rem;
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .chip button {
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            padding: 0;
-            font-size: 1.2rem;
-        }
-
-        .map-container {
-            height: 400px;
-            margin: 1rem 0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        select[multiple] {
-            height: auto;
-            min-height: 120px;
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-
-
-        h1,
-        h2 {
-            text-align: center;
-        }
-
-        #imageGrid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .imageItem {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .imageItem img {
-            max-width: 100%;
-            height: auto;
-        }
-
-
-
-        #uploadSection {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        #uploadedImageUrl {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        label {
-            display: block;
-            margin-top: 10px;
-        }
-
-        input,
-        select,
-        textarea {
-            width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .color-input {
-            display: flex;
-            align-items: center;
-        }
-
-        .color-input input[type="color"] {
-            width: 50px;
-            margin-right: 10px;
-            padding: 0;
-            height: 30px;
-        }
-
-        .color-input input[type="text"] {
-            flex-grow: 1;
-        }
-
-        .ad-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #f9f9f9;
-        }
-
-        .image-upload {
-            margin-top: 10px;
-        }
-
-        .image-upload input[type="file"] {
-            display: inline-block;
-            width: auto;
-        }
-
-        .image-upload button {
-            display: inline-block;
-            margin-left: 10px;
-        }
-
-        .image-preview {
-            max-width: 200px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .popup-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            text-align: center;
-        }
-
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .uploaded-url {
-            word-break: break-all;
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        .image-selection {
-            margin-top: 10px;
-        }
-
-        .image-selection select {
-            width: 100%;
-            padding: 5px;
-            margin-top: 5px;
-        }
-
-        .delete-button {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .delete-button:hover {
-            background-color: #cc0000;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            padding: 15px;
-        }
-
-        .grid-item {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            font-size: 0.9em;
-            background-color: #f9f9f9;
-        }
-
-        .grid-item.building {
-            background-color: #e6f3ff;
-        }
-
-        .grid-item.property {
-            background-color: #fff0e6;
-        }
-
-        .grid-item img {
-            max-width: 100%;
-            height: 120px;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        .building-properties {
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 10px;
-            padding: 5px;
-            background-color: #ffffff;
-            border: 1px solid #ddd;
-        }
-
-        .property-item {
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-        }
-
-        .connect-property {
-            margin-top: 10px;
-        }
-
-        .connect-property select {
-            width: 70%;
-            padding: 5px;
-        }
-
-        .connect-property button {
-            width: 28%;
-            padding: 5px;
-            margin-left: 2%;
-        }
-
-        .property-upload-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .property-upload-form label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .property-upload-form input,
-        .property-upload-form select,
-        .property-upload-form textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-
-        .property-upload-form .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .image-upload-preview {
-            max-width: 200px;
-            max-height: 200px;
-            margin-top: 10px;
-        }
-
-        .property-upload-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .property-upload-form .full-width {
-            grid-column: 1 / -1;
-        }
-
-        .map-container {
-            height: 400px;
-            margin-bottom: 15px;
-        }
-
-        .chip-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .chip {
-            background-color: #e0e0e0;
-            padding: 5px 10px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        select[multiple] {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        select[multiple] option {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-            transition: background-color 0.2s;
-        }
-
-        select[multiple] option:checked {
-            background-color: #e0e0e0;
-            color: #000;
-            font-weight: bold;
-        }
-
-        select[multiple] option:hover {
-            background-color: #f0f0f0;
-        }
-
-        .chip button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .option-item {
-            border: 1px solid #ddd;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-
-        .option-content {
-            margin-bottom: 10px;
-        }
-
-        .option-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-button,
-        .delete-button {
-            padding: 5px 15px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        .edit-button {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .delete-button {
-            background-color: #f44336;
-            color: white;
-        }
-
-        #propertyUploadForm {
-            position: relative;
-        }
-
-        #propertyUploadForm button[type="submit"] {
-            position: relative;
-            z-index: 1;
-        }
-
-        .edit-button:hover,
-        .delete-button:hover {
-            opacity: 0.8;
-        }
-
-        .form-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .image-upload-section {
-            margin: 10px 0;
-        }
-
-        .image-preview {
-            max-width: 200px;
-            max-height: 200px;
-            margin-top: 10px;
-            border: 1px solid #ddd;
-            display: none;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, .3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .header-image-preview {
-            max-width: 300px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-        }
-
-        .list-header {
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 4px;
-            margin: 10px 0;
-        }
-
-        .primary-button {
-            background: #4CAF50;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .secondary-button {
-            background: #6c757d;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .danger-button {
-            background: #dc3545;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .list-management-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        @media (min-width: 992px) {
-            .list-management-container {
-                grid-template-columns: 350px 1fr;
-            }
-        }
-
-        .list-details-section,
-        .options-section {
-            background: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-
-        }
-
-        .image-preview {
-            margin-top: 10px;
-            max-width: 100%;
-            height: 200px;
-            background: #f5f5f5;
-            border: 1px dashed #ddd;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .image-preview img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-
-        .primary-button {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-
-        .primary-button:hover {
-            background: #0056b3;
-        }
-
-        .options-list {
-            margin-top: 30px;
-        }
-
-        .option-card {
-            display: grid;
-            grid-template-columns: 100px 1fr auto;
-            gap: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-
-        .option-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .option-details h3 {
-            margin: 0 0 8px 0;
-            font-size: 16px;
-        }
-
-        .option-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 4px;
-            background: #333;
-            color: white;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .gallery-category,
-        .specification-category {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-        }
-
-        .category-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .gallery-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .gallery-image-container {
-            position: relative;
-            width: 150px;
-            height: 150px;
-        }
-
-        .gallery-preview-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .specification-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .remove-button {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .secondary-button {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-        }
-
-        .notification.success {
-            background: #28a745;
-        }
-
-        .notification.error {
-            background: #dc3545;
-        }
-
-        .location-title {
-            font-weight: 800;
-        }
-    </style>
-
-    <!-- CSS for the toggle switch -->
-    <style>
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 20px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked+.slider {
-            background-color: #4caf50;
-        }
-
-        input:checked+.slider:before {
-            transform: translateX(20px);
-        }
-    </style>
-
-    <!-- style to remove up-down arrow in input type field number , and prevent increment /decrement using js Script -->
-    <style>
-        /* For Chrome, Safari, Edge, Opera */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        /* For Firefox
-        input[type="number"] {
-            -moz-appearance: textfield;
-        } */
-    </style>
-
-    <!-- cities styles -->
-    <style>
-        /* Container styles */
-        #citiesContainer {
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Individual city item styles */
-        .city-item {
-            padding: 10px 15px;
-            margin: 10px 0;
-            background-color: #e0f7fa;
-            border-radius: 5px;
-            color: #00796b;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-transform: capitalize;
-        }
-
-        /* Hover effect for city items */
-        .city-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: #b2dfdb;
-            cursor: pointer;
-        }
-
-        /* Message when no cities are found */
-        #citiesContainer.no-cities {
-            text-align: center;
-            font-size: 18px;
-            color: #757575;
-            font-style: italic;
-        }
-
-
-        /* add new city with preview*/
-        /* Container styling */
-        .city-manager {
-            margin: 40px auto;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-        }
-
-        /* Title styling */
-        .city-manager h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
-        }
-
-        /* Input container styling */
-        .input-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .input-container input {
-            width: 70%;
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: border-color 0.3s ease;
-        }
-
-        .input-container input:focus {
-            border-color: #00796b;
-            outline: none;
-        }
-
-        .input-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background: #00796b;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .input-container button:hover {
-            background: #004d40;
-        }
-
-        /* Preview container styling */
-        .preview-container {
-            margin-top: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            padding: 10px;
-            background: #f0f4f8;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            min-height: 50px;
-        }
-
-        /* Individual city item styling */
-        .city-item {
-            padding: 10px 15px;
-            background: #e0f7fa;
-            color: #00796b;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .city-item:hover {
-            transform: scale(1.05);
-            background: #b2dfdb;
-        }
-
-        /* Alert for no input */
-        .city-manager .alert {
-            color: red;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        /* push chnages button*/
-        #pushChangesButton {
-            background-color: green;
-            /* Green background */
-            color: white;
-            /* White text */
-            font-size: 16px;
-            /* Font size */
-            font-weight: bold;
-            /* Bold text */
-            padding: 10px 20px;
-            /* Padding */
-            border: none;
-            /* Remove border */
-            border-radius: 8px;
-            /* Rounded corners */
-            cursor: pointer;
-            /* Pointer cursor on hover */
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-            /* Subtle shadow */
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            /* Smooth hover effects */
-            display: inline-block;
-            /* Keep it inline by default */
-            margin: 1rem auto;
-        }
-
-        #pushChangesButton:hover {
-            background-color: #434343;
-            /* Darker green on hover */
-            transform: scale(1.05);
-            /* Slight zoom on hover */
-        }
-
-        #pushChangesButton:active {
-            transform: scale(1);
-            /* Reset zoom on click */
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-            /* Reduce shadow on click */
-        }
-
-        #pushChangesButton:disabled {
-            background-color: #ccc;
-            /* Gray background when disabled */
-            color: #666;
-            /* Dimmed text color */
-            cursor: not-allowed;
-            /* Show not-allowed cursor */
-            box-shadow: none;
-            /* Remove shadow when disabled */
-        }
-    </style>
-
-    <style>
-        #availableCitiesContainer{
-            display: flex;
-            gap: 1rem;
-            justify-items: center;
-            flex-wrap: wrap;
-            
-            
-        }
-
-.cities-to-delete {
-    flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    background: #fff;
-}
-
-
-        .city-item,
-.city-item-delete {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background: #f0f0f0;
-    color: #333;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.city-item:hover {
-    background: #e0f7fa;
-    transform: translateY(-2px);
-}
-
-.city-item-delete {
-    background: #fce4ec;
-}
-
-
-#delete-cities-btn{
-    background-color: crimson;
-}
-
-.delete-btn {
-    padding: 8px 15px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.delete-btn:hover {
-    background-color: #c0392b;
-}
-
-.delete-btn:disabled {
-    background-color: #bdc3c7;
-    cursor: not-allowed;
-}
-
-
-    </style>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
@@ -1495,6 +25,10 @@
         <button class="tablinks" onclick="openTab(event, 'ListOptions')">List Options</button>
         <button class="tablinks" onclick="openTab(event, 'NewListOption')">New List Option</button>
         <button class="tablinks" onclick="openTab(event, 'BuildingsProperties')">Buildings & Properties</button>
+        <button class="tablinks" onclick="openTab(event, 'BuilderPropertyConnection')">Builder-Property
+            Connection</button>
+        <button class="tablinks" onclick="openTab(event, 'ProjectProperties')">Project-Property Connection</button>
+        <button class="tablinks" onclick="openTab(event, 'BuilderBuildings')">Builder-Building Connection</button>
         <button class="tablinks" onclick="openTab(event, 'PropertyUpload')">Upload Property</button>
         <button class="tablinks" onclick="openTab(event, 'BuildingUpload')">Upload Building</button>
         <button class="tablinks" onclick="openTab(event, 'DeeplinkGenerator')">Deeplink Generator</button>
@@ -1502,10 +36,29 @@
         <button class="tablinks" onclick="openTab(event, 'CarouselManagement')">Carousel Management</button>
         <button class="tablinks" onclick="openTab(event, 'BuilderUpload')">Builder Upload</button>
         <button class="tablinks" onclick="openTab(event, 'ProjectManagement')">Project Management</button>
-        <button class="tablinks" onclick="openTab(event, 'ProjectPropertiesTab')">Project Properties</button>
         <button class="tablinks" onclick="openTab(event, 'AvailableInCities')">Cities Availability</button>
+        <button class="tablinks" onclick="openTab(event, 'BuilderIdConnection')">Builder ID Connection</button>
+        <button class="tablinks" onclick="openTab(event, 'GenerateToken')">Generate Token</button>
 
     </div>
+
+    <div id="BuilderBuildings" class="tabcontent" style="display: flex;">
+        <div class="builder-container" id="builder-container">
+            <input type="text" id="builder-search" placeholder="Search Builders...">
+            <div class="builder-title">Builders</div>
+            <div id="builder-list"></div>
+        </div>
+
+        <div class="builder-container" id="building-container">
+            <input type="text" id="building-search" placeholder="Search Buildings...">
+            <div class="builder-title">Buildings</div>
+            <div id="building-list"></div>
+        </div>
+
+        <button class="builder-action-button" id="connect-button" disabled>Connect</button>
+    </div>
+
+
 
     <div id="AvailableInCities" class="tabcontent">
         <h1>Cities Availability</h1>
@@ -1556,7 +109,54 @@
 
     </div>
 
-    
+    <div id="BuilderIdConnection" class="tabcontent">
+
+
+    </div>
+    <div id="GenerateToken" class="tabcontent">
+        <button onclick="generateJWT()">Generate Token</button>
+        <p id="token"></p>
+    </div>
+
+    <div id="BuilderPropertyConnection" class="tabcontent">
+        <div class="builder-property-dashboard">
+            <h1>Builder-Property Connection Dashboard</h1>
+
+            <div class="dashboard-grid">
+                <!-- Builders Section -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2>Builders</h2>
+                        <input type="text" id="builderSearch" placeholder="Search builders..." class="search-input">
+                    </div>
+                    <div class="card-content">
+                        <div id="buildersList" class="list-container"></div>
+                    </div>
+                </div>
+
+                <!-- Properties Section -->
+                <div class="section-card">
+                    <div class="card-header">
+                        <h2>Properties</h2>
+                        <input type="text" id="propertySearchx" placeholder="Search properties..." class="search-input">
+                    </div>
+                    <div class="card-content">
+                        <div id="propertiesList" class="list-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Summary -->
+            <div class="connection-summary">
+                <div class="selected-info">
+                    <p>Selected Builder: <span id="selectedBuilderDisplay">None</span></p>
+                    <p>Selected Properties: <span id="selectedPropertiesCount">0</span></p>
+                </div>
+                <!-- <button id="connectButton" class="connect-button">Connect Properties to Builder</button> -->
+            </div>
+            <button id="builderConnectBtn">Connect Properties to Builder</button>
+        </div>
+    </div>
 
     <div id="ProjectManagement" class="tabcontent">
         <h1>Project Management</h1>
@@ -1564,7 +164,10 @@
         <!-- Project List Section -->
         <div class="projects-list-section">
             <h2>Existing Projects</h2>
-            <input type="text" id="projectSearch" placeholder="Search projects..." class="search-input">
+            <div style="display: flex; gap: 1rem;">
+                <input type="text" id="projectSearch" placeholder="Search projects..." class="search-input">
+                <button id="toggle-existing-projects" class=".primary-button">Show Existing Projects</button>
+            </div>
             <div id="projectsList"></div>
         </div>
 
@@ -1803,15 +406,32 @@
                 <div class="form-actions">
                     <button type="submit" class="save-button">Save Project</button>
                     <button type="button" class="cancel-button" onclick="resetProjectForm()">Reset</button>
+                    <button class="save-button" type="button" id="update-project">Update Project</button>
                 </div>
             </form>
         </div>
 
     </div>
 
+    <div id="ProjectProperties" class="tabcontent">
+        <div class="container">
+            <div class="list-container">
+                <h2>Projects</h2>
+                <div class="list" id="projectsListx"></div>
+            </div>
+            <div class="list-container">
+                <h2>Properties</h2>
+                <div class="list" id="propertiesListx"></div>
+            </div>
+        </div>
+        <div class="container">
+            <button id="connectBtn" class="connect-btn" disabled>Connect Selected Items</button>
+        </div>
+        <div id="statusMessage" class="status-message"></div>
+    </div>
 
     <!-- Add this new tab content div -->
-    <div id="ProjectPropertiesTab" class="tabcontent">
+    <!-- <div id="ProjectProperties" class="tabcontent">
         <h1>Project Properties Management</h1>
         <div class="grid-container">
             <div class="project-property-connections">
@@ -1825,13 +445,11 @@
                 </div>
 
                 <div class="properties-grid">
-                    <!-- Available Properties Section -->
                     <div class="available-properties">
                         <h3>Available Properties</h3>
                         <div id="availablePropertiesList" class="property-list"></div>
                     </div>
 
-                    <!-- Connected Properties Section -->
                     <div class="connected-properties">
                         <h3>Connected Properties</h3>
                         <div id="connectedPropertiesList" class="property-list"></div>
@@ -1840,7 +458,10 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
+
+
+
 
 
     <!-- Add this new tab content -->
@@ -1948,7 +569,7 @@
         <!-- Existing Builders List -->
         <div class="builders-list-section">
             <h2>Existing Builders</h2>
-            <div id="buildersList"></div>
+            <!-- <div id="buildersList"></div> -->
         </div>
     </div>
 
@@ -2362,12 +983,54 @@
 
 
     <div id="PropertyUpload" class="tabcontent">
-        <h1>Upload Property</h1>
+        <h1>Manage Property</h1>
+
+        <!-- toggle show / display property -->
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div id="all-cities" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <label for="toggleProperty">Show/Hide:</label>
+                <label class="switch">
+                    <input type="checkbox" id="toggleProperty" name="propertyToggle" value="false">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div id="all-projects-cities">
+
+
+        </div>
+
+
+
+
         <form id="propertyUploadForm" method="post" enctype="multipart/form-data" onsubmit="return false;">
             <div>
                 <label for="post_title">Property Title:</label>
                 <input type="text" id="post_title" name="post_title" required>
             </div>
+            <div>
+                <label for="post-status">Status:</label>
+                <select id="post-status" value='' default="unlisted">
+                    <option value="unlisted">Unlisted</option>
+                    <option value="listed">Listed</option>
+                    <option value="payment-delay">Payment-Delay</option>
+                    <option value="suspicious">Suspicious</option>
+                </select>
+            </div>
+            <div>
+                <label for="post_city">City:</label>
+                <input type="text" id="post_city" name="post_city" required>
+            </div>
+            <div>
+                <label for="locality">Locality:</label>
+                <input type="text" id="locality" name="locality" required>
+            </div>
+
             <div>
                 <label for="type_name">Property Type:</label>
                 <select id="type_name" name="type_name" required>
@@ -2383,7 +1046,7 @@
             </div>
             <div>
                 <label for="purpose">Purpose:</label>
-                <select id="purpose" name="purpose" required>
+                <select id="property_purpose" name="property_purpose" required>
                     <option value="">Select Purpose</option>
                     <option value="Rent">Rent</option>
                     <option value="Buy">Buy</option>
@@ -2397,6 +1060,14 @@
                 <label for="price">Price:</label>
                 <input type="number" id="price" name="price" required>
             </div>
+            <!-- Price On Request  -->
+            <div style="display: flex; gap: 1rem;">
+                <label for="priceOnRequest">Price On Request:</label>
+                <label class="switch">
+                    <input type="checkbox" id="priceOnRequest" name="priceOnRequest" value="false">
+                    <span class="slider"></span>
+                </label>
+            </div>
             <!-- Adding negotiation  -->
             <div style="display: flex; gap: 1rem;">
                 <label for="negotiation">Negotiation:</label>
@@ -2404,11 +1075,6 @@
                     <input type="checkbox" id="negotiation" name="negotiation" value="false">
                     <span class="slider"></span>
                 </label>
-            </div>
-            <!-- -->
-            <div>
-                <label for="price">Price:</label>
-                <input type="number" id="price" name="price" required>
             </div>
             <div>
                 <label for="priceUnit">Price Unit:</label>
@@ -2480,7 +1146,11 @@
             </div>
             <div class="full-width">
                 <label style="display: flex; align-items: center; gap:1rem">Location:<p id="locationDisplay"
-                        style="display: flex; align-items: center; gap: 0.5rem;"></p></label>
+                        style="display: flex; align-items: center; gap: 0.5rem;">
+                    <p id="locationDisplayLat"></p>
+                    <p id="locationDisplayLang"></p>
+                    </p>
+                </label>
                 <button type="button" id="getCurrentLocation">Get Current Location</button>
                 <div id="map" class="map-container"></div>
                 <input type="hidden" id="latitude" name="latitude" required>
@@ -2582,6 +1252,14 @@
             <div>
                 <label for="facilitiess">Facilities (Ctrl+Click for multiple):</label>
                 <select id="facilitiess" name="facilities[]" multiple size="6">
+                    <!-- Options will be dynamically populated -->
+                </select>
+            </div>
+
+            <!-- property tags -->
+            <div>
+                <label for="propertytags">Property Tag Select (Ctrl+Click for multiple):</label>
+                <select id="propertytags" name="propertyTags[]" multiple>
                     <!-- Options will be dynamically populated -->
                 </select>
             </div>
@@ -2746,7 +1424,51 @@
                 <input type="text" name="markerColor" value="#e1faeb">
             </div>
 
+            <!-- constant data -->
             <h2>Constant Data</h2>
+            <!-- Adding autoplay ads  -->
+            <div style="display: flex; gap: 1rem;">
+                <label for=autoplay-ads">Autoplay Ads:</label>
+                <label class="switch">
+                    <input type="checkbox" id="autoplay-ads" name="autoplay-ads" value="false">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+
+            <div>
+                <label for="headerBackgroundImage">Header Background Image:</label>
+                <input type="text" id="headerBackgroundImage" placeholder="Header Background Image URL" />
+            </div>
+
+            <!-- progressGif
+            listEndImage
+            listAds
+            searchAds
+            maxListAds -->
+
+            <div>
+                <label for="progressGif">Progress GIF:</label>
+                <input type="text" id="progressGif" placeholder="" />
+            </div>
+            <div>
+                <label for="listEndImage">ListEndImage:</label>
+                <input type="text" id="listEndImage" placeholder="" />
+            </div>
+            <div>
+                <label for="listAds">ListAds:</label>
+                <input type="text" id="listAds" placeholder="" />
+            </div>
+            <div>
+                <label for="searchAds">SearchAds:</label>
+                <input type="text" id="searchAds" placeholder="" />
+            </div>
+            <div>
+                <label for="maxListAds">MaxListAds:</label>
+                <input type="text" id="maxListAds" placeholder="" />
+            </div>
+
+
             <label for="isPropertyUpload">Is Property Upload:</label>
             <select id="isPropertyUpload" name="constantData.isPropertyUpload">
                 <option value="true">Yes</option>
@@ -2951,16 +1673,43 @@
                     <img id="newHeaderImagePreview" class="image-preview" src="" alt="Header Image Preview">
                 </div>
 
+                <!-- OPtion image type -->
                 <div class="form-group">
-                    <label for="newOptionType">Option Image Type</label>
+                    <label for="newOptionType">Category Type</label>
                     <select id="newOptionType" name="newOptionType">
-                        <option value="carousel">Carousel</option>
+                        <option value="carousal">Carousel</option>
+                        <option value="carousalWithIndicator">Carousel With Indicator</option>
+                        <option value="centerCarousal">Center Carousel</option>
+                        <option value="centerCarousalWithIndicator">Center Carousel With Indicator</option>
                         <option value="horizontal_list">Horizontal_List</option>
                         <option value="single_item">Single_Item</option>
                         <option value="grid_view">Grid_View</option>
                         <option value="vertical_list">Vertical_List</option>
                     </select>
                 </div>
+
+                <!-- sectionType -->
+                <div class="form-group">
+                    <label for="newSectionType">Section Type</label>
+                    <select id="newSectionType" name="newOptionType">
+                        <option value="banner">Banner</option>
+                        <option value="launch">Launch</option>
+                        <option value="search">Search</option>
+                        <option value="userprofile">Userprofile</option>
+                        <option value="list">List</option>
+                        <option value="call">Call</option>
+                    </select>
+                </div>
+
+                <!-- new city option -->
+                <div class="form-group">
+                    <label>City</label>
+                    <select id="newCityNameSelect" name="newCityNameSelect" onchange="handleCityChange(this)" value="">
+
+                    </select>
+
+                </div>
+
             </div>
 
             <!-- Options Container -->
@@ -3002,16 +1751,44 @@
                 <option value="">Select a list</option>
             </select>
             <button onclick="loadListOptions()" class="secondary-button">Load Options</button>
+            <!-- Category Type -->
             <div class="form-group">
-                <label for="optionType">Option Image Type</label>
-                <select id="optionType" name="optionType">
+                <label for="optionTypeUpdate">Category Type</label>
+                <select id="optionTypeUpdate" name="optionType">
                     <option value="carousal">Carousel</option>
+                    <option value="carousalWithIndicator">Carousel With Indicator</option>
+                    <option value="centerCarousal">Center Carousel</option>
+                    <option value="centerCarousalWithIndicator">Center Carousel With Indicator</option>
                     <option value="horizontal_list">Horizontal_List</option>
                     <option value="single_item">Single_Item</option>
                     <option value="grid_view">Grid_View</option>
                     <option value="vertical_list">Vertical_List</option>
                 </select>
             </div>
+
+            <!-- sectionType -->
+            <div class="form-group">
+                <label for="sectionTypeUpdate">Section Type</label>
+                <select id="sectionTypeUpdate" name="sectionType">
+                    <option value="banner">Banner</option>
+                    <option value="launch">Launch</option>
+                    <option value="search">Search</option>
+                    <option value="userprofile">Userprofile</option>
+                    <option value="list">List</option>
+                    <option value="call">Call</option>
+                </select>
+            </div>
+
+
+            <!-- city -->
+            <div class="form-group">
+                <label>City</label>
+                <select id="cityNameSelect" name="cityNameSelect" value="" onchange="handleCityChange(this)">
+
+                </select>
+
+            </div>
+
             <button onclick="UpdateImageType()" class="secondary-button">Update Image Type</button>
         </div>
 
@@ -3081,7 +1858,7 @@
                     </div>
                 </div>
             </div>
-            <h2>Add/Edit List Details</h2>
+            <!-- <h2>Add/Edit List Details</h2>
             <form id="listForm">
                 <div class="form-group">
                     <label for="listName">List Name:*</label>
@@ -3100,9 +1877,9 @@
                         Image</button>
                     <img id="headerImagePreview" class="image-preview" src="" alt="Header Image Preview">
                 </div>
-            </form>
+            </form> -->
 
-            <h3>Add/Edit Option</h3>
+            <!-- <h3>Add/Edit Option</h3>
             <form id="optionForm">
                 <input type="hidden" id="optionId">
 
@@ -3128,7 +1905,7 @@
                     <button type="submit" onclick="saveOptions(event)" class="primary-button">Save Option</button>
                     <button type="button" onclick="resetForm()" class="secondary-button">Reset</button>
                 </div>
-            </form>
+            </form> -->
 
             <!-- Adding here only  -->
 
@@ -3137,7 +1914,7 @@
         <!-- List Actions -->
         <div class="list-actions">
             <button onclick="saveListDetails()">Save List</button>
-            <button id="deleteListButton" onclick="deleteList()" class="danger-button" style="display: none;">Delete
+            <button id="deleteListButton" onclick="deleteList()" class="danger-button" style="display: block;">Delete
                 List</button>
         </div>
     </div>
@@ -3326,7 +2103,7 @@
 
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1035.0.min.js"></script>
     <script>
-        ////////////////
+        
 
 
 
@@ -3720,6 +2497,7 @@
         // Helper function to handle map marker placement
         // Update the marker placement function
         function placeProjectMarker(location) {
+            console.log(location)
             if (projectMarker && projectMap) {
                 projectMarker.setPosition(location);
                 projectMap.panTo(location);
@@ -3734,8 +2512,11 @@
                 document.getElementById('projectLongitude').value = lng;
 
                 // Update display
-                document.getElementById('locationDisplay').textContent =
-                    `Selected Location: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                // document.getElementById('locationDisplay').textContent =
+                //     `Selected Location: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+
+                document.getElementById('locationDisplayLat').textContent = lat.toFixed(6)
+                document.getElementById('locationDisplayLang').textContent = lng.toFixed(6)
 
                 // Reverse geocode for address
                 const geocoder = new google.maps.Geocoder();
@@ -4194,7 +2975,7 @@
         }
 
         // Updated function to get gallery data
-        function getGalleryData() {
+        function DataData() {
             const container = document.getElementById('galleryContainer');
             if (!container) return [];
 
@@ -4227,16 +3008,14 @@
 
                 // Collect all form data
                 const projectData = {
-                    projectId: `PRJ${Date.now()}`,
                     name: document.getElementById('projectNames').value,
                     type: document.getElementById('projectType').value,
                     builder: document.getElementById('builderSelect').value,
                     status: document.getElementById('projectStatus').value,
                     description: document.getElementById('projectDescription').value,
-                    reraNumber: document.getElementById('reraNumber').value, // Add this line
-                    reraValidity: document.getElementById('reravalidity').value, // Add this line
-
-                    availabilityStatus: 'COMING_SOON',
+                    reraNumber: document.getElementById('reraNumber').value,
+                    reraValidity: document.getElementById('reravalidity').value,
+                    availabilityStatus: project.availabilityStatus || 'COMING_SOON', // Default to 'COMING_SOON'
                     overview: {
                         totalUnits: parseInt(document.getElementById('totalUnits').value) || 0,
                         totalTowers: parseInt(document.getElementById('totalTowers').value) || 0,
@@ -4245,22 +3024,22 @@
                         priceRange: {
                             min: parseFloat(document.getElementById('priceMin').value) || 0,
                             max: parseFloat(document.getElementById('priceMax').value) || 0,
-                            pricePerSqFt: parseFloat(document.getElementById('pricePerSqFt').value) || 0
-                        }
+                            pricePerSqFt: parseFloat(document.getElementById('pricePerSqFt').value) || 0,
+                        },
                     },
                     location: {
                         coordinates: {
                             type: 'Point',
                             coordinates: [
                                 parseFloat(document.getElementById('projectLongitude').value),
-                                parseFloat(document.getElementById('projectLatitude').value)
-                            ]
+                                parseFloat(document.getElementById('projectLatitude').value),
+                            ],
                         },
                         address: document.getElementById('projectAddress').value,
                         landmark: document.getElementById('projectLandmark').value,
                         city: document.getElementById('projectCity').value,
                         state: document.getElementById('projectState').value,
-                        pincode: document.getElementById('projectPincode').value
+                        pincode: document.getElementById('projectPincode').value,
                     },
                     floorPlans: getFloorPlansData(),
                     amenities: getAmenitiesData(),
@@ -4269,10 +3048,8 @@
                     highlights: getHighlightsData(),
                     brochures: getBrochuresData(),
                     nearbyLocations: getNearbyLocationsData(),
-
-                    paymentPlan: [],
-
-                    phases: []
+                    paymentPlan: project.paymentPlan || [],
+                    phases: project.phases || [],
                 };
 
 
@@ -4294,7 +3071,7 @@
                     }
                 });
 
-                const response = await fetch('https://propertify.onrender.com/api/projects', {
+                const response = await fetch(`${BASE_URL}/api/projects`, {
                     method: 'POST',
                     body: formData // Send as FormData instead of JSON
                 });
@@ -4857,6 +3634,7 @@
         document.getElementById('projectUploadForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             try {
+                console.log("this", this)
                 await submitProjectForm(this);
             } catch (error) {
                 console.error('Form submission failed:', error);
@@ -4926,7 +3704,7 @@
                 builderSelect.disabled = true;
 
                 console.log('Fetching builders from API...');
-                const response = await fetch('https://propertify.onrender.com/builders', {
+                const response = await fetch(`${BASE_URL}/builders`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -5012,34 +3790,38 @@
         }
 
 
-        async function loadProjectsList() {
-            try {
-                const response = await fetch('https://propertify.onrender.com/api/projects');
-                const projects = await response.json();
+        // async function loadProjectsList() {
+        //     try {
+        //         const response = await fetch(`${BASE_URL}/api/projects`);
+        //         const projects = await response.json();
 
-                const projectsList = document.getElementById('projectsList');
-                projectsList.innerHTML = projects.map(project => `
-            <div class="project-card">
-                <div class="project-header">
-                    <h3>${project.name}</h3>
-                    <span class="project-status ${project.status.toLowerCase()}">${project.status}</span>
-                </div>
-                <div class="project-details">
-                    <p><strong>Type:</strong> ${project.type}</p>
-                    <p><strong>Total Units:</strong> ${project.overview.totalUnits}</p>
-                    <p><strong>Location:</strong> ${project.location.city}</p>
-                </div>
-                <div class="project-actions">
-                    <button onclick="editProject('${project._id}')">Edit</button>
-                    <button onclick="deleteProject('${project._id}')">Delete</button>
-                </div>
-            </div>
-        `).join('');
-            } catch (error) {
-                console.error('Error loading projects:', error);
-                showPopup('Failed to load projects list');
-            }
-        }
+        //         const projectsList = document.getElementById('projectsList');
+        //         projectsList.innerHTML = projects.map(project => `
+        //     <div class="project-card">
+        //         <div class="project-header">
+        //             <h3>${project.name}</h3>
+        //             <span class="project-status ${project.status.toLowerCase()}">${project.status}</span>
+        //         </div>
+        //         <div class="project-details">
+        //             <p><strong>Type:</strong> ${project.type}</p>
+        //             <p><strong>Total Units:</strong> ${project.overview.totalUnits}</p>
+        //             <p><strong>Location:</strong> ${project.location.city}</p>
+        //         </div>
+        //         <div class="project-actions">
+        //             <button onclick="editProject('${project._id} , ${this}')">Edit</button>
+        //             <button onclick="deleteProject('${project._id}')">Delete</button>
+        //         </div>
+        //     </div>
+        // `).join('');
+        //     } catch (error) {
+        //         console.error('Error loading projects:', error);
+        //         showPopup('Failed to load projects list');
+        //     }
+        // }
+
+
+
+
 
         const prefillProjectButton = document.createElement('button');
         prefillProjectButton.type = 'button';
@@ -5452,7 +4234,7 @@
 
         async function loadProjectsList() {
             try {
-                const response = await fetch('https://propertify.onrender.com/api/projects');
+                const response = await fetch(`${BASE_URL}/api/projects`);
                 const projects = await response.json();
 
                 const projectsList = document.getElementById('projectsList');
@@ -5468,8 +4250,8 @@
                     <p><strong>Location:</strong> ${project.location.city}</p>
                 </div>
                 <div class="project-actions">
-                    <button onclick="editProject('${project._id}')">Edit</button>
-                    <button onclick="deleteProject('${project._id}')">Delete</button>
+                    <button onclick="editProject('${project.projectId}')">Edit</button>
+                    <button onclick="deleteProject('${project.projectId}')">Delete</button>
                 </div>
             </div>
         `).join('');
@@ -5605,7 +4387,7 @@
             };
 
             try {
-                const response = await fetch('https://propertify.onrender.com/builders', {
+                const response = await fetch(`${BASE_URL}/builders`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -5883,6 +4665,24 @@
                 "Electric Vehicle Charging", "Bicycle Storage"
             ];
 
+            const propertyTags = [
+                "Newly-Added", "At-Sale-Price", 'Offer-Going', "Best-Value",
+                "Budget-Friendly",
+                "First-Time-Buyer",
+                "High-ROI-Potential",
+                "No-Brokerage",
+                "Quick-Sale",
+                "Ready-for-Possession",
+                "Verified-Property",
+                "Bank-Approved",
+                "Low-EMI-Option",
+                "Distress-Sale",
+                "Freehold-Property",
+                "All-Amenities-Included",
+                "Under-Market-Value",
+                "Negotiable-Price"
+            ]
+
 
             // Function to populate select elements
             function populateSelect(selectId, options) {
@@ -5913,6 +4713,7 @@
             // Populate multi-select fields
             populateMultiSelect('amenitiess', amenities);
             populateMultiSelect('facilitiess', facilities);
+            populateMultiSelect('propertytags', propertyTags);
 
             // Populate single-select fields
             populateSelect('propertyType', propertyTypes);
@@ -6091,14 +4892,17 @@
             }
 
             const galleryImages = form.querySelector('input[name="galleryList"]').files;
+            console.log("galleryImages", galleryImages)
             const apiFormData = new FormData();
             for (let i = 0; i < galleryImages.length; i++) {
                 apiFormData.append('galleryList', galleryImages[i]);
             }
 
             apiFormData.append('data', JSON.stringify(buildingData));
+
+            console.log("apiFormData", apiFormData)
             try {
-                const response = await fetch('https://propertify.onrender.com/api/buildings/saveBuildingDetails', {
+                const response = await fetch(`${BASE_URL}/api/buildings/saveBuildingDetails`, {
                     method: 'POST',
                     body: apiFormData
                 });
@@ -6184,19 +4988,27 @@
         }
 
         function placeMarker(location) {
+            console.log(location)
             marker.setPosition(location);
             map.setCenter(location);
             updateLatLng(location);
         }
 
         function updateLatLng(location) {
+            console.log(location)
             document.getElementById('latitude').value = location.lat();
             document.getElementById('longitude').value = location.lng();
+            // document.getElementById('locationDisplayLat').innerHTML = location.lat()
+            // document.getElementById('locationDisplayLang').innerHTML = location.lng()
+
             updateLocationDisplay(location);
         }
 
         function updateLocationDisplay(location) {
+            console.log(location.lat(), location.lng())
             const locationDisplay = document.getElementById('locationDisplay');
+            document.getElementById('locationDisplayLat').value = location.lat().toFixed(6)
+            document.getElementById('locationDisplayLang').value = location.lng().toFixed(6)
             locationDisplay.textContent = `Latitude: ${location.lat().toFixed(6)}, Longitude: ${location.lng().toFixed(6)}`;
         }
 
@@ -6432,6 +5244,7 @@
                 // Prevent the default form submission
                 e.preventDefault();
 
+
                 try {
                     // Create FormData object
                     const formData = new FormData();
@@ -6446,14 +5259,19 @@
                         return Array.from(element.selectedOptions).map(opt => opt.value);
                     }
 
+                    // console.log(document.getElementById('locationDisplay').innerHTML)
                     // Prepare property data object
                     const propertyData = {
                         // Basic Information
                         post_title: document.getElementById('post_title').value,
+                        city: document.getElementById('post_city').value,
+                        locality: document.getElementById('locality').value,
+                        status: document.getElementById('post-status').value || 'unlisted',
                         type_name: document.getElementById('type_name').value,
-                        purpose: document.getElementById('purpose').value,
+                        purpose: document.getElementById('property_purpose').value,
                         building_id: document.getElementById('building_id').value || null,
                         price: parseFloat(document.getElementById('price').value),
+                        priceOnRequest: document.getElementById('priceOnRequest').value || false,
                         negotiation: document.getElementById('negotiation').value || false,
                         priceUnit: document.getElementById('priceUnit').value,
                         area: parseFloat(document.getElementById('area').value),
@@ -6477,10 +5295,16 @@
                         location: {
                             type: 'Point',
                             coordinates: [
-                                parseFloat(document.getElementById('longitude').value),
-                                parseFloat(document.getElementById('latitude').value)
+                                parseFloat(document.getElementById('locationDisplayLat').value),
+                                parseFloat(document.getElementById('locationDisplayLang').value)
                             ]
                         },
+                        latitude: document.getElementById('locationDisplayLat').value,
+                        longitude: document.getElementById('locationDisplayLang').value,
+                        // latitude: document.getElementById('edit_latitude').value,
+                        // longitude: document.getElementById('edit_longitude').value,
+
+                        //locationDisplay
 
                         // Description
                         post_description: document.getElementById('post_description').value,
@@ -6496,6 +5320,7 @@
                         propertyManagementServices: getMultiSelectValues('propertyManagementServices'),
                         amenities: getMultiSelectValues('amenitiess'),
                         facilities: getMultiSelectValues('facilitiess'),
+                        tags: getMultiSelectValues('propertytags'),
 
 
 
@@ -6509,6 +5334,8 @@
                         propertyTaxClasses: document.getElementById('propertyTaxClass').value,
                         investmentStrategies: document.getElementById('investmentStrategy').value
                     };
+
+                    console.log("propertyData -----------", propertyData)
 
                     // Append the property data as a JSON string
                     formData.append('data', JSON.stringify(propertyData));
@@ -6647,8 +5474,10 @@
 
             const listName = document.getElementById('newListName').value;
             const categoryType = document.getElementById('newOptionType').value;
+            const sectionType = document.getElementById('newSectionType').value;
             const newListTitle = document.getElementById('newListTitle').value;
             const headerImage = document.getElementById('newHeaderImage').value;
+            const city = document.getElementById('newCityNameSelect').value;
 
             const options = [];
 
@@ -6666,7 +5495,7 @@
                 const response = await fetch(`${BASE_URL}/api/list-options/add-complete`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ listName, categoryType, title: newListTitle, headerImage: headerImage, options })
+                    body: JSON.stringify({ listName, categoryType, sectionType, city, title: newListTitle, headerImage: headerImage, options })
                 });
 
                 if (!response.ok) {
@@ -6703,7 +5532,7 @@
         // Function to load available lists
 
         // const BASE_URL = 'https://propertify.onrender.com';
-        const BASE_URL = 'http://localhost:5053';  // testing
+        const BASE_URL = 'http://localhost:5053';
         // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
@@ -6989,7 +5818,7 @@
 
 
 
-        /////////////////////////////////
+        
 
 
         document.getElementById('addNewOptionButton').addEventListener('click', function () {
@@ -7051,6 +5880,18 @@
             if (tabName === 'BuildingsProperties') {
                 loadBuildingsAndProperties();
             }
+            if (tabName === 'BuilderPropertyConnection') {
+                fetchProperties();
+                fetchBuilders();
+                initalBtn()
+            }
+            if (tabName === 'BuilderBuildings') {
+                // pending 
+            }
+            if (tabName === 'ProjectProperties') {
+                // fetchProjects();
+                // fetchProperties();
+            }
 
             if (tabName === 'CategoryManagement') {
                 loadCategories();
@@ -7059,11 +5900,15 @@
             if (tabName === 'ProjectManagement') {
                 initializeProjectManagement();
             }
+            if (tabName === 'BuilderIdConnection') {
+                fetchBuilders();
+            }
 
             // Add PropertyEdit handling
-            if (tabName === 'PropertyEdit') {
+            if (tabName === 'PropertyUpload') {
                 // Initialize the property edit tab
                 initializePropertyEdit();
+                fetchAvailableCitiesOption()
             }
 
 
@@ -7141,7 +5986,7 @@
                 console.log('Property Edit tab initialized successfully');
             } catch (error) {
                 console.error('Error initializing Property Edit tab:', error);
-                showPopup('Error initializing edit form');
+                // showPopup('Error initializing edit form');
             }
         }
 
@@ -7329,7 +6174,7 @@
                 console.log('Fetching list options for:', listName);
                 currentListName = listName;
 
-                const response = await fetch(`https://propertify.onrender.com/api/list-options/${listName}`);
+                const response = await fetch(`${BASE_URL}/api/list-options/${listName}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -7348,6 +6193,19 @@
                 const listTitle = document.getElementById('listTitle');
                 const headerImage = document.getElementById('headerImage');
                 const headerImagePreview = document.getElementById('headerImagePreview');
+                const sectionType = document.getElementById('sectionTypeUpdate');
+                const cityName = document.getElementById('cityNameSelect');
+                const optionType = document.getElementById('optionTypeUpdate');
+
+                if (data.city) {
+                    cityName.value = data.city
+                }
+                if (data.sectionType) {
+                    sectionType.value = data.sectionType;
+                }
+                if (data.categoryType) {
+                    optionType.value = data.categoryType;
+                }
 
                 if (data.title) {
                     listTitle.value = data.title;
@@ -7392,7 +6250,7 @@
 
             } catch (error) {
                 console.error('Error loading options:', error);
-                showPopup('Failed to load options. Please try again. ' + error);
+                // showPopup('Failed to load options. Please try again. ' + error);
             }
         }
 
@@ -7485,6 +6343,7 @@
 
         /* saved option */
         async function saveOptions() {
+            console.log("HHHHHHHHHHHHHHHHHH")
             const optionId = document.getElementById('optionId').value;
 
 
@@ -7540,7 +6399,7 @@
         }
 
         async function deleteOption(optionId) {
-            if (!confirm('Are you sure you want to delete this option?')) return;
+            // if (!confirm('Are you sure you want to delete this option?')) return;
 
             try {
                 const response = await fetch(`${BASE_URL}/api/list-options/${currentListName}/remove-option/${optionId}`, {
@@ -7560,7 +6419,7 @@
         }
 
         async function deleteList() {
-            if (!confirm(`Are you sure you want to delete the entire list "${currentListName}"?`)) return;
+            // if (!confirm(`Are you sure you want to delete the entire list "${currentListName}"?`)) return;
 
             try {
                 const response = await fetch(`${BASE_URL}/api/list-options/${currentListName}`, {
@@ -7578,7 +6437,7 @@
                 loadAvailableLists(); // Refresh the list of available lists
             } catch (error) {
                 console.error('Error deleting list:', error);
-                showPopup('Failed to delete list. Please try again.');
+                // showPopup('Failed to delete list. Please try again.');
             }
         }
 
@@ -7590,13 +6449,13 @@
             }
 
             // Event listener for option form
-            // const optionForm = document.getElementById('optionForm');
-            // if (optionForm) {
-            //     optionForm.addEventListener('submit', async function (e) {
-            //         e.preventDefault();
-            //         await saveOptions(e);
-            //     });
-            // }
+            const optionForm = document.getElementById('optionForm');
+            if (optionForm) {
+                optionForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    await saveOptions(e);
+                });
+            }
 
             // Initial load of available lists
 
@@ -7627,7 +6486,7 @@
 
         async function deleteOption(optionId) {
             const listName = document.getElementById('listSelector').value;
-            if (!confirm('Are you sure you want to delete this option?')) return;
+            // // if (!confirm('Are you sure you want to delete this option?')) return;
 
             try {
                 const response = await fetch(`${BASE_URL}/api/list-options/${listName}/remove-option/${optionId}`, {
@@ -7642,7 +6501,7 @@
                 showPopup('Option deleted successfully!');
             } catch (error) {
                 console.error('Error deleting option:', error);
-                showPopup('Failed to delete option. Please try again.');
+                // showPopup('Failed to delete option. Please try again.');
             }
         }
 
@@ -7748,11 +6607,16 @@
         // AWS S3 Image Gallery functions
         async function fetchImagesFromS3() {
             try {
-                const response = await fetch('/api/list-images');
+                const response = await fetch(`${BASE_URL}/api/list-images`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                return await response.json();
+                // console.log(response.json())
+                // return await response.json();
+
+                const data = await response.json();
+                console.log(data);
+                return data;
             } catch (error) {
                 console.error('Error fetching images:', error);
                 // alert('Failed to fetch images. Please try again.');
@@ -7865,7 +6729,7 @@
 
                 async function fetchImagesFromS3() {
                     try {
-                        const response = await fetch('/api/list-images');
+                        const response = await fetch(`${BASE_URL}/api/list-images`);
                         if (!response.ok) {
                             throw new Error('Failed to fetch images');
                         }
@@ -8054,6 +6918,13 @@
                 list_price_size: parseInt(formData.get('list_price_size')) || 14,
                 markerColor: formData.get('markerColor') || "#e1faeb",
                 constantData: {
+                    progressGif: document.getElementById('progressGif').value || "NA",
+                    listEndImage: document.getElementById('listEndImage').value || "NA",
+                    listAds: document.getElementById('listAds').value || "NA",
+                    searchAds: document.getElementById('searchAds').value || "NA",
+                    maxListAds: document.getElementById('maxListAds').value || "NA",
+                    autoPlayAds: document.getElementById('autoplay-ads').value || 'false',
+                    headerBackgroundImage: document.getElementById('headerBackgroundImage').value || "NA",
                     isPropertyUpload: formData.get('constantData.isPropertyUpload') === 'true',
                     homeUrls: formData.get('constantData.homeUrls') ? formData.get('constantData.homeUrls').split(',') : [],
                     isStrokeFilter: formData.get('constantData.isStrokeFilter') === 'true',
@@ -8280,7 +7151,7 @@
             console.log('DOM fully loaded and parsed=========>>>');
             async function fetchImagesFromS3() {
                 try {
-                    const response = await fetch('/api/list-images');
+                    const response = await fetch(`${BASE_URL}/api/list-images`);
                     if (!response.ok) {
                         throw new Error('Failed to fetch images');
                     }
@@ -8751,13 +7622,17 @@
             const locationDisplay = document.getElementById("locationDisplay");
             const latitudeInput = document.getElementById("edit_latitude");
             const longitudeInput = document.getElementById("edit_longitude");
+            const latitudeIn = document.getElementById("locationDisplayLat");
+            const longitudeIn = document.getElementById("locationDisplayLang");
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const latitude = position.coords.latitude;
                         const longitude = position.coords.longitude;
-                        console.log(latitude, longitude)
+                        console.log("Lat lang Check------------", latitude, longitude)
+                        latitudeIn.value = latitude
+                        longitudeIn.value = longitude
 
                         // Display the location in the locationDisplay element <p>
                         locationDisplay.innerHTML = `Latitude:${latitude.toFixed(6)},Longitude:${longitude.toFixed(6)}`;
@@ -8791,7 +7666,7 @@
     </script>
 
     <script>
-        const selectElement = document.getElementById('optionType');
+        const selectElement = document.getElementById('optionTypeUpdate');
         console.log("selectElement", selectElement)
         // const outputElement = document.getElementById('output');
 
@@ -8804,9 +7679,12 @@
 
         async function UpdateImageType() {
             const listName = document.getElementById('listSelector').value
+            const sectionValue = document.getElementById('sectionTypeUpdate').value;
+            const cityValue = document.getElementById('cityNameSelect').value;
             // const optionId = document.getElementById('optionId').value
             console.log("listName:", listName)
             console.log("selected Value:", selectedValue)
+            console.log("City Value:", cityValue)
             try {
                 const response = await fetch(`${BASE_URL}/api/list-options/${listName}`, {
                     method: 'PUT',
@@ -8814,9 +7692,13 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        categoryType: selectedValue
+                        categoryType: selectedValue,
+                        sectionType: sectionValue,
+                        city: cityValue
+
                     })
                 });
+                showPopup('Successfully Updated')
                 console.log("response : ", response)
             } catch (error) {
                 console.log("error", error)
@@ -8839,6 +7721,29 @@
             // negotiationValueDisplay.textContent = `Current Value: ${negotiationToggle.value}`;
         });
     </script>
+
+    <!-- Price on request toggle -->
+    <script>
+        const priceOnRequestToggle = document.getElementById("priceOnRequest");
+
+        // Add a change event listener to the checkbox
+        priceOnRequestToggle.addEventListener("change", () => {
+            // Update the value attribute based on the checked state
+            priceOnRequestToggle.value = priceOnRequestToggle.checked ? "true" : "false";
+
+        });
+    </script>
+
+    <!-- Script to handle auto play ads on change  -->
+    <script>
+        const autoPlayToggle = document.getElementById("autoplay-ads");
+        autoPlayToggle.addEventListener("change", () => {
+            autoPlayToggle.value = autoPlayToggle.checked ? "true" : "false";
+
+        });
+    </script>
+
+
 
 
     <!-- updateColors script - Update Colors Api form -->
@@ -8987,181 +7892,2085 @@
     })
 </script> -->
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
 
-        // Elements for Currently Available Cities
-        const citiesContainer = document.getElementById("citiesContainer");
-        const availableCitiesContainer = document.getElementById("availableCitiesContainer");
+            // Elements for Currently Available Cities
+            const citiesContainer = document.getElementById("citiesContainer");
+            const availableCitiesContainer = document.getElementById("availableCitiesContainer");
+            const cityNameSelect = document.getElementById('cityNameSelect')
+            const newCityNameSelect = document.getElementById('newCityNameSelect')
 
-        // Elements for Adding Cities
-        const cityInput = document.getElementById("cityInput");
-        const addCityButton = document.getElementById("addCityButton");
-        const previewContainer = document.getElementById("preview-container");
-        const pushChangesButton = document.getElementById("pushChangesButton");
-        const newCitiesToAppend = [];
 
-        // Elements for Deleting Cities
-        const searchInput = document.getElementById("searchInput");
-        const deleteCitiesBtn = document.getElementById("delete-cities-btn");
-        const citiesToDeleteContainer = document.getElementById("citiesToDeleteContainer");
-        const newCitiesToDelete = [];
+            // Elements for Adding Cities
+            const cityInput = document.getElementById("cityInput");
+            const addCityButton = document.getElementById("addCityButton");
+            const previewContainer = document.getElementById("preview-container");
+            const pushChangesButton = document.getElementById("pushChangesButton");
+            const newCitiesToAppend = [];
 
-        // Fetch and display all cities
-        function fetchAndDisplayCities() {
+            // Elements for Deleting Cities
+            const searchInput = document.getElementById("searchInput");
+            const deleteCitiesBtn = document.getElementById("delete-cities-btn");
+            const citiesToDeleteContainer = document.getElementById("citiesToDeleteContainer");
+            const newCitiesToDelete = [];
+
+            // Fetch and display all cities
+            function fetchAndDisplayCities() {
+                const apiUrl = `${BASE_URL}/api/get-all-cities`;
+
+                fetch(apiUrl)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        citiesContainer.innerHTML = ""; // Clear Available Cities Section
+                        availableCitiesContainer.innerHTML = ""; // Clear Manage Cities Section
+                        cityNameSelect.innerHTML = ""; // Clear the dropdown options
+                        newCityNameSelect.innerHTML = ""; // Clear the dropdown options
+
+                        // Default "Select City" option for both dropdowns
+                        const defaultOption = document.createElement("option");
+                        defaultOption.value = "";
+                        defaultOption.textContent = "Select City";
+                        cityNameSelect.appendChild(defaultOption);
+
+                        const defaultOptionNew = document.createElement("option");
+                        defaultOptionNew.value = "";
+                        defaultOptionNew.textContent = "Select City";
+                        newCityNameSelect.appendChild(defaultOptionNew);
+
+                        if (data && data.cities) {
+                            data.cities.forEach((city) => {
+                                // Update Currently Available Cities
+                                const cityElement = document.createElement("div");
+                                cityElement.textContent = city;
+                                cityElement.classList.add("city-item");
+                                citiesContainer.appendChild(cityElement);
+
+                                // Update Manage Cities Section
+                                const cityManageElement = document.createElement("div");
+                                cityManageElement.textContent = city;
+                                cityManageElement.classList.add("city-item");
+                                cityManageElement.addEventListener("click", () => addCityToDelete(city));
+                                availableCitiesContainer.appendChild(cityManageElement);
+
+                                // Add city as an option to the dropdowns
+                                const cityOption = document.createElement("option");
+                                cityOption.value = city;
+                                cityOption.textContent = city;
+                                cityNameSelect.appendChild(cityOption);
+
+                                // Clone the option to avoid overwriting when appending to both dropdowns
+                                const newCityOption = cityOption.cloneNode(true);
+                                newCityNameSelect.appendChild(newCityOption);
+
+
+                            });
+                        } else {
+                            citiesContainer.textContent = "No cities found.";
+                            availableCitiesContainer.textContent = "No cities found.";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching cities:", error);
+                        alert("Failed to fetch cities. Please try again.");
+                    });
+            }
+
+            // Initially fetch cities on page load
+            fetchAndDisplayCities();
+
+            // Adding New Cities
+            addCityButton.addEventListener("click", () => {
+                const cityName = cityInput.value.trim();
+                if (cityName) {
+                    if (!newCitiesToAppend.includes(cityName)) {
+                        newCitiesToAppend.push(cityName);
+
+                        const cityElement = document.createElement("div");
+                        cityElement.textContent = cityName;
+                        cityElement.classList.add("city-item");
+
+                        // Remove city on click
+                        cityElement.addEventListener("click", () => {
+                            newCitiesToAppend.splice(newCitiesToAppend.indexOf(cityName), 1);
+                            cityElement.remove();
+                            togglePushChangesButton();
+                        });
+
+                        previewContainer.appendChild(cityElement);
+                        togglePushChangesButton();
+                    }
+                    cityInput.value = ""; // Clear input
+                } else {
+                    alert("Please enter a valid city name!");
+                }
+            });
+
+            pushChangesButton.addEventListener("click", () => {
+                const addCityApiUrl = `${BASE_URL}/api/add-new-city`;
+
+                fetch(addCityApiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cities: newCitiesToAppend }),
+                })
+                    .then((response) => {
+                        if (!response.ok) throw new Error(`Failed to add cities. Status: ${response.status}`);
+                        return response.json();
+                    })
+                    .then(() => {
+                        alert("Cities added successfully!");
+                        newCitiesToAppend.length = 0; // Clear the array
+                        previewContainer.innerHTML = ""; // Clear the preview
+                        togglePushChangesButton();
+                        fetchAndDisplayCities(); // Refresh cities list
+                    })
+                    .catch((error) => {
+                        console.error("Error adding cities:", error);
+                        alert("Failed to add cities.");
+                    });
+            });
+
+            function togglePushChangesButton() {
+                pushChangesButton.style.display = newCitiesToAppend.length > 0 ? "block" : "none";
+            }
+
+            // Deleting Cities
+            function addCityToDelete(city) {
+                if (!newCitiesToDelete.includes(city)) {
+                    newCitiesToDelete.push(city);
+                    renderCitiesToDelete();
+                }
+            }
+
+            function renderCitiesToDelete() {
+                citiesToDeleteContainer.innerHTML = "";
+                newCitiesToDelete.forEach((city) => {
+                    const cityElement = document.createElement("div");
+                    cityElement.textContent = city;
+                    cityElement.classList.add("city-item-delete");
+                    cityElement.addEventListener("click", () => {
+                        newCitiesToDelete.splice(newCitiesToDelete.indexOf(city), 1);
+                        renderCitiesToDelete();
+                    });
+                    citiesToDeleteContainer.appendChild(cityElement);
+                });
+                deleteCitiesBtn.disabled = newCitiesToDelete.length === 0;
+            }
+
+            deleteCitiesBtn.addEventListener("click", () => {
+                const deleteCitiesApiUrl = `${BASE_URL}/api/remove-cities`;
+                if (newCitiesToDelete.length > 0) {
+                    fetch(deleteCitiesApiUrl, {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cities: newCitiesToDelete }),
+                    })
+                        .then((response) => {
+                            if (!response.ok) throw new Error(`Failed to delete cities. Status: ${response.status}`);
+                            return response.json();
+                        })
+                        .then(() => {
+                            alert("Cities deleted successfully!");
+                            newCitiesToDelete.length = 0; // Clear the array
+                            renderCitiesToDelete(); // Clear delete preview
+                            fetchAndDisplayCities(); // Refresh cities list
+                        })
+                        .catch((error) => {
+                            console.error("Error deleting cities:", error);
+                            alert("Failed to delete cities.");
+                        });
+                } else {
+                    alert("No cities selected to Delete")
+                }
+            });
+
+            // Search Available Cities
+            searchInput.addEventListener("input", (event) => {
+                const searchText = event.target.value.toLowerCase();
+                document.querySelectorAll("#availableCitiesContainer .city-item").forEach((cityElement) => {
+                    const cityName = cityElement.textContent.toLowerCase();
+                    cityElement.style.display = cityName.includes(searchText) ? "block" : "none";
+                });
+            });
+        });
+    </script>
+
+
+    <!-- Project Management Tab -  deleteProject -->
+    <script>
+
+        function dynamicFormFiller(jsonData) {
+            // Helper function to set value for single inputs
+            function setValue(id, value) {
+                const element = document.getElementById(id);
+                if (!element) {
+                    console.warn(`Element with id '${id}' not found`);
+                    return;
+                }
+
+                switch (element.type) {
+                    case 'checkbox':
+                        element.checked = value;
+                        break;
+                    case 'hidden':
+                    case 'text':
+                    case 'number':
+                    case 'date':
+                    case 'select-one':
+                        element.value = value;
+                        break;
+                    default:
+                        element.value = value;
+                }
+            }
+
+            // Helper function to handle special containers
+            function handleContainer(containerId, data, templateFunction) {
+                const container = document.getElementById(containerId);
+                if (!container) {
+                    console.warn(`Container '${containerId}' not found`);
+                    return;
+                }
+
+                container.innerHTML = ''; // Clear existing content
+
+                if (Array.isArray(data)) {
+                    data.forEach(item => {
+                        const element = templateFunction(item);
+                        container.appendChild(element);
+                    });
+                }
+            }
+
+            // Handle floor plans template with image preview
+            function createFloorPlanTemplate(plan) {
+                const floorPlanDiv = document.createElement('div');
+                floorPlanDiv.className = 'floor-plan-item';
+
+                // Create a unique ID for the image preview
+                const previewId = `preview_${Math.random().toString(36).substr(2, 9)}`;
+
+                floorPlanDiv.innerHTML = `
+      <div class="grid-2-cols">
+        <div>
+          <label>Plan Name:</label>
+          <input type="text" name="floorPlans[][name]" value="${plan.name || ''}" required>
+        </div>
+        <div>
+          <label>Type:</label>
+          <input type="text" name="floorPlans[][type]" value="${plan.type || ''}" required>
+        </div>
+        <div>
+          <label>Super Area (sq.ft):</label>
+          <input type="number" name="floorPlans[][superArea]" value="${plan.superArea || ''}" required>
+        </div>
+        <div>
+          <label>Carpet Area (sq.ft):</label>
+          <input type="number" name="floorPlans[][carpetArea]" value="${plan.carpetArea || ''}" required>
+        </div>
+        <div>
+          <label>Price:</label>
+          <input type="number" name="floorPlans[][price]" value="${plan.price || ''}" required>
+        </div>
+        <div>
+          <label>Floor Plan Image:</label>
+          <input type="file" name="floorPlans[][image]" accept="image/*" onchange="previewImage(this, '${previewId}')">
+          ${plan.image ? `<div id="${previewId}" class="image-preview">
+            <img src="${plan.image}" alt="Floor Plan" style="max-width: 200px; margin-top: 10px;">
+          </div>` : `<div id="${previewId}" class="image-preview"></div>`}
+        </div>
+      </div>
+      <button type="button" onclick="removeFloorPlan(this)" class="remove-button">Remove Floor Plan</button>
+    `;
+                return floorPlanDiv;
+            }
+
+            // Handle gallery template
+            function createGalleryTemplate(gallery) {
+                const galleryDiv = document.createElement('div');
+                galleryDiv.className = 'gallery-category';
+
+                const previewsHtml = gallery.images.map((image, index) => `
+      <div class="gallery-image-preview">
+        <img src="${image}" alt="Gallery Image ${index + 1}" style="max-width: 200px; margin: 5px;">
+      </div>
+    `).join('');
+
+                galleryDiv.innerHTML = `
+      <div class="gallery-section">
+        <input type="text" class="category-input" value="${gallery.category}" placeholder="Category Name">
+        <div class="gallery-images">
+          ${previewsHtml}
+        </div>
+        <input type="file" multiple accept="image/*" onchange="handleGalleryImageUpload(this)" class="gallery-upload">
+      </div>
+    `;
+                return galleryDiv;
+            }
+
+            // Handle amenities template
+            function createAmenityTemplate(amenity) {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'amenity-category';
+                categoryDiv.innerHTML = `
+      <input type="text" placeholder="Category Name" class="category-input" value="${amenity.category}">
+      <div class="amenity-items">
+        ${amenity.items.map(item => `
+          <input type="text" placeholder="Amenity Item" class="amenity-input" value="${item}">
+        `).join('')}
+      </div>
+      <button type="button" onclick="addAmenityItem(this)" class="small-button">Add Item</button>
+    `;
+                return categoryDiv;
+            }
+
+            try {
+                // Basic Information
+                setValue('projectNames', jsonData.name);
+                setValue('projectType', jsonData.type);
+                setValue('projectStatus', jsonData.status);
+                setValue('builderSelect', jsonData.builder._id);
+                setValue('projectDescription', jsonData.description);
+                setValue('reraNumber', jsonData.reraNumber);
+                setValue('reravalidity', jsonData.reraValidity);
+
+                // Overview Section
+                setValue('totalUnits', jsonData.overview.totalUnits);
+                setValue('totalTowers', jsonData.overview.totalTowers);
+                setValue('launchDate', jsonData.overview.launchDate.split('T')[0]);
+                setValue('possessionDate', jsonData.overview.possessionDate.split('T')[0]);
+
+                // Price Range
+                setValue('priceMin', jsonData.overview.priceRange.min);
+                setValue('priceMax', jsonData.overview.priceRange.max);
+                setValue('pricePerSqFt', jsonData.overview.priceRange.pricePerSqFt);
+
+                // Location Details
+                setValue('projectAddress', jsonData.location.address);
+                setValue('projectLandmark', jsonData.location.landmark);
+                setValue('projectCity', jsonData.location.city);
+                setValue('projectState', jsonData.location.state);
+                setValue('projectPincode', jsonData.location.pincode);
+
+                // Handle map coordinates
+                if (jsonData.location.coordinates && jsonData.location.coordinates.coordinates) {
+                    const [longitude, latitude] = jsonData.location.coordinates.coordinates;
+                    setValue('projectLatitude', latitude);
+                    setValue('projectLongitude', longitude);
+
+                    if (typeof projectMap !== 'undefined' && projectMarker) {
+                        const position = new google.maps.LatLng(latitude, longitude);
+                        projectMarker.setPosition(position);
+                        projectMap.setCenter(position);
+                        projectMap.setZoom(15);
+                    }
+                }
+
+                // Handle Floor Plans
+                if (jsonData.floorPlans && jsonData.floorPlans.length > 0) {
+                    handleContainer('floorPlansContainer', jsonData.floorPlans, createFloorPlanTemplate);
+                }
+
+                // Handle Amenities
+                if (jsonData.amenities && jsonData.amenities.length > 0) {
+                    handleContainer('amenitiesContainer', jsonData.amenities, createAmenityTemplate);
+                }
+
+                // Handle Gallery
+                if (jsonData.gallery && jsonData.gallery.length > 0) {
+                    handleContainer('galleryContainer', jsonData.gallery, createGalleryTemplate);
+                }
+
+            } catch (error) {
+                console.error('Error filling form:', error);
+            }
+        }
+
+        // Helper function to preview images (add this if not already present)
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 200px; margin-top: 10px;">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function deleteProject(id) {
+            try {
+                const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to delete project with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log(result)
+                alert("Deleted Successfully");
+                loadProjectsList()
+
+                // Optionally, handle UI updates here
+            } catch (error) {
+                console.error("Error occurred while deleting the project:", error.message);
+            }
+
+        }
+
+        function getFormData() {
+            const galleryContainer = document.getElementById('galleryContainer');
+            const galleryInputs = galleryContainer.querySelectorAll('input[type="file"]');
+
+            var galleryFiles = [];
+            galleryInputs.forEach(input => {
+                if (input.files.length > 0) {
+                    for (const file of input.files) {
+                        galleryFiles.push(file);
+                    }
+                }
+            });
+            const data = {
+                name: document.getElementById("projectNames").value,
+                type: document.getElementById("projectType").value,
+                status: document.getElementById('projectStatus').value,
+                projectStatus: document.getElementById("projectStatus").value,
+                builder: document.getElementById("builderSelect").value,
+                reraNumber: document.getElementById("reraNumber").value,
+                reravalidity: document.getElementById("reravalidity").value,
+                description: document.getElementById("projectDescription").value,
+
+
+                // Project Overview
+                overview: {
+                    totalUnits: document.getElementById("totalUnits").value,
+                    totalTowers: document.getElementById("totalTowers").value,
+                    launchDate: document.getElementById("launchDate").value,
+                    possessionDate: document.getElementById("possessionDate").value,
+                    priceRange: {
+                        minPrice: document.getElementById("priceMin").value,
+                        maxPrice: document.getElementById("priceMax").value,
+                        pricePerSqFt: document.getElementById("pricePerSqFt").value,
+                    },
+                },
+
+                // Location Details
+                location: {
+                    address: document.getElementById("projectAddress").value,
+                    landmark: document.getElementById("projectLandmark").value,
+                    city: document.getElementById("projectCity").value,
+                    state: document.getElementById("projectState").value,
+                    pincode: document.getElementById("projectPincode").value,
+                    latitude: document.getElementById("projectLatitude").value,
+                    longitude: document.getElementById("projectLongitude").value,
+                },
+
+                // Floor Plans, Amenities, Specifications, Gallery, Phases, etc.
+                floorPlans: getFloorPlansData(),
+                amenities: getAmenitiesData(),
+                specifications: getSpecificationData(),
+                // phases: getPhase(),
+                highlights: getHighlightsData(),
+                brochures: getBrochuresData(),
+                nearbyLocations: getNearbyLocationsData(),
+                gallery: galleryFiles
+
+            };
+
+            return data;
+        }
+
+
+        async function editProject(id, formData) {
+            try {
+                // Fetch project data from the server using the provided ID
+                const response = await fetch(`${BASE_URL}/api/projects/${id}`);
+                const project = await response.json();
+                console.log(project)
+                dynamicFormFiller(project)
+
+
+            } catch (error) {
+                console.error('Error fetching project details:', error);
+            }
+            const updateBtn = document.getElementById('update-project')
+            updateBtn.addEventListener('click', async () => {
+                const dataToUpdate = getFormData();
+
+
+                console.log("dataToUpdate", dataToUpdate)
+
+                try {
+                    const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(dataToUpdate)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to update project with status: ${response.status}`);
+                    }
+                    const result = await response.json();
+                    console.log(result)
+
+                } catch (error) {
+
+                    console.log('Error in Updating project details:', error);
+
+                }
+
+            })
+        }
+
+
+    </script>
+
+    <!-- toggle existing projects -->
+    <script>
+        const toggleBtn = document.getElementById('toggle-existing-projects')
+        const projectDiv = document.getElementById('projectsList')
+        toggleBtn.addEventListener('click', () => {
+            if (projectDiv.style.display == 'none') {
+                projectDiv.style.display = 'flex';
+            } else {
+                projectDiv.style.display = 'none';
+            }
+        })
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let projects = [];
+            async function loadProjectsList() {
+                try {
+                    const response = await fetch(`${BASE_URL}/api/projects`);
+                    projects = await response.json();
+                    renderProjects(projects); // Render all projects initially
+                } catch (error) {
+                    console.error('Error loading projects:', error);
+                    showPopup('Failed to load projects list');
+                }
+            }
+
+            // Function to render projects - all projects which is passed into 
+            function renderProjects(filteredProjects) {
+                console.log(filteredProjects)
+                const projectsList = document.getElementById('projectsList');
+                projectsList.innerHTML = filteredProjects.map(project => `
+        <div class="project-card">
+            <div class="project-header">
+                <h3>${project.name}</h3>
+                <span class="project-status ${project.status.toLowerCase()}">${project.status}</span>
+            </div>
+            <div class="project-details">
+                <p><strong>Type:</strong> ${project.type}</p>
+                <p><strong>Total Units:</strong> ${project.overview.totalUnits}</p>
+                <p><strong>Location:</strong> ${project.location.city}</p>
+            </div>
+            <div class="project-actions">
+                <button onclick="editProject('${project._id}')">Edit</button>
+                <button onclick="deleteProject('${project._id}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+            }
+
+            // Event listener for search input
+            document.getElementById('projectSearch').addEventListener('input', (event) => {
+                console.log(projects)
+                const query = event.target.value.toLowerCase();
+                const filteredProjects = projects.filter(project =>
+                    project.name.toLowerCase().includes(query) ||
+                    project.location.address.toLowerCase().includes(query) ||
+                    project.location.city.toLowerCase().includes(query) ||
+                    project.location.landmark.toLowerCase().includes(query) ||
+                    project.location.state.toLowerCase().includes(query) ||
+                    project.availabilityStatus.toLowerCase().includes(query) ||
+                    project.status.toLowerCase().includes(query) ||
+                    project.type.toLowerCase().includes(query)
+
+                );
+                renderProjects(filteredProjects); // Render filtered projects
+            });
+
+            // Load projects on page load
+            loadProjectsList();
+        })
+    </script>
+
+
+    <!-- <script>
+        const fetchAvailableCitiesOption = () => {
+            console.log("Heeleo")
             const apiUrl = `${BASE_URL}/api/get-all-cities`;
-
+            // document.getElementById('all-cities').innerText = ''
+            const cityContainer = document.getElementById('all-cities')
+            
             fetch(apiUrl)
-                .then((res) => res.json())
-                .then((data) => {
-                    citiesContainer.innerHTML = ""; // Clear Available Cities Section
-                    availableCitiesContainer.innerHTML = ""; // Clear Manage Cities Section
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                if (data && data.cities) {
+                    
+                    cityContainer.innerHTML = ''
+                        data.cities.forEach((city,index) => {
+                            console.log(city , index)
 
-                    if (data && data.cities) {
-                        data.cities.forEach((city) => {
-                            // Update Currently Available Cities
                             const cityElement = document.createElement("div");
                             cityElement.textContent = city;
                             cityElement.classList.add("city-item");
-                            citiesContainer.appendChild(cityElement);
+                            cityContainer.appendChild(cityElement);
 
-                            // Update Manage Cities Section
-                            const cityManageElement = document.createElement("div");
-                            cityManageElement.textContent = city;
-                            cityManageElement.classList.add("city-item");
-                            cityManageElement.addEventListener("click", () => addCityToDelete(city));
-                            availableCitiesContainer.appendChild(cityManageElement);
+                            
+
+
                         });
                     } else {
-                        citiesContainer.textContent = "No cities found.";
-                        availableCitiesContainer.textContent = "No cities found.";
+                        cityContainer.textContent = "No cities found.";
                     }
                 })
                 .catch((error) => {
                     console.error("Error fetching cities:", error);
                     alert("Failed to fetch cities. Please try again.");
                 });
+
+
         }
+    </script> -->
 
-        // Initially fetch cities on page load
-        fetchAndDisplayCities();
+    <script>
+        var GOOGLE_API_KEY;
+        document.addEventListener('DOMContentLoaded', async () => {
+            const SERVER_PORT = window.location.port;
+            try {
+                const url = `http://localhost:${SERVER_PORT}/google/api/key`; // Backend API to fetch the key
+                const response = await fetch(url);
+                console.log(response)
 
-        // Adding New Cities
-        addCityButton.addEventListener("click", () => {
-            const cityName = cityInput.value.trim();
-            if (cityName) {
-                if (!newCitiesToAppend.includes(cityName)) {
-                    newCitiesToAppend.push(cityName);
-
-                    const cityElement = document.createElement("div");
-                    cityElement.textContent = cityName;
-                    cityElement.classList.add("city-item");
-
-                    // Remove city on click
-                    cityElement.addEventListener("click", () => {
-                        newCitiesToAppend.splice(newCitiesToAppend.indexOf(cityName), 1);
-                        cityElement.remove();
-                        togglePushChangesButton();
-                    });
-
-                    previewContainer.appendChild(cityElement);
-                    togglePushChangesButton();
+                // Check if response is successful
+                if (!response.ok) {
+                    throw new Error(`HTTP Error: ${response.status}`);
                 }
-                cityInput.value = ""; // Clear input
-            } else {
-                alert("Please enter a valid city name!");
+
+                // Parse JSON response
+                const data = await response.json();
+                GOOGLE_API_KEY = data
+                // console.log(data)
+
+
+            } catch (error) {
+                console.error("Error in fetching Google API Key:", error);
+                alert("Failed to load Google API Key. Please try again.");
             }
         });
+    </script>
 
-        pushChangesButton.addEventListener("click", () => {
-            const addCityApiUrl = `${BASE_URL}/api/add-new-city`;
+    <script>
+        let selectedCityElement = null;
+        const fetchAvailableCitiesOption = async () => {
+            const apiUrl = `${BASE_URL}/api/get-all-cities`;
+            const cityContainer = document.getElementById('all-cities');
 
-            fetch(addCityApiUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ cities: newCitiesToAppend }),
-            })
-                .then((response) => {
-                    if (!response.ok) throw new Error(`Failed to add cities. Status: ${response.status}`);
-                    return response.json();
-                })
-                .then(() => {
-                    alert("Cities added successfully!");
-                    newCitiesToAppend.length = 0; // Clear the array
-                    previewContainer.innerHTML = ""; // Clear the preview
-                    togglePushChangesButton();
-                    fetchAndDisplayCities(); // Refresh cities list
-                })
-                .catch((error) => {
-                    console.error("Error adding cities:", error);
-                    alert("Failed to add cities.");
-                });
-        });
+            try {
+                // Fetch city list from your API
+                const response = await fetch(apiUrl);
 
-        function togglePushChangesButton() {
-            pushChangesButton.style.display = newCitiesToAppend.length > 0 ? "block" : "none";
-        }
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
 
-        // Deleting Cities
-        function addCityToDelete(city) {
-            if (!newCitiesToDelete.includes(city)) {
-                newCitiesToDelete.push(city);
-                renderCitiesToDelete();
-            }
-        }
+                const data = await response.json();
+                console.log("Fetched Data:", data);
 
-        function renderCitiesToDelete() {
-            citiesToDeleteContainer.innerHTML = "";
-            newCitiesToDelete.forEach((city) => {
-                const cityElement = document.createElement("div");
-                cityElement.textContent = city;
-                cityElement.classList.add("city-item-delete");
-                cityElement.addEventListener("click", () => {
-                    newCitiesToDelete.splice(newCitiesToDelete.indexOf(city), 1);
-                    renderCitiesToDelete();
-                });
-                citiesToDeleteContainer.appendChild(cityElement);
-            });
-            deleteCitiesBtn.disabled = newCitiesToDelete.length === 0;
-        }
+                // Clear the container
+                cityContainer.innerHTML = '';
 
-        deleteCitiesBtn.addEventListener("click", () => {
-            const deleteCitiesApiUrl = `${BASE_URL}/api/remove-cities`;
-            if(newCitiesToDelete.length > 0){
-                fetch(deleteCitiesApiUrl, {
-                    method: "DELETE",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ cities: newCitiesToDelete }),
-                })
-                    .then((response) => {
-                        if (!response.ok) throw new Error(`Failed to delete cities. Status: ${response.status}`);
-                        return response.json();
-                    })
-                    .then(() => {
-                        alert("Cities deleted successfully!");
-                        newCitiesToDelete.length = 0; // Clear the array
-                        renderCitiesToDelete(); // Clear delete preview
-                        fetchAndDisplayCities(); // Refresh cities list
-                    })
-                    .catch((error) => {
-                        console.error("Error deleting cities:", error);
-                        alert("Failed to delete cities.");
+                // Check and render the cities
+                if (data && data.cities) {
+                    data.cities.forEach((cityName, index) => {
+                        console.log(cityName, index);
+
+                        // Create a card for each city
+                        const cityElement = document.createElement("div");
+                        cityElement.textContent = cityName;
+                        cityElement.classList.add("city-item");
+                        cityElement.style.cursor = "pointer";
+
+
+
+                        // Click event to fetch lat and long from Google Geocoding API
+                        cityElement.addEventListener('click', async () => {
+                            if (selectedCityElement) { selectedCityElement.classList.remove("selected-city"); } cityElement.classList.add("selected-city"); selectedCityElement = cityElement;
+
+                            const coordinates = await fetchCityCoordinates(cityName);
+                            // Div that contains all projects related to selected cities :
+                            const allProjects = document.getElementById('all-projects-cities')
+                            allProjects.innerHTML = ''
+                            if (coordinates) {
+                                // alert(`City: ${cityName}\nLatitude: ${coordinates.lat}\nLongitude: ${coordinates.lng}`);
+                                // console.log(`City: ${cityName}, Latitude: ${coordinates.lat}, Longitude: ${coordinates.lng}`);
+
+                                // Getting cods and send a request to get city
+                                try {
+                                    // http://localhost:5053/api/properties/filter?latitude=26.7921605&longitude=82.1997954&radius=1.28
+
+                                    const response = await fetch(`${BASE_URL}/api/properties/filter?latitude=${coordinates?.lat}&longitude=${coordinates?.lng}`)
+
+                                    const { properties } = await response.json()
+
+                                    console.log("properties : ", properties)
+
+                                    // mapping over properties and inserted into allProjects container 
+                                    if (properties && properties.length > 0) {
+                                        properties.forEach((property, index) => {
+                                            const projectElement = document.createElement('div');
+                                            projectElement.classList.add("project-item");
+                                            projectElement.style.cursor = "pointer";
+
+                                            // card
+                                            projectElement.innerHTML = `
+                                            <div class="card">
+                                                <div class="card-image">
+                                                    <img src="${property.galleryList && property.galleryList.length > 0 ? property.galleryList[0] : 'default-image.jpg'}" alt="Property Image" class="property-image" />
+                                                </div>
+                                                <div class="card-content">
+                                                    <h5 class="card-title">${property.post_title || "Untitled Project"}</h5>
+                                                    
+
+                                                    <p>${property.type_name} - ${property.price} ${property.priceUnit || 'INR'} - ${property.purpose}</p>
+
+                                                    <div class="status-dropdown">
+                                                        <label for="status-select-${property._id}" style="display: block; margin-top: 5px;">Status:</label>
+                                                        <select id="status-select-${property._id}" class="status-select" data-id="${property._id}">
+                                                            <option value="listed" ${property.status === 'listed' ? 'selected' : ''}>Listed</option>
+                                                            <option value="unlisted" ${property.status === 'unlisted' ? 'selected' : ''}>Unlisted</option>
+                                                            <option value="payment-pending" ${property.status === 'payment-pending' ? 'selected' : ''}>Payment Pending</option>
+                                                            <option value="suspicious" ${property.status === 'suspicious' ? 'selected' : ''}>Suspicious</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+
+
+                                            // Adding event listner that will fetch that single data
+                                            projectElement.addEventListener('click', () => {
+                                                // handleProjectClick(property.post_id);
+                                            })
+
+
+                                            // Append the project element (card) to the container
+                                            allProjects.appendChild(projectElement);
+                                            // cityElement.style.backgroundColor = 'black';
+                                            // cityElement.style.color = 'black';
+                                        });
+
+                                        propertyToggle.checked = true;
+                                        projectsContainer.style.display = "flex";
+
+                                        allProjects.addEventListener('change', async (event) => {
+                                            if (event.target && event.target.classList.contains('status-select')) {
+                                                const selectedStatus = event.target.value;
+                                                const propertyId = event.target.dataset.id;
+
+                                                // Make a PUT API call
+                                                try {
+                                                    const response = await fetch(`${BASE_URL}/api/property/update-status/${propertyId}`, {
+                                                        method: 'PUT',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                        },
+                                                        body: JSON.stringify({ status: selectedStatus }),
+                                                    });
+
+                                                    if (response.ok) {
+                                                        const { message } = await response.json();
+                                                        showPopup(message)
+                                                        console.log('Status updated successfully:', message);
+                                                    } else {
+                                                        console.error('Failed to update status:', response.status, response.statusText);
+                                                    }
+                                                } catch (error) {
+                                                    console.error('Error updating status:', error);
+                                                }
+                                            }
+                                        });
+
+
+
+                                        // Add an event listener to the dropdown
+                                        // const dropdown = document.getElementById(`status-select-${property._id}`);
+                                        // dropdown.addEventListener('change', async (event) => {
+                                        //     const selectedStatus = event.target.value;
+                                        //     const propertyId = event.target.dataset.id;
+
+                                        //     // Make a PUT API call
+                                        //     try {
+                                        //         const response = await fetch(`${BASE_URL}/api/property/update-status/${propertyId}`, {
+                                        //             method: 'PUT',
+                                        //             headers: {
+                                        //                 'Content-Type': 'application/json',
+                                        //             },
+                                        //             body: JSON.stringify({ status: selectedStatus }),
+                                        //         });
+
+                                        //         if (response.ok) {
+                                        //             const data = await response.json();
+                                        //             console.log('Status updated successfully:', data);
+                                        //         } else {
+                                        //             console.error('Failed to update status:', response.status, response.statusText);
+                                        //         }
+                                        //     } catch (error) {
+                                        //         console.error('Error updating status:', error);
+                                        //     }
+                                        // });
+
+
+                                    } else {
+                                        allProjects.textContent = "No properties found for this city.";
+                                        propertyToggle.checked = false;
+                                        projectsContainer.style.display = "none";
+                                    }
+
+                                    // <p>${property.type_name || "Unknown Type"}</p>
+                                    // <p>${property.price || "N/A"} ${property.priceUnit || ""}</p>
+                                    // <p>${property.purpose || "N/A"}</p>
+
+
+
+
+                                } catch (error) {
+                                    console.log('Error Occured:', error, error.message)
+                                }
+                            } else {
+                                alert("Failed to get coordinates for this city.");
+                            }
+                        });
+
+                        cityContainer.appendChild(cityElement);
                     });
-            }else{
-                alert("No cities selected to Delete")
+                } else {
+                    cityContainer.textContent = "No cities found.";
+                }
+            } catch (error) {
+                console.error("Error fetching cities:", error);
+                alert("Failed to fetch cities. Please try again.");
+            }
+        };
+
+        // Function to fetch latitude and longitude using Google Geocoding API
+        const fetchCityCoordinates = async (cityName) => {
+            try {
+                const geoUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(cityName)}&key=${GOOGLE_API_KEY}`;
+                const response = await fetch(geoUrl);
+
+                if (!response.ok) {
+                    throw new Error(`Error fetching coordinates for ${cityName}`);
+                }
+
+                const data = await response.json();
+                console.log("DATAA", data)
+                if (data.status === "OK" && data.results.length > 0) {
+                    const location = data.results[0].geometry.location; // Get lat/lng
+                    return location;
+                } else {
+                    console.error(`No results found for ${cityName}`);
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error fetching city coordinates:", error);
+                return null;
+            }
+        };
+
+        // Call the function to load cities
+        fetchAvailableCitiesOption();
+
+
+        const propertyToggle = document.getElementById("toggleProperty");
+        const projectsContainer = document.getElementById("all-projects-cities");
+
+        // Add toggle functionality
+        propertyToggle.addEventListener("change", () => {
+            projectsContainer.style.display = propertyToggle.checked ? "flex" : "none";
+        });
+
+        // function fillPropertyForm(data) {
+        //         // Map response fields to form fields
+        //         document.getElementById("post_title").value = data.post_title || "";
+        //         document.getElementById("type_name").value = data.type_name || "";
+        //         document.getElementById("property_purpose").value = data.purpose || "";
+        //         document.getElementById("building_id").value = data.building_id || "";
+        //         document.getElementById("price").value = data.price || "";
+        //         document.getElementById("area").value = data.area || "";
+        //         document.getElementById("priceUnit").value = data.priceUnit || "";
+        //         document.getElementById("areaUnit").value = data.areaUnit || "";
+        //         document.getElementById("floor").value = data.floor || "";
+        //         document.getElementById("category").value = data.category || "";
+        //         document.getElementById("region").value = data.region || "";
+        //         document.getElementById("agreement").value = data.agreement || "";
+
+        //         document.getElementById("carpetArea").value = data.carpetArea || "";
+        //         document.getElementById("superBuiltupArea").value = data.superBuiltupArea || "";
+        //         document.getElementById("bedrooms").value = data.bedrooms || "";
+        //         document.getElementById("bathrooms").value = data.bathrooms || "";
+        //         document.getElementById("furnishing").value = data.furnishing || "";
+        //         document.getElementById("possession").value = data.possession || "";
+        //         document.getElementById("address").value = data.address || "";
+        //         document.getElementById("post_description").value = data.post_description || "";
+        //         document.getElementById("latitude").value = data.latitude || "";
+        //         document.getElementById("longitude").value = data.longitude || "";
+        //         document.getElementById("available").checked = data.available || false;
+        //         document.getElementById('investmentStrategy').value = data.investmentStrategies || null
+
+        //         // Set gallery images
+        //         const galleryImagesPreview = document.getElementById("gallery_images_preview");
+        //         galleryImagesPreview.innerHTML = "";
+        //         if (data.galleryList && data.galleryList.length) {
+        //             data.galleryList.forEach(url => {
+        //                 const img = document.createElement("img");
+        //                 img.src = url;
+        //                 img.alt = "Gallery Image";
+        //                 img.style.width = "100px";
+        //                 img.style.height = "100px";
+        //                 img.style.margin = "5px";
+        //                 galleryImagesPreview.appendChild(img);
+        //             });
+        //         }
+
+        //     // Set floor plan image
+        //     const floorImagePreview = document.getElementById('floor_plan_image_preview');
+
+        //     if (data.floor_plan_image) {
+        //         floorImagePreview.src = data.floor_plan_image; 
+        //         floorImagePreview.alt = 'Floor Plan Image';   
+        //         floorImagePreview.style.display = 'block';    
+        //         floorImagePreview.style.width = "100px";      
+        //         floorImagePreview.style.height = "100px";
+        //         floorImagePreview.style.margin = "5px";
+        //     } else {
+        //         floorImagePreview.style.display = 'none';     
+        //     }
+
+        //     console.log(floorImagePreview);
+
+        //         // Set main image preview
+        //         const postImagePreview = document.getElementById("post_image_preview");
+        //         if (data.post_image) {
+        //             postImagePreview.src = data.post_image;
+        //             postImagePreview.style.display = "block";
+        //         }
+
+        //         // Fill amenities
+        //         const amenitiesSelect = document.getElementById("amenitiess");
+        //         if (amenitiesSelect && data.amenities && data.amenities.length) {
+        //             [...amenitiesSelect.options].forEach(option => {
+        //                 option.selected = data.amenities.includes(option.value);
+        //             });
+        //         }
+
+        //         // Set other multi-select fields
+        //         setMultiSelectValues("facilitiess", data.facilities);
+        //         setMultiSelectValues("financingOptions", data.financingOptions);
+        //         setMultiSelectValues("environmentalCertifications", data.environmentalCertifications);
+
+        //         // Helper to set multi-select values
+        //         function setMultiSelectValues(selectId, values) {
+        //             const selectElement = document.getElementById(selectId);
+        //             if (selectElement && values && values.length) {
+        //                 [...selectElement.options].forEach(option => {
+        //                     option.selected = values.includes(option.value);
+        //                 });
+        //             }
+        //         }
+
+        //         // Helper to capitalize the first letter of strings
+        //         function capitalizeFirstLetter(string) {
+        //             return string.charAt(0).toUpperCase() + string.slice(1);
+        //         }
+        //     }
+
+        /* fill up the form to edit - pending*/
+        const handleProjectClick = async (post_id) => {
+            console.log("NEW CLICk", post_id)
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/details/${post_id}`)
+                const data = await response.json()
+                fillPropertyForm(data)
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+
+            }
+
+        }
+
+
+
+
+    </script>
+
+    <script>
+        document.getElementById('post-status').addEventListener('change', (e) => {
+            document.getElementById('post-status').value = e.target.value;
+            console.log("VALUE", e.target.value)
+        })
+
+
+
+        function handleCityChange(selectElement) {
+            const selectedCity = selectElement.value;
+            if (selectedCity) {
+                console.log(`Selected city is ${selectedCity}`);
+            }
+        }
+    </script>
+
+
+    <!-- Builder ID Connection -->
+    <script>
+
+        async function fetchBuilders() {
+            const buliderIdConnection = document.getElementById('BuilderIdConnection');
+
+            try {
+                const response = await fetch(`${BASE_URL}/builders/info`);
+                const res = await response.json();
+
+                console.log('API Response:', res);
+
+                if (!Array.isArray(res)) {
+                    console.error('Response is not an array. Check API structure.');
+                    return;
+                }
+
+                // Create the table
+                const table = document.createElement('table');
+                table.style.border = "1px solid black";
+                table.style.width = "100%";
+                table.style.borderCollapse = "collapse";
+
+                // Create table headers
+                const headers = ['Logo', 'Name', 'Username', 'Password', 'Reset Password'];
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    th.textContent = header;
+                    th.style.border = "1px solid black";
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                // Create table body
+                const tbody = document.createElement('tbody');
+                res.forEach(builder => {
+                    const row = document.createElement('tr');
+
+                    // add logo 
+                    const logoCell = document.createElement('td');
+
+                    // Check if the logo URL is available
+                    if (builder.logo) {
+                        const img = document.createElement('img');
+                        img.src = builder.logo; // Set the source of the image
+                        img.alt = "Builder Logo"; // Set an alternative text
+                        img.style.width = "60px"; // Adjust the width as needed
+                        img.style.height = "60px"; // Adjust the height as needed
+                        logoCell.appendChild(img); // Add the image to the cell
+                    } else {
+                        logoCell.textContent = 'N/A'; // Default text if no logo is available
+                    }
+
+                    logoCell.style.border = "1px solid black";
+                    row.appendChild(logoCell);
+
+                    // Add name
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = builder.name || 'N/A';
+                    nameCell.style.border = "1px solid black";
+                    row.appendChild(nameCell);
+
+                    // username
+                    const usernameCell = document.createElement('td');
+                    usernameCell.textContent = builder.username || 'N/A';
+                    usernameCell.style.border = "1px solid black";
+                    row.appendChild(usernameCell);
+
+                    // Add password with a copy button
+                    const passwordCell = document.createElement('td');
+                    passwordCell.textContent = builder.password || "N/A";
+                    passwordCell.style.border = "1px solid black";
+
+                    // Create the copy button for the password
+                    const copyButton = document.createElement('button');
+                    copyButton.textContent = "Copy"; // Set the button's text
+                    copyButton.style.cursor = "pointer"; // Optional: Add pointer cursor for better UX
+                    copyButton.style.backgroundColor = "lightblue"; // Button color
+                    copyButton.style.marginLeft = "10px"; // Space between password and button
+
+                    // Add event listener to copy password to clipboard
+                    copyButton.addEventListener('click', () => {
+                        const password = builder.password || 'N/A';
+                        navigator.clipboard.writeText(password).then(() => {
+                            alert('Password copied to clipboard!');
+                            copyButton.textContent = "Copied!";
+                            copyButton.style.backgroundColor = "green";
+                        }).catch((err) => {
+                            console.error('Error copying password: ', err);
+                            alert('Failed to copy password.');
+                        });
+                    });
+
+                    // Append the copy button to the password cell
+                    passwordCell.appendChild(copyButton);
+
+                    row.appendChild(passwordCell);
+
+                    // Add Reset Password Button
+                    const resetPasswordCell = document.createElement('td');
+
+                    // Create the button element
+                    const resetButton = document.createElement('button');
+                    resetButton.textContent = "Reset Password"; // Set the button's text
+                    resetButton.style.cursor = "pointer"; // Optional: Add pointer cursor for better UX
+                    resetButton.style.backgroundColor = "crimson"; // Button color
+
+                    // Add an event listener to handle button clicks
+                    resetButton.addEventListener('click', async () => {
+                        const choose =  confirm('Are You Sure Want to Reset Password ?')
+                        if(choose){
+                            const builderId = builder._id; // Replace with the actual builder ID you want to reset the password for
+
+                            try {
+                                const response = await fetch(`${BASE_URL}/builder/reset-password/${builderId}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+
+                                const data = await response.json();
+
+                                if (response.ok) {
+                                    alert(`Password has been reset: ${data.newPassword}`); // You can display the new password or handle it differently
+                                    fetchBuilders(); // Refresh the table after password reset
+                                } else {
+                                    alert(data.message); // Show error message from the API response
+                                }
+                            } catch (error) {
+                                console.error('Error resetting password:', error);
+                                alert('There was an error resetting the password.');
+                            }
+                        }else{
+                            return
+                        }
+                    });
+
+                    // Append the reset password button to the cell
+                    resetPasswordCell.appendChild(resetButton);
+
+                    // Style the table cell
+                    resetPasswordCell.style.border = '1px solid black';
+                    resetPasswordCell.style.textAlign = 'center'; // Optional: Center-align the button
+
+                    // Append the reset password cell to the row
+                    row.appendChild(resetPasswordCell);
+
+                    tbody.appendChild(row);
+                });
+                table.appendChild(tbody);
+
+                buliderIdConnection.innerHTML = '';
+                buliderIdConnection.appendChild(table);
+
+                console.log('Table created successfully');
+            } catch (error) {
+                console.error('Error fetching builders:', error);
+            }
+
+
+        }
+
+        fetchBuilders();
+
+    </script>
+
+
+
+    <!-- Builder-property connnection -->
+    <script>
+        // State management
+        let selectedBuilder = null;
+        let selectedPropertiesx = new Set();
+        let builders = [];
+        let properties = [];
+        let builderIdStore;
+
+        // DOM Elements
+        const buildersList = document.getElementById('buildersList');
+        const propertiesList = document.getElementById('propertiesList');
+        const builderSearch = document.getElementById('builderSearch');
+        const propertySearchx = document.getElementById('propertySearchx');
+        const connectButtond = document.getElementById('builderConnectBtn');
+        const selectedBuilderDisplay = document.getElementById('selectedBuilderDisplay');
+        const selectedPropertiesCount = document.getElementById('selectedPropertiesCount');
+
+
+        function initalBtn() {
+            console.log("InitialBtn")
+            // Initialize
+            connectButtond.addEventListener('click',
+                connectPropertiesToBuilder
+            );
+        }
+
+        // Fetch builders and properties
+        async function fetchBuilders() {
+            console.log("HIHIIHHIHIHHIII")
+            try {
+                const response = await fetch(`${BASE_URL}/builders`);
+                builders = await response.json();
+                console.log("builders")
+                displayBuilders(builders);
+            } catch (error) {
+                console.error('Error fetching builders:', error);
+                showNotification('Failed to load builders', 'error');
+            }
+        }
+
+        async function fetchProperties() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/properties/all`);
+                properties = await response.json();
+                console.log("propertiessssss", properties)
+
+                displayProperties(properties);
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+                showNotification('Failed to load properties', 'error');
+            }
+        }
+
+        // Display functions
+        function displayBuilders(buildersToShow) {
+            console.log("buildersToShow", buildersToShow)
+            buildersList.innerHTML = buildersToShow.map(builder => `
+            <div class="list-item ${selectedBuilder?._id === builder._id ? 'selected' : ''}"
+            console.log(builder._id)
+                 onclick="selectBuilder('${builder._id}')">
+                <h3>${builder.name}</h3>
+                <p>Experience: ${builder.experience || 0} years</p>
+            </div>
+        `).join('');
+        }
+
+        function displayProperties(propertiesToShow) {
+            console.log("propertiesToShow", propertiesToShow)
+            propertiesList.innerHTML = propertiesToShow.map(property => `
+            <div class="list-item property-item">
+                <input type="checkbox" 
+                       class="property-checkbox"
+                       ${selectedPropertiesx.has(property.post_id) ? 'checked' : ''}
+                       onchange="toggleProperty('${property.post_id}')">
+                <div>
+                    <h3>${property.post_title}</h3>
+                    <p>${property.type_name} - ₹${property.price?.toLocaleString() || 'N/A'}</p>
+                </div>
+            </div>
+        `).join('');
+        }
+
+        // Event handlers
+        function selectBuilder(builderId) {
+            builderIdStore = builderId
+            const builder = builders.find(b => b._id === builderId);
+            selectedBuilder = selectedBuilder?._id === builderId ? null : builder;
+            selectedBuilderDisplay.textContent = selectedBuilder?.name || 'None';
+            displayBuilders(builders);
+            // updateConnectButton();
+        }
+
+        function toggleProperty(propertyId) {
+            if (selectedPropertiesx.has(propertyId)) {
+                selectedPropertiesx.delete(propertyId);
+            } else {
+                selectedPropertiesx.add(propertyId);
+            }
+            selectedPropertiesCount.textContent = selectedPropertiesx.size;
+            // updateConnectButton();
+        }
+
+        function updateConnectButton() {
+            // connectButton.disabled = !selectedBuilder || selectedPropertiesx.size === 0;
+        }
+
+        // Connect properties to builder
+        async function connectPropertiesToBuilder() {
+            console.log("Connecting")
+            if (!selectedBuilder || selectedPropertiesx.size === 0) return;
+
+            try {
+                // connectButton.disabled = true;
+
+                const response = await fetch(`${BASE_URL}/api/builders/${builderIdStore}/properties`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        propertyIds: Array.from(selectedPropertiesx)
+                    })
+                });
+
+                if (!response.ok) throw new Error('Failed to connect properties');
+                console.log(response)
+                showNotification('Properties connected successfully!', 'success');
+
+                // Reset selections
+                selectedBuilder = null;
+                selectedPropertiesx.clear();
+                selectedBuilderDisplay.textContent = 'None';
+                selectedPropertiesCount.textContent = '0';
+
+                // Refresh lists
+                await Promise.all([fetchBuilders(), fetchProperties()]);
+
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Failed to connect properties', 'error');
+            } finally {
+                //  connectButton.disabled = false;
+                //connectButton.textContent = 'Connect Properties to Builder';
+            }
+        }
+
+        // Search functionality
+        builderSearch.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredBuilders = builders.filter(builder =>
+                builder.name.toLowerCase().includes(searchTerm)
+            );
+            displayBuilders(filteredBuilders);
+        });
+
+        propertySearchx.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            console.log(searchTerm)
+            const filteredProperties = properties.filter(property =>
+                property?.post_title?.toLowerCase()?.includes(searchTerm) ||
+                property?.post_id.includes(searchTerm)
+            );
+            displayProperties(filteredProperties);
+        });
+
+
+
+
+    </script>
+
+
+
+    <script>
+        const secretKey = "8f45d7c2a1e6b390f8d4c2e5a9b3f7d1c6e2b5a8f4d7c9e3b2a5f8d6c4b7a9e1f3d5b8a2c6e4f7d9b3a5c8e2f6b4d9a7c1e3f5b8d2a6c4f9e7b1a3d5c8f2e4b6a9d7c1f3e5b8a2c4f6d9b3a7e1c5f8b4d2a6c9e3f7b1a5d8c2f4e6b9a3d7c1f5e8b2a4c6d9f3b7a1e5c8f2d4b6a9c3e7f1b5a8d2c4f6e9b3a7c1d5f8b2a4e6c9f3d7b1a5";
+
+        function generateJWT() {
+            // Payload to include in the token
+            const payload = {
+                userId: 123, // Example user ID
+                username: 'john_doe', // Example username
+            };
+
+            // Generate the JWT token using the secret key
+            const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
+
+            // Display the token in the 'GenerateToken' div
+            document.getElementById('token').innerText = token;
+        }
+    </script>
+
+
+
+    //
+    <script>
+        //     let projects = [];
+        //     let propertiesx = [];
+        //     const projectsList = document.getElementById('projectsListx');
+        //     const propertiesListx = document.getElementById('propertiesListx');
+        //     const connectBtn = document.getElementById('connectBtn');
+        //     const statusMessage = document.getElementById('statusMessage');
+
+        //     // Fetch projects from the API
+        //     async function fetchProjects() {
+        //         try {
+        //             const response = await fetch(`${BASE_URL}/api/projects`);
+        //             projects = await response.json();
+        //             renderProjects();
+        //         } catch (error) {
+        //             console.error('Error fetching projects:', error);
+        //             showError('Failed to load projects');
+        //         }
+        //     }
+
+        //     // Fetch properties from the API
+        //     async function fetchProperties() {
+        //         try {
+        //             const response = await fetch(`${BASE_URL}/api/properties/all`);
+        //             propertiesx = await response.json();
+        //             renderProperties();
+        //         } catch (error) {
+        //             console.error('Error fetching propertiesx:', error);
+        //             showError('Failed to load propertiesx');
+        //         }
+        //     }
+
+        //     // Render projects list
+        //     function renderProjects() {
+        //         projectsList.innerHTML = projects.map(project => `
+        //                 <div class="list-item">
+        //                     <input type="checkbox" id="project-${project.projectId}" value="${project.projectId}">
+        //                     <label for="project-${project.projectId}">
+        //                         ${project.name} (${project.type})
+        //                     </label>
+        //                 </div>
+        //             `).join('');
+        //     }
+
+        //     // Render propertiesx list
+        //     function renderProperties() {
+        //         propertiesListx.innerHTML = propertiesx.map(property => `
+        //                 <div class="list-item">
+        //                     <input type="checkbox" id="property-${property.post_id}" value="${property.post_id}">
+        //                     <label for="property-${property.post_id}">
+        //                         ${property.post_title} (${property.type_name})
+        //                     </label>
+        //                 </div>
+        //             `).join('');
+        //     }
+
+        //     // Check if any items are selected and enable/disable connect button
+        //     function updateConnectButton() {
+        //         const selectedProjects = document.querySelectorAll('#projectsListx input:checked');
+        //         const selectedProperties = document.querySelectorAll('#propertiesListx input:checked');
+        //         connectBtn.disabled = selectedProjects.length === 0 || selectedProperties.length === 0;
+        //     }
+
+        //     // Connect selected projects and propertiesx
+        //     async function connectItems() {
+        //         const selectedProjects = [...document.querySelectorAll('#projectsListx input:checked')].map(input => input.value);
+        //         const selectedProperties = [...document.querySelectorAll('#propertiesListx input:checked')].map(input => input.value);
+
+        //         try {
+        //             const promises = selectedProjects.map(projectId =>
+        //                 Promise.all(selectedProperties.map(propertyId =>
+        //                     fetch(`${BASE_URL}/api/projects/${projectId}/properties/${propertyId}`, {
+        //                         method: 'POST',
+        //                         headers: {
+        //                             'Content-Type': 'application/json'
+        //                         }
+        //                     })
+        //                 ))
+        //             );
+
+        //             await Promise.all(promises);
+        //             showSuccess('Successfully connected selected items');
+
+        //             // Refresh the lists
+        //             fetchProjects();
+        //             fetchProperties();
+        //         } catch (error) {
+        //             console.error('Error connecting items:', error);
+        //             showError('Failed to connect items');
+        //         }
+        //     }
+
+        //     function showSuccess(message) {
+        //         statusMessage.className = 'status-message success';
+        //         statusMessage.textContent = message;
+        //     }
+
+        //     function showError(message) {
+        //         statusMessage.className = 'status-message error';
+        //         statusMessage.textContent = message;
+        //     }
+
+        //     // Event listeners
+        //     document.addEventListener('DOMContentLoaded', () => {
+        //         fetchProjects();
+        //         fetchProperties();
+        //     });
+
+        //     projectsList.addEventListener('change', updateConnectButton);
+        //     propertiesListx.addEventListener('change', updateConnectButton);
+        //     connectBtn.addEventListener('click', connectItems);
+        // </script>
+
+
+
+
+    <script>
+        let projects = [];
+        let propertiesx = [];
+        const projectsList = document.getElementById('projectsListx');
+        const propertiesListx = document.getElementById('propertiesListx');
+        const connectBtn = document.getElementById('connectBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        let selectedProjectId = null;
+
+        async function fetchProjects() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/projects`);
+                projects = await response.json();
+                renderProjects();
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+                showError('Failed to load projects');
+            }
+        }
+
+        async function fetchPropertiesx() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/properties/all`);
+                propertiesx = await response.json();
+                console.log("propertiesx", propertiesx)
+                renderProperties();
+            } catch (error) {
+                console.error('Error fetching properties:', error);
+                showError('Failed to load properties');
+            }
+        }
+
+        // function renderProjects() {
+        //         projectsList.innerHTML = projects.map(project => `
+        //     <div class="list-item">
+        //         <div style="display:flex; align-items:center; padding:1rem 0; ">
+        //             <label for="project-${project.projectId}" style='font-size:1.2rem;'>
+        //                 ${project.name} (${project.type})
+        //             </label>
+        //             <input type="radio" name="project" id="project-${project.projectId}" value="${project.projectId}" style='display:none;' >
+        //         </div>
+        //         <div>
+        //             <span class="chip status ${project.status.toLowerCase()}">${project.status}</span>
+        //             <span class="chip availability ${project.availabilityStatus.toLowerCase()}">${project.availabilityStatus}</span>
+        //         </div>
+        //         ${project.connectedProperties && project.connectedProperties.length > 0 ? `
+        //             <div class="associated-properties">
+        //                 <strong>Associated Properties:</strong>
+        //                 <ul>
+        //                     ${project.connectedProperties.map(property => `
+        //                         <li>
+        //                             <strong>${property.post_title}</strong> (ID: ${property.post_id})
+        //                         </li>
+        //                     `).join('')}
+        //                 </ul>
+        //             </div>
+        //         ` : ''}
+        //     </div>
+        // `).join('');
+        //     }
+
+
+        let uniquePostIds = new Set(); // Initialize an empty Set
+        function renderProjects() {
+
+            projectsList.innerHTML = projects.map(project => {
+                if (project.connectedProperties && project.connectedProperties.length > 0) {
+                    // Add post_id values to the Set
+                    project.connectedProperties.forEach(property => uniquePostIds.add(property.post_id));
+                }
+
+                return `
+            <div class="list-item">
+                <div style="display:flex; align-items:center; padding:1rem 0; ">
+                    <label for="project-${project.projectId}" style='font-size:1.2rem;'>
+                        ${project.name} (${project.type})
+                    </label>
+                    <input type="radio" name="project" id="project-${project.projectId}" value="${project.projectId}" style='display:none;' >
+                </div>
+                <div>
+                    <span class="chip status ${project.status.toLowerCase()}">${project.status}</span>
+                    <span class="chip availability ${project.availabilityStatus.toLowerCase()}">${project.availabilityStatus}</span>
+                </div>
+                ${project.connectedProperties && project.connectedProperties.length > 0 ? `
+                    <div class="associated-properties">
+                        <strong>Associated Properties:</strong>
+                        <ul>
+                            ${project.connectedProperties.map(property => `
+                                <li>
+                                    <strong>${property.post_title}</strong> (ID: ${property.post_id})
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+            }).join('');
+
+            console.log('Unique Post IDs:', uniquePostIds); // Debugging: Log the unique post IDs
+        }
+
+
+        // function renderProperties(connectedProperties = []) {
+        //     const connectedIds = connectedProperties.map(p => p.id);
+        //     propertiesListx.innerHTML = propertiesx.map(property => `
+        //         <div class="list-item ${connectedIds.includes(property.post_id) ? 'connected' : ''}">
+        //             <div>
+        //                 <label for="property-${property.post_id}">
+        //                 ${property.post_title} (${property.type_name}) (${property.post_id})
+        //                 </label>
+        //             <input type="checkbox" id="property-${property.post_id}" value="${property.post_id}" 
+        //             ${connectedIds.includes(property.post_id) ? 'disabled checked' : ''}>    
+        //             </div>
+
+        //         </div>
+        //     `).join('');
+        // }
+
+        function renderProperties(connectedProperties = []) {
+            const connectedIds = connectedProperties.map(p => p.id);
+            propertiesListx.innerHTML = propertiesx.map(property => {
+                const isConnected = uniquePostIds.has(property.post_id);
+                return `
+            <div class="list-item ${isConnected ? 'connected' : ''}">
+                <div>
+                    <label for="property-${property.post_id}">
+                        <div style='text-decoration:capitalize;'>
+                            ${property.post_title} (${property.type_name}) (${property.post_id}) 
+                            </div>
+                            <img src='${property.galleryList[0]}' alt='gallery-image' id='gallery-image-property' />
+                            <div id='address-property'>${property.address}</div>
+                            <span id='price-property'>${property.price} ${property.priceUnit || 'inr'}</span>
+                            <span id='price-property'>${property.area} ${property.areaUnit || 'sqft'}</span>
+                            <div id='status-property'>${property.status}</div>
+                    </label>
+                    ${isConnected
+                        ? `<button class="disconnect-btn" data-post-id="${property.post_id}">Disconnect</button>`
+                        : `<input type="checkbox" id="property-${property.post_id}" value="${property.post_id}" 
+                                ${connectedIds.includes(property.post_id) ? 'disabled checked' : ''}>`
+                    }
+                </div>
+            </div>
+        `;
+            }).join('');
+
+            // Attach event listeners for the disconnect buttons
+            document.querySelectorAll('.disconnect-btn').forEach(button => {
+                button.addEventListener('click', handleDisconnect);
+            });
+        }
+
+
+        async function handleDisconnect(event) {
+            const postId = event.target.dataset.postId;
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/properties/disconnect/${postId}`, { // pending
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccess(`Successfully disconnected property ID: ${postId}`);
+                    // Refresh projects and properties after disconnecting
+                    fetchProjects();
+                    fetchPropertiesx();
+                } else {
+                    showError(`Failed to disconnect property ID: ${postId}`);
+                }
+            } catch (error) {
+                console.error('Error disconnecting property:', error);
+                showError('Failed to disconnect property');
+            }
+        }
+
+
+        async function handleProjectSelection(event) {
+            if (!event.target.matches('input[type="radio"]')) return;
+
+            const projectId = event.target.value;
+            if (selectedProjectId === projectId) return;
+
+            // Clear previous selection
+            selectedProjectId = projectId;
+            document.querySelectorAll('.list-item.selected').forEach(el => el.classList.remove('selected'));
+            document.querySelectorAll('.list-item.connected').forEach(el => el.classList.remove('connected'));
+
+            // Highlight the selected project
+            event.target.closest('.list-item').classList.add('selected');
+
+            try {
+                // Fetch connected properties for the selected project
+                const response = await fetch(`${BASE_URL}/api/projects/${projectId}/properties`);
+                const data = await response.json();
+
+                if (data.success) {
+                    renderProperties(data.data.properties);
+                } else {
+                    showError('Failed to fetch connected properties');
+                }
+            } catch (error) {
+                console.error('Error fetching connected properties:', error);
+                showError('Failed to fetch connected properties');
+            }
+
+            updateConnectButton();
+        }
+
+        function updateConnectButton() {
+            const selectedProjects = document.querySelectorAll('#projectsListx input:checked');
+            const selectedProperties = document.querySelectorAll('#propertiesListx input:checked:not(:disabled)');
+            connectBtn.disabled = selectedProjects.length === 0 || selectedProperties.length === 0;
+        }
+
+        async function connectItems() {
+            const selectedProjects = [...document.querySelectorAll('#projectsListx input:checked')].map(input => input.value);
+            const selectedProperties = [...document.querySelectorAll('#propertiesListx input:checked:not(:disabled)')].map(input => input.value);
+
+            try {
+                const promises = selectedProjects.map(projectId =>
+                    Promise.all(selectedProperties.map(propertyId =>
+                        fetch(`${BASE_URL}/api/projects/${projectId}/properties/${propertyId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                    ))
+                );
+
+                await Promise.all(promises);
+                showSuccess('Successfully connected selected properties');
+                showPopup('Successfully connected selected properties');
+
+                fetchProjects();
+                fetchPropertiesx();
+            } catch (error) {
+                console.error('Error connecting properties:', error);
+                showError('Failed to connect properties');
+                showPopup('Failed to connect properties');
+            }
+        }
+
+        function showSuccess(message) {
+            statusMessage.className = 'status-message success';
+            statusMessage.textContent = message;
+        }
+
+        function showError(message) {
+            statusMessage.className = 'status-message error';
+            statusMessage.textContent = message;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProjects();
+            fetchPropertiesx();
+        });
+
+        projectsList.addEventListener('change', handleProjectSelection);
+        propertiesListx.addEventListener('change', updateConnectButton);
+        connectBtn.addEventListener('click', connectItems);
+    </script>
+
+
+
+
+    <!-- Builder and building Connection -->
+    //
+    <script>
+        //     // Mock API endpoints
+        //     const API_BUILDERS = `${BASE_URL}/builders`;
+        //     const API_BUILDINGS = `${BASE_URL}/api/buildings`;
+        //     const API_CONNECT = `${BASE_URL}/builders`;
+
+        //     const builderList = document.getElementById('builder-list');
+        //     const buildingList = document.getElementById('building-list');
+        //     const connectButton = document.getElementById('connect-button');
+
+        //     let selectedBuilderx = null;
+        //     let selectedBuildings = new Set();
+
+        //     // Fetch and render builders
+        //     async function fetchBuilders() {
+        //         const response = await fetch(API_BUILDERS);
+        //         const builders = await response.json();
+        //         console.log("builders", builders);
+
+        //         builderList.innerHTML = '';
+        //         builders.forEach(builder => {
+        //             const div = document.createElement('div');
+        //             div.className = 'builder-list-item';
+
+        //             const checkbox = document.createElement('input');
+        //             checkbox.type = 'checkbox';
+        //             checkbox.name = 'builder';
+        //             checkbox.value = builder._id;
+        //             checkbox.addEventListener('change', () => {
+        //                 if (checkbox.checked) {
+        //                     selectedBuilderx = builder._id;
+        //                     deselectOtherBuilders(checkbox);
+        //                 } else {
+        //                     selectedBuilderx = null;
+        //                 }
+        //                 toggleConnectButton();
+        //             });
+
+        //             const label = document.createElement('label');
+        //             label.textContent = builder.name;
+
+        //             div.appendChild(checkbox);
+        //             div.appendChild(label);
+        //             builderList.appendChild(div);
+        //         });
+        //     }
+
+        //     function deselectOtherBuilders(currentCheckbox) {
+        //         const checkboxes = builderList.querySelectorAll('input[type="checkbox"]');
+        //         checkboxes.forEach(checkbox => {
+        //             if (checkbox !== currentCheckbox) {
+        //                 checkbox.checked = false;
+        //             }
+        //         });
+        //     }
+
+        //     // Fetch and render buildings
+        //     async function fetchBuildings() {
+        //         const response = await fetch(API_BUILDINGS);
+        //         const buildings = await response.json();
+        //         console.log("buildings", buildings);
+
+        //         buildingList.innerHTML = '';
+        //         buildings.forEach(building => {
+        //             const div = document.createElement('div');
+        //             div.className = 'building-list-item';
+
+        //             const checkbox = document.createElement('input');
+        //             checkbox.type = 'checkbox';
+        //             checkbox.name = 'building';
+        //             checkbox.value = building._id;
+
+        //             // Check if the building is already connected
+        //             const isConnected = building.name && building.ownerName;
+
+        //             // Disable the checkbox for connected buildings
+        //             checkbox.disabled = isConnected;
+
+        //             // Add or remove from the selectedBuildings set
+        //             checkbox.addEventListener('change', () => {
+        //                 if (checkbox.checked) {
+        //                     selectedBuildings.add(building._id);
+        //                 } else {
+        //                     selectedBuildings.delete(building._id);
+        //                 }
+        //                 toggleConnectButton();
+        //             });
+
+        //             const label = document.createElement('label');
+        //             label.textContent = `${building.buildingId} - ${building.name || 'N/A'} (${building.ownerName || 'N/A'})`;
+
+        //             div.appendChild(checkbox);
+        //             div.appendChild(label);
+        //             buildingList.appendChild(div);
+        //         });
+        //     }
+
+        //     function toggleConnectButton() {
+        //         connectButton.disabled = !selectedBuilderx || selectedBuildings.size === 0;
+        //     }
+
+        //     // Connect API call
+        //     connectButton.addEventListener('click', async () => {
+        //         if (!selectedBuilderx || selectedBuildings.size === 0) return;
+
+        //         const response = await fetch(`${API_CONNECT}/${selectedBuilderx}/buildings`, {
+        //             method: 'POST',
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({ buildings: Array.from(selectedBuildings) })
+        //         });
+
+        //         if (response.ok) {
+        //             const data = await response.json();
+        //             alert('Connection successful!');
+        //             console.log(data);
+        //             selectedBuilderx = null;
+        //             selectedBuildings.clear();
+        //             fetchBuilders();
+        //             fetchBuildings();
+        //             toggleConnectButton();
+        //         } else {
+        //             const error = await response.json();
+        //             alert(`Connection failed: ${error.message}`);
+        //         }
+        //     });
+
+        //     // Initialize
+        //     fetchBuilders();
+        //     fetchBuildings();
+        // </script>
+
+
+    <!-- Builder and building Connection -->
+    <script>
+        const API_BUILDERS = `${BASE_URL}/builders`;
+        const API_BUILDINGS = `${BASE_URL}/api/buildings`;
+        const API_CONNECT = `${BASE_URL}/builders`;
+
+        const builderList = document.getElementById('builder-list');
+        const buildingList = document.getElementById('building-list');
+        const connectButton = document.getElementById('connect-button');
+        const builderSearchx = document.getElementById('builder-search');
+        const buildingSearch = document.getElementById('building-search');
+
+        let selectedBuilderx = null;
+        let selectedBuildings = new Set();
+        let buildersCache = [];
+        let buildingsCache = [];
+
+        async function fetchNewBuilders() {
+            const response = await fetch(API_BUILDERS);
+            buildersCache = await response.json();
+            console.log("BUILDERS", buildersCache)
+            renderBuilders(buildersCache);
+        }
+
+        function renderBuilders(builders) {
+            builderList.innerHTML = '';
+            builders.forEach(builder => {
+                const div = document.createElement('div');
+                div.className = 'builder-list-item';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'builder';
+                checkbox.value = builder._id;
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        selectedBuilderx = builder._id;
+                        deselectOtherBuilders(checkbox);
+                    } else {
+                        selectedBuilderx = null;
+                    }
+                    toggleConnectButton();
+                });
+
+                const label = document.createElement('label');
+                label.innerHTML = `
+                        <img src="${builder.logo}" alt="${builder.name} logo" class="builder-logo" />
+                        <span>${builder.name} (Experience: ${builder.experience} years)</span>
+                    `;
+
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                builderList.appendChild(div);
+            });
+        }
+
+        function deselectOtherBuilders(currentCheckbox) {
+            const checkboxes = builderList.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                if (checkbox !== currentCheckbox) {
+                    checkbox.checked = false;
+                }
+            });
+        }
+
+        async function fetchBuildings() {
+            const response = await fetch(API_BUILDINGS);
+            buildingsCache = await response.json();
+            console.log("BUILDINGS", buildingsCache)
+            renderBuildings(buildingsCache);
+        }
+
+        function renderBuildings(buildings) {
+            buildingList.innerHTML = '';
+            buildings.forEach(building => {
+                const div = document.createElement('div');
+                div.className = 'building-list-item';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'building';
+                checkbox.value = building._id;
+
+                const isConnected = building.name && building.ownerName;
+                checkbox.disabled = isConnected;
+
+                checkbox.addEventListener('change', () => {
+                    if (checkbox.checked) {
+                        selectedBuildings.add(building._id);
+                    } else {
+                        selectedBuildings.delete(building._id);
+                    }
+                    toggleConnectButton();
+                });
+
+                const label = document.createElement('label');
+                label.innerHTML = `
+                        <img src="${building.galleryList[0]}" alt="Building Image" class="building-image" />
+                        <span>${building.buildingId} - ${building.name || 'N/A'} (${building.ownerName || 'N/A'})</span>
+                    `;
+
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                buildingList.appendChild(div);
+            });
+        }
+
+        function toggleConnectButton() {
+            connectButton.disabled = !selectedBuilderx || selectedBuildings.size === 0;
+        }
+
+        builderSearchx.addEventListener('input', () => {
+            const query = builderSearchx.value.toLowerCase();
+            const filteredBuilders = buildersCache.filter(builder => builder?.name?.toLowerCase().includes(query));
+            renderBuilders(filteredBuilders);
+        });
+
+        buildingSearch.addEventListener('input', () => {
+            const query = buildingSearch.value.toLowerCase();
+            const filteredBuildings = buildingsCache.filter(building => building?.name?.toLowerCase().includes(query));
+            renderBuildings(filteredBuildings);
+        });
+
+        connectButton.addEventListener('click', async () => {
+            if (!selectedBuilderx || selectedBuildings.size === 0) return;
+
+            const response = await fetch(`${API_CONNECT}/${selectedBuilderx}/buildings`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ buildings: Array.from(selectedBuildings) })
+            });
+
+            if (response.ok) {
+                alert('Connection successful!');
+                selectedBuilderx = null;
+                selectedBuildings.clear();
+                fetchNewBuilders();
+                fetchBuildings();
+                toggleConnectButton();
+            } else {
+                const error = await response.json();
+                alert(`Connection failed: ${error.message}`);
             }
         });
 
-        // Search Available Cities
-        searchInput.addEventListener("input", (event) => {
-            const searchText = event.target.value.toLowerCase();
-            document.querySelectorAll("#availableCitiesContainer .city-item").forEach((cityElement) => {
-                const cityName = cityElement.textContent.toLowerCase();
-                cityElement.style.display = cityName.includes(searchText) ? "block" : "none";
-            });
-        });
-    });
-</script>
+        fetchNewBuilders();
+        fetchBuildings();
+    </script>
 
 
 </body>
