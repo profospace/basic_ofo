@@ -15,8 +15,8 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// const BASE_URL = 'https://propertify.onrender.com';
-const BASE_URL = 'https://qa-mhkj.onrender.com';
+ const BASE_URL = 'https://propertify.onrender.com';
+//const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
 // AWS Configuration
@@ -36,6 +36,10 @@ const s3 = new AWS.S3({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: 'ap-south-1'
   });
+
+  app.get('/google/api/key' , (req,res)=>{
+    res.json(process.env.GOOGLE_API_KEY)
+})
   
 
 app.get('/', (req, res) => {
