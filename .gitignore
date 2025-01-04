@@ -2,6 +2,7 @@
 .env.*
 sendgrid.env
 .env_2024*
+node_modules/
 .node_modules
 .node_modules/
 .history
