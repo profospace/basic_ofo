@@ -194,6 +194,31 @@
                             </select>
                         </div>
                         <div>
+                            <label for="offer">Offer:</label>
+                            <input type="text" id="offer" />
+                            <div id="selectedOffer"></div>
+                        </div>
+                        <div>
+                            <label for="propertyTypeMultiSelect">Property Type:</label>
+                            <select id="propertyTypeMultiSelect" multiple>
+                                <option value="Apartment">Apartment</option>
+                                <option value="House">House</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Shop">Shop</option>
+                                <option value="Office">Office</option>
+                                <option value="Warehouse">Warehouse</option>
+                                <option value="Land">Land</option>
+                                <option value="Commercial_land">Commercial_land</option>
+                                <option value="Factory">Factory</option>
+                                <option value="Room">Room</option>
+                                <option value="Plot">Plot</option>
+                                <option value="Agricultural_Land">Agricultural_Land</option>
+                                <option value="Residential_Land">Residential_Land</option>
+                            </select>
+                            <div id="selectedPropertyType"></div>
+                        </div>
+
+                        <div>
                             <label for="projectStatus">Status:</label>
                             <select id="projectStatus" name="projectStatus">
                                 <option value="UPCOMING">Upcoming</option>
@@ -3026,6 +3051,8 @@
                 const projectData = {
                     name: document.getElementById('projectNames').value,
                     type: document.getElementById('projectType').value,
+                    offer : offerChips,
+                    propertyType : propertyTypeChips,
                     builder: document.getElementById('builderSelect').value,
                     status: document.getElementById('projectStatus').value,
                     description: document.getElementById('projectDescription').value,
@@ -5559,8 +5586,8 @@
 
         // Function to load available lists
 
-        const BASE_URL = 'https://propertify.onrender.com';
-        // const BASE_URL = 'http://localhost:5053';
+        // const BASE_URL = 'https://propertify.onrender.com';
+        const BASE_URL = 'http://localhost:5053';
         // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
@@ -10000,6 +10027,74 @@
         fetchBuildings();
     </script>
 
+
+<script>
+    // Arrays to store chip data
+        const offerChips = [];
+        const propertyTypeChips = [];
+
+        // Function to handle chip creation for text input fields
+        function createChipFromInput(inputId, containerId, chipsArray) {
+            const inputElement = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+
+            inputElement.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && inputElement.value.trim() !== '') {
+                    const value = inputElement.value.trim();
+                    if (!chipsArray.includes(value)) {
+                        chipsArray.push(value);
+                        createChip(container, value, chipsArray);
+                    }
+                    inputElement.value = ''; // Clear the input field
+                }
+            });
+        }
+
+        // Function to handle chip creation for multi-select fields
+        function createChipsFromMultiSelect(selectId, containerId, chipsArray) {
+            const selectElement = document.getElementById(selectId);
+            const container = document.getElementById(containerId);
+
+            selectElement.addEventListener('change', function () {
+                const selectedOptions = Array.from(selectElement.selectedOptions);
+                selectedOptions.forEach(option => {
+                    if (!chipsArray.includes(option.value)) {
+                        chipsArray.push(option.value);
+                        createChip(container, option.value, chipsArray);
+                    }
+                });
+            });
+        }
+
+        // Helper function to create a chip
+        function createChip(container, text, chipsArray) {
+            const chip = document.createElement('div');
+            chip.className = 'chip';
+            chip.innerText = text;
+            chip.setAttribute('data-value', text);
+
+            // Add a delete button to the chip
+            const deleteBtn = document.createElement('span');
+            deleteBtn.innerHTML = '&times;';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = () => {
+                container.removeChild(chip);
+                const index = chipsArray.indexOf(text);
+                if (index > -1) chipsArray.splice(index, 1); // Remove from array
+            };
+
+            chip.appendChild(deleteBtn);
+            container.appendChild(chip);
+        }
+
+        // Call the function for the "Offer" input field
+        createChipFromInput('offer', 'selectedOffer', offerChips);
+
+        // Call the function for the "Property Type" multi-select field
+        createChipsFromMultiSelect('propertyTypeMultiSelect', 'selectedPropertyType', propertyTypeChips);
+
+
+    </script>
 
 </body>
 
