@@ -1172,8 +1172,8 @@
             <div class="full-width">
                 <label style="display: flex; align-items: center; gap:1rem">Location:<p id="locationDisplay"
                         style="display: flex; align-items: center; gap: 0.5rem;">
-                    <p id="locationDisplayLat"></p>
-                    <p id="locationDisplayLang"></p>
+                    <p id="locationDisplayLat"  ></p>
+                    <p id="locationDisplayLang"  ></p>
                     </p>
                 </label>
                 <button type="button" id="getCurrentLocation">Get Current Location</button>
@@ -5737,7 +5737,7 @@
             console.log('Connecting property:', propertyId, 'to building:', buildingId);
 
             try {
-                const response = await fetch(`https://propertify.onrender.com/api/properties/${propertyId}`, {
+                const response = await fetch(`${BASE_URL}/api/properties/${propertyId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

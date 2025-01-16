@@ -37,7 +37,7 @@ const s3 = new AWS.S3({
     region: 'ap-south-1'
   });
 
-  app.get('/google/api/key' , (req,res)=>{
+app.get('/google/api/key' , (req,res)=>{
     res.json(process.env.GOOGLE_API_KEY)
 })
   
