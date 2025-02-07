@@ -1013,6 +1013,11 @@
                 <label for="post_title">Property Title:</label>
                 <input type="text" id="post_title" name="post_title" required>
             </div>
+
+            <div>
+                <label for="property_owner_name">Property Owner Name:</label>
+                <input type="text" id="property_owner_name" name="property_owner_name" >
+            </div>
             <div>
                 <label for="post-status">Status:</label>
                 <select id="post-status" value='' default="unlisted">
@@ -1030,6 +1035,8 @@
                 <label for="locality">Locality:</label>
                 <input type="text" id="locality" name="locality" required>
             </div>
+
+
 
             <div>
                 <label for="type_name">Property Type:</label>
@@ -5308,6 +5315,9 @@
                         bathrooms: parseInt(document.getElementById('bathrooms').value),
                         floor: document.getElementById('floor').value,
                         furnishing: document.getElementById('furnishing').value,
+                        ownerName : document.getElementById('property_owner_name').value,
+
+
 
                         // Additional Details
                         carpetArea: parseFloat(document.getElementById('carpetArea').value) || null,
