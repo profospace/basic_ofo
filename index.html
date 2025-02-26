@@ -12,9 +12,17 @@
 
 
 
+    <script src="./public/building-update.js"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
+    <script>
+    </script>
+
+    <script>
+        let BASE_URL = "http://localhost:5053"
+        // let BASE_URL = 'https://propertify.onrender.com'
+    </script>
 </head>
 
 <body>
@@ -39,7 +47,180 @@
         <button class="tablinks" onclick="openTab(event, 'AvailableInCities')">Cities Availability</button>
         <button class="tablinks" onclick="openTab(event, 'BuilderIdConnection')">Builder ID Connection</button>
         <button class="tablinks" onclick="openTab(event, 'GenerateToken')">Generate Token</button>
+        <button class="tablinks" onclick="openTab(event, 'BuildingEdit')">Building Edit</button>
 
+    </div>
+
+    <div id="BuildingEdit" class="tabcontent">
+        <h1>Edit Building</h1>
+        <!-- Add this new section -->
+        <div class="building-selection-section">
+            <div class="search-and-filter">
+                <input type="text" id="buildingSearchInput" placeholder="Search buildings..." class="search-input">
+                <select id="buildingStatusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="Ready">Ready</option>
+                    <option value="Under Construction">Under Construction</option>
+                    <option value="Upcoming">Upcoming</option>
+                </select>
+            </div>
+
+            <div class="buildings-list">
+                <table id="buildingsTable">
+                    <thead>
+                        <tr>
+                            <th>Building ID</th>
+                            <th>Name</th>
+                            <th>Owner</th>
+                            <th>Status</th>
+                            <th>Total Properties</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="buildingsTableBody">
+                        <!-- Buildings will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <form id="buildingEditForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="edit_building_id">
+
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h2>Basic Information</h2>
+                <div class="grid-2-cols">
+                    <div>
+                        <label for="edit_buildingId">Building ID:</label>
+                        <input type="text" id="edit_buildingId" name="buildingId" required>
+                    </div>
+                    <div>
+                        <label for="edit_name">Name:</label>
+                        <input type="text" id="edit_name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="edit_frontRoad">Front Road:</label>
+                        <input type="text" id="edit_frontRoad" name="frontRoad">
+                    </div>
+                    <div>
+                        <label for="edit_parkingArea">Parking Area:</label>
+                        <input type="text" id="edit_parkingArea" name="parkingArea">
+                    </div>
+                    <div>
+                        <label for="edit_description">Description:</label>
+                        <textarea id="edit_description" name="description"></textarea>
+                    </div>
+                    <div>
+                        <label for="edit_areaUSP">Area USP:</label>
+                        <input type="text" id="edit_areaUSP" name="areaUSP">
+                    </div>
+                    <div>
+                        <label for="edit_ownerName">Owner Name:</label>
+                        <input type="text" id="edit_ownerName" name="ownerName">
+                    </div>
+                    <div>
+                        <label for="edit_ownerId">Owner ID:</label>
+                        <input type="text" id="edit_ownerId" name="ownerId">
+                    </div>
+                    <div>
+                        <label for="edit_storey">Storey:</label>
+                        <input type="text" id="edit_storey" name="storey">
+                    </div>
+                    <div>
+                        <label for="edit_age">Age:</label>
+                        <input type="text" id="edit_age" name="age">
+                    </div>
+                    <div>
+                        <label for="edit_type">Type:</label>
+                        <input type="text" id="edit_type" name="type">
+                    </div>
+                    <div>
+                        <label for="edit_luda">LUDA:</label>
+                        <input type="text" id="edit_luda" name="luda">
+                    </div>
+                    <div>
+                        <label for="edit_totalProperties">Total Properties:</label>
+                        <input type="text" id="edit_totalProperties" name="totalProperties">
+                    </div>
+                    <div>
+                        <label for="edit_developmentStatus">Development Status:</label>
+                        <input type="text" id="edit_developmentStatus" name="developmentStatus">
+                    </div>
+                    <div>
+                        <label for="edit_allowPreBooking">Allow Pre-Booking:</label>
+                        <input type="checkbox" id="edit_allowPreBooking" name="allowPreBooking">
+                    </div>
+                    <div>
+                        <label for="edit_allocatedProperties">Allocated Properties:</label>
+                        <input type="text" id="edit_allocatedProperties" name="allocatedProperties">
+                    </div>
+                    <div>
+                        <label for="edit_freeProperties">Free Properties:</label>
+                        <input type="text" id="edit_freeProperties" name="freeProperties">
+                    </div>
+                    <div>
+                        <label for="edit_contactNumber">Contact Number:</label>
+                        <input type="tel" id="edit_contactNumber" name="contactNumber">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Section -->
+            <div class="form-section">
+                <h2>Location</h2>
+                <div class="map-container">
+                    <div id="edit_building_map" style="height: 400px;"></div>
+                    <input type="hidden" id="edit_latitude" name="latitude">
+                    <input type="hidden" id="edit_longitude" name="longitude">
+                    <button type="button" id="edit_getCurrentLocation">Get Current Location</button>
+                </div>
+            </div>
+
+            <!-- Flats Details Section -->
+            <div class="form-section">
+                <h2>Flats Details</h2>
+                <div>
+                    <label for="edit_numberOfFlatsAvailable">Number of Flats Available:</label>
+                    <input type="number" id="edit_numberOfFlatsAvailable" name="numberOfFlatsAvailable" required>
+                </div>
+                <div>
+                    <label for="edit_totalFloors">Total Number of Floors:</label>
+                    <input type="number" id="edit_totalFloors" name="totalFloors" required>
+                </div>
+                <div id="edit_flatsDetailsContainer">
+                    <!-- Will be populated dynamically based on total floors -->
+                </div>
+            </div>
+
+            <!-- Links Section -->
+            <div class="form-section">
+                <h2>Links</h2>
+                <div>
+                    <label for="edit_brochureLink">Brochure Link:</label>
+                    <input type="url" id="edit_brochureLink" name="brochureLink">
+                </div>
+                <div>
+                    <label for="edit_mapLink">Map Link:</label>
+                    <input type="url" id="edit_mapLink" name="mapLink">
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div class="form-section">
+                <h2>Gallery</h2>
+                <div>
+                    <label for="edit_galleryList">Gallery Images:</label>
+                    <input type="file" id="edit_galleryList" name="galleryList" multiple accept="image/*">
+                    <div id="edit_gallery_preview" class="gallery-preview"></div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="primary-button">Update Building</button>
+                <button type="button" class="secondary-button" onclick="cancelBuildingEdit()">Cancel</button>
+            </div>
+        </form>
     </div>
 
     <div id="BuilderBuildings" class="tabcontent" style="display: flex;">
@@ -193,6 +374,31 @@
                                 <option value="MIXED_USE">Mixed Use</option>
                             </select>
                         </div>
+                        <div>
+                            <label for="offer">Offer:</label>
+                            <input type="text" id="offer" />
+                            <div id="selectedOffer"></div>
+                        </div>
+                        <div>
+                            <label for="propertyTypeMultiSelect">Property Type:</label>
+                            <select id="propertyTypeMultiSelect" multiple>
+                                <option value="Apartment">Apartment</option>
+                                <option value="House">House</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Shop">Shop</option>
+                                <option value="Office">Office</option>
+                                <option value="Warehouse">Warehouse</option>
+                                <option value="Land">Land</option>
+                                <option value="Commercial_land">Commercial_land</option>
+                                <option value="Factory">Factory</option>
+                                <option value="Room">Room</option>
+                                <option value="Plot">Plot</option>
+                                <option value="Agricultural_Land">Agricultural_Land</option>
+                                <option value="Residential_Land">Residential_Land</option>
+                            </select>
+                            <div id="selectedPropertyType"></div>
+                        </div>
+
                         <div>
                             <label for="projectStatus">Status:</label>
                             <select id="projectStatus" name="projectStatus">
@@ -481,6 +687,10 @@
                             <input type="text" id="builderName" name="name" required>
                         </div>
                         <div>
+                            <label for="company">Company Name:</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        <div>
                             <label for="builderLogo">Logo URL:</label>
                             <input type="text" id="builderLogo" name="logo">
                         </div>
@@ -490,7 +700,14 @@
                         </div>
                         <div>
                             <label for="builderEstablished">Established Year*:</label>
-                            <input type="number" id="builderEstablished" name="established" required>
+                            <input type="number" id="builderEstablished" name="establishedYear" required>
+                        </div>
+                        <div>
+                            <label for="status">Status:</label>
+                            <select id="status" name="status">
+                                <option value="ACTIVE">Active</option>
+                                <option value="INACTIVE">Inactive</option>
+                            </select>
                         </div>
                     </div>
 
@@ -504,15 +721,15 @@
                     <div class="grid-2-cols">
                         <div>
                             <label for="builderEmail">Email:</label>
-                            <input type="email" id="builderEmail" name="contact.email">
+                            <input type="email" id="builderEmail" name="contacts[0]">
                         </div>
                         <div>
                             <label for="builderPhone">Phone:</label>
-                            <input type="tel" id="builderPhone" name="contact.phone">
+                            <input type="tel" id="builderPhone" name="contacts[1]">
                         </div>
                         <div>
                             <label for="builderWebsite">Website:</label>
-                            <input type="url" id="builderWebsite" name="contact.website">
+                            <input type="url" id="builderWebsite" name="website">
                         </div>
                     </div>
 
@@ -521,29 +738,76 @@
                     <div class="grid-2-cols">
                         <div>
                             <label for="builderStreet">Street:</label>
-                            <input type="text" id="builderStreet" name="contact.address.street">
+                            <input type="text" id="builderStreet" name="address.street">
                         </div>
                         <div>
                             <label for="builderCity">City:</label>
-                            <input type="text" id="builderCity" name="contact.address.city">
+                            <input type="text" id="builderCity" name="address.city">
                         </div>
                         <div>
                             <label for="builderState">State:</label>
-                            <input type="text" id="builderState" name="contact.address.state">
+                            <input type="text" id="builderState" name="address.state">
                         </div>
                         <div>
                             <label for="builderPincode">Pincode:</label>
-                            <input type="text" id="builderPincode" name="contact.address.pincode">
+                            <input type="text" id="builderPincode" name="address.pincode">
                         </div>
                     </div>
 
                     <!-- Location Map -->
                     <div class="map-section">
                         <label>Office Location:</label>
+                        <div class="map-controls">
+                            <button type="button" id="getCurrentLocationBuilderUpload" class="location-button">
+                                Get Current Location
+                            </button>
+                        </div>
                         <div id="builderMap" class="map-container"></div>
-                        <input type="hidden" id="builderLatitude" name="contact.address.location.coordinates[1]">
-                        <input type="hidden" id="builderLongitude" name="contact.address.location.coordinates[0]">
+                        <input type="text" id="builderLatitude" name="latitude">
+                        <input type="text" id="builderLongitude" name="longitude">
                     </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="form-section">
+                    <h3>Statistics</h3>
+                    <div class="grid-2-cols">
+                        <div>
+                            <label for="completedProjects">Completed Projects:</label>
+                            <input type="number" id="completedProjects" name="statistics.completedProjects" value="0">
+                        </div>
+                        <div>
+                            <label for="ongoingProjects">Ongoing Projects:</label>
+                            <input type="number" id="ongoingProjects" name="statistics.ongoingProjects" value="0">
+                        </div>
+                        <div>
+                            <label for="totalBuildings">Total Buildings:</label>
+                            <input type="number" id="totalBuildings" name="statistics.totalBuildings" value="0">
+                        </div>
+                        <div>
+                            <label for="totalProperties">Total Properties:</label>
+                            <input type="number" id="totalProperties" name="statistics.totalProperties" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operating Locations -->
+                <div class="form-section">
+                    <h3>Operating Locations</h3>
+                    <div id="operatingLocations">
+                        <div class="operating-location grid-2-cols">
+                            <div>
+                                <label for="opCity0">City:</label>
+                                <input type="text" id="opCity0" name="operatingLocations[0].city">
+                            </div>
+                            <div>
+                                <label for="opState0">State:</label>
+                                <input type="text" id="opState0" name="operatingLocations[0].state">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addOperatingLocation()" class="add-button">Add Another
+                        Location</button>
                 </div>
 
                 <!-- Property Connection -->
@@ -564,12 +828,6 @@
                     <button type="button" class="cancel-button" onclick="resetBuilderForm()">Reset</button>
                 </div>
             </form>
-        </div>
-
-        <!-- Existing Builders List -->
-        <div class="builders-list-section">
-            <h2>Existing Builders</h2>
-            <!-- <div id="buildersList"></div> -->
         </div>
     </div>
 
@@ -1013,10 +1271,9 @@
                 <label for="post_title">Property Title:</label>
                 <input type="text" id="post_title" name="post_title" required>
             </div>
-
             <div>
                 <label for="property_owner_name">Property Owner Name:</label>
-                <input type="text" id="property_owner_name" name="property_owner_name" >
+                <input type="text" id="property_owner_name" name="property_owner_name">
             </div>
             <div>
                 <label for="post-status">Status:</label>
@@ -1035,8 +1292,6 @@
                 <label for="locality">Locality:</label>
                 <input type="text" id="locality" name="locality" required>
             </div>
-
-
 
             <div>
                 <label for="type_name">Property Type:</label>
@@ -1346,7 +1601,7 @@
 
         <div id="uploadSection">
             <h2>Upload New Image</h2>
-            <input type="file" id="imageUpload" accept="image/*">
+            <input type="file" id="imageUpload">
             <button onclick="uploadImage()">Upload</button>
             <div id="uploadedImageUrl"></div>
         </div>
@@ -2060,6 +2315,7 @@
                 <label for="contactNumber">Contact Number:</label>
                 <input type="tel" id="contactNumber" name="contactNumber">
             </div>
+
             <div>
                 <label for="latitude">Latitude:</label>
                 <input type="number" id="latitude" name="latitude" step="any">
@@ -3033,12 +3289,14 @@
                 const projectData = {
                     name: document.getElementById('projectNames').value,
                     type: document.getElementById('projectType').value,
+                    offer: offerChips,
+                    propertyType: propertyTypeChips,
                     builder: document.getElementById('builderSelect').value,
                     status: document.getElementById('projectStatus').value,
                     description: document.getElementById('projectDescription').value,
                     reraNumber: document.getElementById('reraNumber').value,
                     reraValidity: document.getElementById('reravalidity').value,
-                //    availabilityStatus: project.availabilityStatus || 'COMING_SOON', // Default to 'COMING_SOON'
+                    //    availabilityStatus: project.availabilityStatus || 'COMING_SOON', // Default to 'COMING_SOON'
                     overview: {
                         totalUnits: parseInt(document.getElementById('totalUnits').value) || 0,
                         totalTowers: parseInt(document.getElementById('totalTowers').value) || 0,
@@ -3067,12 +3325,12 @@
                     floorPlans: getFloorPlansData(),
                     amenities: getAmenitiesData(),
                     specification: getSpecificationData() || [],
-                   // gallery: getGalleryData(),
+                    // gallery: getGalleryData(),
                     highlights: getHighlightsData(),
                     brochures: getBrochuresData(),
                     nearbyLocations: getNearbyLocationsData(),
-                //    paymentPlan: project.paymentPlan || [],
-                  //  phases: project.phases || [],
+                    //    paymentPlan: project.paymentPlan || [],
+                    //  phases: project.phases || [],
                 };
 
 
@@ -3149,7 +3407,7 @@
 
                 // Configuration
                 config: {
-                    apiBaseUrl: 'https://propertify.onrender.com/api',
+                    apiBaseUrl: `${BASE_URL}/api`,
                     selectors: {
                         projectSelector: '#projectSelector',
                         searchInput: '#projectPropertySearch',
@@ -4300,6 +4558,10 @@
         let selectedProperties = new Set();
 
         function initializeBuilderMap() {
+            console.log('Map initialization started');
+            const mapElement = document.getElementById('builderMap');
+            console.log('Map element:', mapElement);
+
             builderMap = new google.maps.Map(document.getElementById('builderMap'), {
                 center: { lat: 20.5937, lng: 78.9629 }, // Center of India
                 zoom: 5
@@ -4327,6 +4589,10 @@
             updateBuilderLatLng(location);
         }
 
+        // function updateBuilderLatLng(location) {
+        //     document.getElementById('builderLatitude').value = location.lat();
+        //     document.getElementById('builderLongitude').value = location.lng();
+        // }
         function updateBuilderLatLng(location) {
             document.getElementById('builderLatitude').value = location.lat();
             document.getElementById('builderLongitude').value = location.lng();
@@ -4347,7 +4613,7 @@
                 }
 
                 try {
-                    const response = await fetch(`https://propertify.onrender.com/api/properties/search?q=${searchTerm}`);
+                    const response = await fetch(`${BASE_URL}/api/properties/search?q=${searchTerm}`);
                     const properties = await response.json();
 
                     searchResults.innerHTML = properties.map(property => `
@@ -4390,36 +4656,309 @@
         }
 
         // Form submission
+        // document.getElementById('builderUploadForm').addEventListener('submit', async function (e) {
+        //     e.preventDefault();
+
+        //     const formData = new FormData(this);
+        //     const builderData = {
+        //         name: formData.get('name'),
+        //         logo: formData.get('logo'),
+        //         experience: parseInt(formData.get('experience')),
+        //         established: parseInt(formData.get('established')),
+        //         description: formData.get('description'),
+        //         contact: {
+        //             email: formData.get('contact.email'),
+        //             phone: formData.get('contact.phone'),
+        //             website: formData.get('contact.website'),
+        //             address: {
+        //                 street: formData.get('contact.address.street'),
+        //                 city: formData.get('contact.address.city'),
+        //                 state: formData.get('contact.address.state'),
+        //                 pincode: formData.get('contact.address.pincode'),
+        //                 location: {
+        //                     type: 'Point',
+        //                     coordinates: [
+        //                         parseFloat(formData.get('contact.address.location.coordinates[0]')),
+        //                         parseFloat(formData.get('contact.address.location.coordinates[1]'))
+        //                     ]
+        //                 }
+        //             }
+        //         },
+        //         properties: Array.from(selectedProperties)
+        //     };
+
+        //     try {
+        //         const response = await fetch(`${BASE_URL}/builders`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify(builderData)
+        //         });
+
+        //         if (!response.ok) {
+        //             throw new Error('Failed to upload builder');
+        //         }
+
+        //         const result = await response.json();
+        //         showPopup('Builder uploaded successfully!');
+        //         resetBuilderForm();
+        //         loadBuildersList();
+        //     } catch (error) {
+        //         console.error('Error uploading builder:', error);
+        //         showPopup('Failed to upload builder: ' + error.message);
+        //     }
+        // });
+
+        // document.getElementById('builderUploadForm').addEventListener('submit', async function (e) {
+        //     e.preventDefault();
+
+        //     const formData = new FormData(this);
+        //     const builderData = {
+        //         // Basic information
+        //         name: formData.get('name'),
+        //         logo: formData.get('logo'),
+        //         experience: parseInt(formData.get('experience')),
+        //         establishedYear: parseInt(formData.get('established')), // Changed to match schema
+        //         description: formData.get('description'),
+
+        //         // Contact information
+        //         website: formData.get('contact.website'),
+        //         contacts: [
+        //             formData.get('contact.email'),
+        //             formData.get('contact.phone')
+        //         ].filter(Boolean), // Filter out empty values
+
+        //         // Address
+        //         address: {
+        //             street: formData.get('contact.address.street'),
+        //             city: formData.get('contact.address.city'),
+        //             state: formData.get('contact.address.state'),
+        //             pincode: formData.get('contact.address.pincode')
+        //         },
+
+        //         // Latitude and Longitude (separate fields as per schema)
+        //         latitude: parseFloat(formData.get('contact.address.location.coordinates[1]')),
+        //         longitude: parseFloat(formData.get('contact.address.location.coordinates[0]')),
+
+        //         // Properties
+        //         properties: Array.from(selectedProperties),
+
+        //         // Default values
+        //         status: 'ACTIVE',
+        //         statistics: {
+        //             completedProjects: 0,
+        //             ongoingProjects: 0,
+        //             totalBuildings: 0,
+        //             totalProperties: 0
+        //         },
+
+        //         // Operating locations (based on provided address)
+        //         operatingLocations: [{
+        //             city: formData.get('contact.address.city'),
+        //             state: formData.get('contact.address.state')
+        //         }]
+        //     };
+
+        //     // Remove undefined or null values
+        //     Object.keys(builderData).forEach(key => {
+        //         if (builderData[key] === null || builderData[key] === undefined) {
+        //             delete builderData[key];
+        //         }
+        //     });
+
+        //     try {
+        //         const response = await fetch(`${BASE_URL}/builders`, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //             body: JSON.stringify(builderData)
+        //         });
+
+        //         if (!response.ok) {
+        //             throw new Error(`HTTP error! status: ${response.status}`);
+        //         }
+
+        //         const result = await response.json();
+        //         showPopup('Builder uploaded successfully!');
+        //         resetBuilderForm();
+        //         loadBuildersList();
+        //     } catch (error) {
+        //         console.error('Error uploading builder:', error);
+        //         showPopup('Failed to upload builder: ' + error.message);
+        //     }
+        // });
+
+        // document.getElementById('builderUploadForm').addEventListener('submit', async function (e) {
+        //         e.preventDefault();
+
+        //         const formData = new FormData(this);
+        //         const builderData = {
+        //             // Basic information
+        //             name: formData.get('name'),
+        //             logo: formData.get('logo'),
+        //             experience: parseInt(formData.get('experience')),
+        //             establishedYear: parseInt(formData.get('established')),
+        //             description: formData.get('description'),
+
+        //             // Contact information
+        //             website: formData.get('contact.website'),
+        //             contacts: [
+        //                 formData.get('contact.email'),
+        //                 formData.get('contact.phone')
+        //             ].filter(Boolean), // Filter out empty values
+
+        //             // Address
+        //             address: {
+        //                 street: formData.get('contact.address.street'),
+        //                 city: formData.get('contact.address.city'),
+        //                 state: formData.get('contact.address.state'),
+        //                 pincode: formData.get('contact.address.pincode')
+        //             },
+
+        //             // Location coordinates
+        //             latitude: parseFloat(formData.get('latitude')),
+        //             longitude: parseFloat(formData.get('longitude')),
+
+        //             // Properties (assuming selectedProperties is a Set or Array of property IDs)
+        //             properties: Array.from(selectedProperties || []),
+
+        //             // Company name
+        //             company: formData.get('name'), // Using builder name as company name if not separately provided
+
+        //             // Default values
+        //             status: 'ACTIVE',
+        //             statistics: {
+        //                 completedProjects: 0,
+        //                 ongoingProjects: 0,
+        //                 totalBuildings: 0,
+        //                 totalProperties: 0
+        //             },
+
+        //             // Operating locations (based on provided address)
+        //             operatingLocations: [{
+        //                 city: formData.get('contact.address.city'),
+        //                 state: formData.get('contact.address.state')
+        //             }].filter(loc => loc.city && loc.state) // Only include if both city and state are provided
+        //         };
+
+        //         // Clean up undefined, null, or empty values
+        //         function cleanObject(obj) {
+        //             for (const key in obj) {
+        //                 if (obj[key] && typeof obj[key] === 'object') {
+        //                     cleanObject(obj[key]);
+        //                 }
+        //                 if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+        //                     delete obj[key];
+        //                 }
+        //                 // Clean up empty objects
+        //                 if (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0) {
+        //                     delete obj[key];
+        //                 }
+        //             }
+        //             return obj;
+        //         }
+
+        //         const cleanedData = cleanObject(builderData);
+
+        //         try {
+        //             const response = await fetch(`${BASE_URL}/builders`, {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json'
+        //                 },
+        //                 body: JSON.stringify(cleanedData)
+        //             });
+
+        //             if (!response.ok) {
+        //                 const errorData = await response.json();
+        //                 throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+        //             }
+
+        //             const result = await response.json();
+        //             showPopup('Builder uploaded successfully!');
+        //             resetBuilderForm();
+        //             loadBuildersList();
+        //         } catch (error) {
+        //             console.error('Error uploading builder:', error);
+        //             showPopup('Failed to upload builder: ' + error.message);
+        //         }
+        //     });
+
+        // Function to add new operating location fields
+        let locationCount = 1;
+        function addOperatingLocation() {
+            const container = document.getElementById('operatingLocations');
+            const newLocation = document.createElement('div');
+            newLocation.className = 'operating-location grid-2-cols';
+            newLocation.innerHTML = `
+        <div>
+            <label for="opCity${locationCount}">City:</label>
+            <input type="text" id="opCity${locationCount}" name="operatingLocations[${locationCount}].city">
+        </div>
+        <div>
+            <label for="opState${locationCount}">State:</label>
+            <input type="text" id="opState${locationCount}" name="operatingLocations[${locationCount}].state">
+        </div>
+        <button type="button" onclick="removeOperatingLocation(this)" class="remove-button">Remove</button>
+    `;
+            container.appendChild(newLocation);
+            locationCount++;
+        }
+
+        // Function to remove operating location fields
+        function removeOperatingLocation(button) {
+            button.parentElement.remove();
+        }
+
+        // Updated form submission handler
         document.getElementById('builderUploadForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const formData = new FormData(this);
             const builderData = {
                 name: formData.get('name'),
+                company: formData.get('company'),
                 logo: formData.get('logo'),
                 experience: parseInt(formData.get('experience')),
-                established: parseInt(formData.get('established')),
+                establishedYear: parseInt(formData.get('establishedYear')),
+                status: formData.get('status'),
                 description: formData.get('description'),
-                contact: {
-                    email: formData.get('contact.email'),
-                    phone: formData.get('contact.phone'),
-                    website: formData.get('contact.website'),
-                    address: {
-                        street: formData.get('contact.address.street'),
-                        city: formData.get('contact.address.city'),
-                        state: formData.get('contact.address.state'),
-                        pincode: formData.get('contact.address.pincode'),
-                        location: {
-                            type: 'Point',
-                            coordinates: [
-                                parseFloat(formData.get('contact.address.location.coordinates[0]')),
-                                parseFloat(formData.get('contact.address.location.coordinates[1]'))
-                            ]
-                        }
-                    }
+                website: formData.get('website'),
+
+                // Handle contacts array
+                contacts: Array.from(formData.getAll('contacts[]')).filter(Boolean),
+
+                // Address object
+                address: {
+                    street: formData.get('address.street'),
+                    city: formData.get('address.city'),
+                    state: formData.get('address.state'),
+                    pincode: formData.get('address.pincode')
                 },
-                properties: Array.from(selectedProperties)
+
+                // Coordinates
+                latitude: parseFloat(formData.get('latitude')),
+                longitude: parseFloat(formData.get('longitude')),
+
+                // Statistics
+                statistics: {
+                    completedProjects: parseInt(formData.get('statistics.completedProjects')) || 0,
+                    ongoingProjects: parseInt(formData.get('statistics.ongoingProjects')) || 0,
+                    totalBuildings: parseInt(formData.get('statistics.totalBuildings')) || 0,
+                    totalProperties: parseInt(formData.get('statistics.totalProperties')) || 0
+                },
+
+                // Operating Locations
+                operatingLocations: getOperatingLocations(formData),
+
+                // Properties array (from selected properties)
+                properties: Array.from(selectedProperties || [])
             };
+
+            // Clean and send the data
+            const cleanedData = cleanObject(builderData);
 
             try {
                 const response = await fetch(`${BASE_URL}/builders`, {
@@ -4427,11 +4966,11 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(builderData)
+                    body: JSON.stringify(cleanedData)
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to upload builder');
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const result = await response.json();
@@ -4443,6 +4982,51 @@
                 showPopup('Failed to upload builder: ' + error.message);
             }
         });
+
+        // Helper function to get operating locations from form data
+        function getOperatingLocations(formData) {
+            const locations = [];
+            const keys = Array.from(formData.keys());
+            const cityKeys = keys.filter(key => key.startsWith('operatingLocations[') && key.endsWith('].city'));
+
+            for (const cityKey of cityKeys) {
+                const index = cityKey.match(/\[(\d+)\]/)[1];
+                const stateKey = `operatingLocations[${index}].state`;
+                const city = formData.get(cityKey);
+                const state = formData.get(stateKey);
+
+                if (city && state) {
+                    locations.push({ city, state });
+                }
+            }
+            return locations;
+        }
+
+        // Clean object helper function (as provided in previous response)
+        function cleanObject(obj) {
+            for (const key in obj) {
+                if (obj[key] && typeof obj[key] === 'object') {
+                    cleanObject(obj[key]);
+                }
+                if (obj[key] === null || obj[key] === undefined || obj[key] === '') {
+                    delete obj[key];
+                }
+                if (typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0) {
+                    delete obj[key];
+                }
+            }
+            return obj;
+        }
+
+        // Update the marker placement function to set the correct form field values
+        function placeBuilderMarker(location) {
+            builderMarker.setPosition(location);
+            builderMap.setCenter(location);
+
+            // Update the form fields with the new coordinates
+            document.getElementById('builderLatitude').value = location.lat();
+            document.getElementById('builderLongitude').value = location.lng();
+        }
 
         function resetBuilderForm() {
             document.getElementById('builderUploadForm').reset();
@@ -4786,7 +5370,7 @@
 
         async function loadCategories() {
             try {
-                const response = await fetch('https://propertify.onrender.com/api/categories');
+                const response = await fetch(`${BASE_URL}/api/categories`);
                 categories = await response.json();
                 displayCategories();
             } catch (error) {
@@ -4828,14 +5412,14 @@
                 let response;
                 if (categoryId) {
                     // Update existing category
-                    response = await fetch(`https://propertify.onrender.com/api/categories/${categoryId}`, {
+                    response = await fetch(`${BASE_URL}/api/categories/${categoryId}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(categoryData)
                     });
                 } else {
                     // Add new category
-                    response = await fetch('https://propertify.onrender.com/api/categories', {
+                    response = await fetch(`${BASE_URL}/api/categories`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ categories: [categoryData] })
@@ -4859,7 +5443,7 @@
         async function deleteCategory(id) {
             if (confirm('Are you sure you want to delete this category?')) {
                 try {
-                    const response = await fetch(`https://propertify.onrender.com/api/categories/${id}`, {
+                    const response = await fetch(`${BASE_URL}/api/categories/${id}`, {
                         method: 'DELETE'
                     });
 
@@ -5299,6 +5883,7 @@
                     const propertyData = {
                         // Basic Information
                         post_title: document.getElementById('post_title').value,
+                        ownerName: document.getElementById('property_owner_name').value,
                         city: document.getElementById('post_city').value,
                         locality: document.getElementById('locality').value,
                         status: document.getElementById('post-status').value || 'unlisted',
@@ -5315,9 +5900,6 @@
                         bathrooms: parseInt(document.getElementById('bathrooms').value),
                         floor: document.getElementById('floor').value,
                         furnishing: document.getElementById('furnishing').value,
-                        ownerName : document.getElementById('property_owner_name').value,
-
-
 
                         // Additional Details
                         carpetArea: parseFloat(document.getElementById('carpetArea').value) || null,
@@ -5567,11 +6149,7 @@
             }
         });
 
-        // Function to load available lists
 
-        const BASE_URL = 'https://propertify.onrender.com';
-        // const BASE_URL = 'http://localhost:5053';
-        // const BASE_URL = 'https://qa-mhkj.onrender.com';
 
 
         async function loadAvailableLists() {
@@ -5627,8 +6205,8 @@
         async function loadBuildingsAndProperties() {
             try {
                 const [buildingsResponse, propertiesResponse] = await Promise.all([
-                    fetch('https://propertify.onrender.com/api/buildings'),
-                    fetch('https://propertify.onrender.com/api/properties/all')
+                    fetch(`${BASE_URL}/api/buildings`),
+                    fetch(`${BASE_URL}/api/properties/all`)
                 ]);
 
                 allBuildings = await buildingsResponse.json();
@@ -5720,7 +6298,7 @@
             console.log('Connecting property:', propertyId, 'to building:', buildingId);
 
             try {
-                const response = await fetch(`https://propertify.onrender.com/api/properties/${propertyId}`, {
+                const response = await fetch(`${BASE_URL}/api/properties/${propertyId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -5798,7 +6376,7 @@
             }
 
             try {
-                const response = await fetch(`https://propertify.onrender.com/api/properties/${propertyId}`, {
+                const response = await fetch(`${BASE_URL}/api/properties/${propertyId}`, {
                     method: 'DELETE'
                 });
 
@@ -5823,11 +6401,11 @@
 
             try {
                 // First, remove the building association from all properties
-                const propertiesResponse = await fetch(`https://propertify.onrender.com/api/properties/building/${buildingId}`);
+                const propertiesResponse = await fetch(`${BASE_URL}/api/properties/building/${buildingId}`);
                 const associatedProperties = await propertiesResponse.json();
 
                 for (const property of associatedProperties) {
-                    await fetch(`https://propertify.onrender.com/api/properties/${property.post_id}`, {
+                    await fetch(`${BASE_URL}/api/properties/${property.post_id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -5837,7 +6415,7 @@
                 }
 
                 // Then, delete the building
-                const response = await fetch(`https://propertify.onrender.com/api/buildings/${buildingId}`, {
+                const response = await fetch(`${BASE_URL}/api/buildings/${buildingId}`, {
                     method: 'DELETE'
                 });
 
@@ -6601,7 +7179,7 @@
             try {
                 const formData = new FormData();
                 formData.append('uploadedFileName', file);
-
+                
                 const uploadResponse = await fetch('/imageUpload', {
                     method: 'POST',
                     body: formData
@@ -7601,7 +8179,7 @@
             if (confirm('Are you sure you want to delete this ad?')) {
                 try {
                     // Fetch existing ads
-                    const response = await fetch('https://propertify.onrender.com/api/colors/ads');
+                    const response = await fetch(`${BASE_URL}/api/colors/ads`);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
@@ -7611,7 +8189,7 @@
                     ads = ads.filter(ad => ad._id !== adId);
 
                     // Update ads
-                    const updateResponse = await fetch('https://propertify.onrender.com/api/colors/update-ads', {
+                    const updateResponse = await fetch(`${BASE_URL}/api/colors/update-ads`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ ads: ads })
@@ -7630,7 +8208,7 @@
             }
             if (confirm('Are you sure you want to delete this ad?')) {
                 try {
-                    const response = await fetch(`https://propertify.onrender.com/api/colors/ads/${adId}`, {
+                    const response = await fetch(`${BASE_URL}/api/colors/ads/${adId}`, {
                         method: 'DELETE'
                     });
                     if (!response.ok) {
@@ -8977,6 +9555,82 @@
     <!-- Builder ID Connection -->
     <script>
 
+        // Add this CSS at the top of your script or in a style tag
+        const styles = `
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}`;
+
+        // Add the styles to the document
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = styles;
+        document.head.appendChild(styleSheet);
+
+        // Function to update builder access
+        async function updateBuilderAccess(builderId, newAccessState) {
+            try {
+                const response = await fetch(`${BASE_URL}/builder/update-access/${builderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ access: newAccessState })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to update access');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Error updating access:', error);
+                throw error;
+            }
+        }
+
         async function fetchBuilders() {
             const buliderIdConnection = document.getElementById('BuilderIdConnection');
 
@@ -8998,7 +9652,7 @@
                 table.style.borderCollapse = "collapse";
 
                 // Create table headers
-                const headers = ['Logo', 'Name', 'Username', 'Password', 'Reset Password'];
+                const headers = ['Logo', 'Name', 'Username', 'Password', 'Reset Password', 'Access State'];
                 const thead = document.createElement('thead');
                 const headerRow = document.createElement('tr');
                 headers.forEach(header => {
@@ -9126,6 +9780,49 @@
                     row.appendChild(resetPasswordCell);
 
                     tbody.appendChild(row);
+
+
+
+                    // Add this in the headers array
+                    // headers.push('Access');
+
+                    // Add this after the reset password cell code (before tbody.appendChild(row);)
+                    // Create access toggle cell
+                    const accessCell = document.createElement('td');
+                    accessCell.style.border = '1px solid black';
+                    accessCell.style.textAlign = 'center';
+
+                    // Create toggle switch
+                    const toggleContainer = document.createElement('label');
+                    toggleContainer.className = 'toggle-switch';
+
+                    const toggleInput = document.createElement('input');
+                    toggleInput.type = 'checkbox';
+                    toggleInput.checked = builder.access || false;
+
+                    const sliderSpan = document.createElement('span');
+                    sliderSpan.className = 'slider';
+
+                    // Add event listener for toggle
+                    toggleInput.addEventListener('change', async (e) => {
+                        try {
+                            await updateBuilderAccess(builder._id, e.target.checked);
+                            // Optional: show success message
+                            alert(`Access ${e.target.checked ? 'granted' : 'revoked'} successfully`);
+                        } catch (error) {
+                            // Revert the toggle if the API call fails
+                            toggleInput.checked = !toggleInput.checked;
+                            alert('Failed to update access status');
+                        }
+                    });
+
+                    // Assemble the toggle switch
+                    toggleContainer.appendChild(toggleInput);
+                    toggleContainer.appendChild(sliderSpan);
+                    accessCell.appendChild(toggleContainer);
+
+                    // Add the access cell to the row
+                    row.appendChild(accessCell);
                 });
                 table.appendChild(tbody);
 
@@ -9956,15 +10653,18 @@
                     toggleConnectButton();
                 });
 
+
                 const label = document.createElement('label');
                 label.innerHTML = `
-                        <img src="${building.galleryList[0]}" alt="Building Image" class="building-image" />
-                        <span>${building.buildingId} - ${building.name || 'N/A'} (${building.ownerName || 'N/A'})</span>
-                    `;
+                <img src="${building.galleryList[0]}" alt="Building Image" class="building-image" />
+                <span>${building.buildingId} - ${building.name || 'N/A'} (${building.ownerName || 'N/A'})</span>
+                `;
 
                 div.appendChild(checkbox);
                 div.appendChild(label);
                 buildingList.appendChild(div);
+
+
             });
         }
 
@@ -10010,6 +10710,617 @@
         fetchBuildings();
     </script>
 
+
+    <script>
+        // Arrays to store chip data
+        const offerChips = [];
+        const propertyTypeChips = [];
+
+        // Function to handle chip creation for text input fields
+        function createChipFromInput(inputId, containerId, chipsArray) {
+            const inputElement = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+
+            inputElement.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter' && inputElement.value.trim() !== '') {
+                    const value = inputElement.value.trim();
+                    if (!chipsArray.includes(value)) {
+                        chipsArray.push(value);
+                        createChip(container, value, chipsArray);
+                    }
+                    inputElement.value = ''; // Clear the input field
+                }
+            });
+        }
+
+        // Function to handle chip creation for multi-select fields
+        function createChipsFromMultiSelect(selectId, containerId, chipsArray) {
+            const selectElement = document.getElementById(selectId);
+            const container = document.getElementById(containerId);
+
+            selectElement.addEventListener('change', function () {
+                const selectedOptions = Array.from(selectElement.selectedOptions);
+                selectedOptions.forEach(option => {
+                    if (!chipsArray.includes(option.value)) {
+                        chipsArray.push(option.value);
+                        createChip(container, option.value, chipsArray);
+                    }
+                });
+            });
+        }
+
+        // Helper function to create a chip
+        function createChip(container, text, chipsArray) {
+            const chip = document.createElement('div');
+            chip.className = 'chip';
+            chip.innerText = text;
+            chip.setAttribute('data-value', text);
+
+            // Add a delete button to the chip
+            const deleteBtn = document.createElement('span');
+            deleteBtn.innerHTML = '&times;';
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.onclick = () => {
+                container.removeChild(chip);
+                const index = chipsArray.indexOf(text);
+                if (index > -1) chipsArray.splice(index, 1); // Remove from array
+            };
+
+            chip.appendChild(deleteBtn);
+            container.appendChild(chip);
+        }
+
+        // Call the function for the "Offer" input field
+        createChipFromInput('offer', 'selectedOffer', offerChips);
+
+        // Call the function for the "Property Type" multi-select field
+        createChipsFromMultiSelect('propertyTypeMultiSelect', 'selectedPropertyType', propertyTypeChips);
+
+
+    </script>
+
+    /* building update */
+    <script>
+        let allBuildingsx = [];
+        let filteredBuildings = [];
+        let editMap;
+
+        // Function to fetch and display buildings
+        async function fetchAndDisplayBuildings() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/buildings`);
+                if (!response.ok) throw new Error('Failed to fetch buildings');
+
+                allBuildingsx = await response.json();
+                console.log("resposem", allBuildingsx)
+                filteredBuildings = [...allBuildingsx];
+                displayBuildings(filteredBuildings);
+            } catch (error) {
+                console.error('Error:', error);
+                showPopup('Error fetching buildings');
+            }
+        }
+
+        // Function to display buildings in the table
+        function displayBuildings(buildings) {
+            const tbody = document.getElementById('buildingsTableBody');
+            tbody.innerHTML = '';
+
+            buildings.forEach(building => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+            <td>${building.buildingId || 'N/A'}</td>
+            <td>${building.name || 'N/A'}</td>
+            <td>${building.ownerName || 'N/A'}</td>
+            <td>
+                <span class="status-badge status-${building.developmentStatus?.toLowerCase().replace(' ', '-') || 'upcoming'}">
+                    ${building.developmentStatus || 'Upcoming'}
+                </span>
+            </td>
+            <td>${building.totalProperties || '0'}</td>
+            <td>
+                <button class="building-action-btn edit-btn" onclick="startBuildingEdit('${building.buildingId}')">
+                    Edit
+                </button>
+                <button class="building-action-btn delete-btn" onclick="deleteBuilding('${building._id}')">
+                    Delete
+                </button>
+            </td>
+        `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Function to filter buildings
+        function filterBuildings() {
+            const searchTerm = document.getElementById('buildingSearchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('buildingStatusFilter').value.toLowerCase();
+
+            filteredBuildings = allBuildingsx.filter(building => {
+                const matchesSearch = (
+                    (building.buildingId?.toLowerCase().includes(searchTerm) || '') ||
+                    (building.name?.toLowerCase().includes(searchTerm) || '') ||
+                    (building.ownerName?.toLowerCase().includes(searchTerm) || '')
+                );
+
+                const matchesStatus = !statusFilter ||
+                    building.developmentStatus?.toLowerCase() === statusFilter;
+
+                return matchesSearch && matchesStatus;
+            });
+
+            displayBuildings(filteredBuildings);
+        }
+
+        // Function to start building edit
+        function startBuildingEdit(buildingId) {
+            console.log("buildingId", buildingId)
+            // Hide the buildings list
+            document.querySelector('.building-selection-section').style.display = 'none';
+            // Show the edit form
+            // document.getElementById('editFormContainer').style.display = 'block';
+            // Load the building data
+            editBuilding(buildingId);
+        }
+
+        // Function to delete building
+        async function deleteBuilding(buildingId) {
+            if (!confirm('Are you sure you want to delete this building?')) return;
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/buildings/${buildingId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Failed to delete building');
+
+                showPopup('Building deleted successfully');
+                fetchAndDisplayBuildings();
+            } catch (error) {
+                console.error('Error:', error);
+                showPopup('Error deleting building');
+            }
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the buildings list
+            fetchAndDisplayBuildings();
+
+            // Add search and filter listeners
+            document.getElementById('buildingSearchInput').addEventListener('input', filterBuildings);
+            document.getElementById('buildingStatusFilter').addEventListener('change', filterBuildings);
+
+            // Add button to return to buildings list
+            const backButton = document.createElement('button');
+            backButton.textContent = 'Back to Buildings List';
+            backButton.className = 'secondary-button';
+            backButton.style.marginBottom = '20px';
+            backButton.onclick = () => {
+                document.querySelector('.building-selection-section').style.display = 'block';
+                document.getElementById('editFormContainer').style.display = 'none';
+            };
+            document.getElementById('editFormContainer').insertBefore(
+                backButton,
+                document.getElementById('buildingEditForm')
+            );
+        });
+
+        // Modify your existing cancelBuildingEdit function
+        function cancelBuildingEdit() {
+            document.querySelector('.building-selection-section').style.display = 'block';
+            document.getElementById('editFormContainer').style.display = 'none';
+        }
+
+        async function editBuilding(buildingId) {
+            try {
+                // Show loading state
+                showPopup('Loading building data...');
+                // Fetch building data
+                const response = await fetch(`${BASE_URL}/api/buildings/${buildingId}`);
+                const building = await response.json();
+                // Switch to edit tab
+                document.querySelectorAll('.tabcontent').forEach(tab => tab.style.display = 'none');
+                document.getElementById('BuildingEdit').style.display = 'block';
+                // Initialize map if not already initialized
+                if (!editMap) {
+                    initializeEditMap();
+                }
+                // Populate form
+                populateBuildingEditForm(building);
+            } catch (error) {
+                console.error('Error loading building:', error);
+                showPopup('Error loading building data');
+            }
+        }
+
+        function initializeEditMap() {
+            editMap = new google.maps.Map(document.getElementById('edit_building_map'), {
+                zoom: 13,
+                center: { lat: 20.5937, lng: 78.9629 }
+            });
+            editMarker = new google.maps.Marker({
+                map: editMap,
+                draggable: true
+            });
+            // Add map click handler
+            google.maps.event.addListener(editMap, 'click', function (event) {
+                editMarker.setPosition(event.latLng);
+                updateEditLatLng(event.latLng);
+            });
+            // Add marker drag handler
+            google.maps.event.addListener(editMarker, 'dragend', function (event) {
+                updateEditLatLng(event.latLng);
+            });
+        }
+        function updateEditLatLng(location) {
+            document.getElementById('edit_latitude').value = location.lat();
+            document.getElementById('edit_longitude').value = location.lng();
+        }
+        function populateBuildingEditForm(building) {
+            // Populate hidden ID
+            document.getElementById('edit_building_id').value = building._id;
+            // Basic Information
+            document.getElementById('edit_buildingId').value = building.buildingId || '';
+            document.getElementById('edit_name').value = building.name || '';
+            document.getElementById('edit_frontRoad').value = building.frontRoad || '';
+            document.getElementById('edit_parkingArea').value = building.parkingArea || '';
+            document.getElementById('edit_description').value = building.description || '';
+            document.getElementById('edit_areaUSP').value = building.areaUSP || '';
+            document.getElementById('edit_ownerName').value = building.ownerName || '';
+            document.getElementById('edit_ownerId').value = building.ownerId || '';
+            document.getElementById('edit_storey').value = building.storey || '';
+            document.getElementById('edit_age').value = building.age || '';
+            document.getElementById('edit_type').value = building.type || '';
+            document.getElementById('edit_luda').value = building.luda || '';
+            document.getElementById('edit_totalProperties').value = building.totalProperties || '';
+            document.getElementById('edit_developmentStatus').value = building.developmentStatus || '';
+            document.getElementById('edit_allowPreBooking').checked = building.allowPreBooking || false;
+            document.getElementById('edit_allocatedProperties').value = building.allocatedProperties || '';
+            document.getElementById('edit_freeProperties').value = building.freeProperties || '';
+            document.getElementById('edit_contactNumber').value = building.contactNumber || '';
+            // Flats Details
+            document.getElementById('edit_numberOfFlatsAvailable').value = building.numberOfFlatsAvailable || '';
+            document.getElementById('edit_totalFloors').value = building.totalFloors || '';
+
+            // Update flats details container
+            updateFlatsDetailsContainer(building.totalFloors, building.flatsDetails);
+            // Links
+            document.getElementById('edit_brochureLink').value = building.brochureLink || '';
+            document.getElementById('edit_mapLink').value = building.mapLink || '';
+            // Location
+            if (building.location && building.location.coordinates) {
+                const position = new google.maps.LatLng(
+                    building.location.coordinates[1],
+                    building.location.coordinates[0]
+                );
+                editMarker.setPosition(position);
+                editMap.setCenter(position);
+                updateEditLatLng(position);
+            }
+            // Gallery Preview
+            const galleryPreview = document.getElementById('edit_gallery_preview');
+            galleryPreview.innerHTML = '';
+            if (building.galleryList && building.galleryList.length > 0) {
+                building.galleryList.forEach(imageUrl => {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.className = 'gallery-preview-image';
+                    galleryPreview.appendChild(img);
+                });
+            }
+        }
+        function updateFlatsDetailsContainer(totalFloors, existingDetails = []) {
+            const container = document.getElementById('edit_flatsDetailsContainer');
+            container.innerHTML = '';
+            for (let i = 1; i <= totalFloors; i++) {
+                const floorDetails = existingDetails.find(detail => detail.floorNumber === i) || {};
+
+                const floorDiv = document.createElement('div');
+                floorDiv.className = 'floor-details';
+                floorDiv.innerHTML = `
+            <h4>Floor ${i}</h4>
+            <div>
+                <label for="flatsOnFloor${i}">Number of Flats on Floor:</label>
+                <input type="number" id="flatsOnFloor${i}" name="flatsOnFloor${i}" 
+                       value="${floorDetails.flatsOnFloor || ''}" required>
+            </div>
+            <div>
+                <label for="availableFlats${i}">Available Flats on Floor:</label>
+                <input type="number" id="availableFlats${i}" name="availableFlats${i}" 
+                       value="${floorDetails.availableFlats || ''}" required>
+            </div>
+        `;
+                container.appendChild(floorDiv);
+            }
+        }
+        // Handle form submission
+        // document.getElementById('buildingEditForm').addEventListener('submit', async function (e) {
+        //     e.preventDefault();
+
+        //     try {
+        //         const buildingId = document.getElementById('edit_building_id').value;
+        //         const formData = new FormData(this);
+        //         // Add location coordinates
+        //         const lat = document.getElementById('edit_latitude').value;
+        //         const lng = document.getElementById('edit_longitude').value;
+        //         formData.append('location[coordinates][]', lng);
+        //         formData.append('location[coordinates][]', lat);
+        //         // Collect flats details
+        //         const totalFloors = parseInt(formData.get('totalFloors'));
+        //         const flatsDetails = [];
+        //         for (let i = 1; i <= totalFloors; i++) {
+        //             flatsDetails.push({
+        //                 floorNumber: i,
+        //                 flatsOnFloor: parseInt(formData.get(`flatsOnFloor${i}`)),
+        //                 availableFlats: parseInt(formData.get(`availableFlats${i}`))
+        //             });
+        //         }
+        //         formData.append('flatsDetails', JSON.stringify(flatsDetails));
+        //         const response = await fetch(`${BASE_URL}/api/buildings/${buildingId}`, {
+        //             method: 'PUT',
+        //             body: formData
+        //         });
+        //         if (!response.ok) throw new Error('Failed to update building');
+        //         showPopup('Building updated successfully!');
+        //         setTimeout(() => {
+        //             // Switch back to buildings list and refresh
+        //             document.getElementById('BuildingEdit').style.display = 'none';
+        //             document.getElementById('BuildingsProperties').style.display = 'block';
+        //             fetchBuildings();
+        //         }, 1500);
+        //     } catch (error) {
+        //         console.error('Error updating building:', error);
+        //         showPopup('Error updating building: ' + error.message);
+        //     }
+        // });
+
+        // document.getElementById('buildingEditForm').addEventListener('submit', async function (e) {
+        //         e.preventDefault();
+
+        //         try {
+        //             const buildingId = document.getElementById('edit_building_id').value;
+        //             const formData = new FormData(this);
+
+        //             // Convert FormData to a regular object
+        //             const data = {};
+        //             for (let [key, value] of formData.entries()) {
+        //                 data[key] = value;
+        //             }
+
+        //             // Add location coordinates
+        //             const lat = document.getElementById('edit_latitude').value;
+        //             const lng = document.getElementById('edit_longitude').value;
+        //             data.location = {
+        //                 coordinates: [parseFloat(lng), parseFloat(lat)]
+        //             };
+
+        //             // Add flats details
+        //             const totalFloors = parseInt(data.totalFloors);
+        //             const flatsDetails = [];
+        //             for (let i = 1; i <= totalFloors; i++) {
+        //                 flatsDetails.push({
+        //                     floorNumber: i,
+        //                     flatsOnFloor: parseInt(formData.get(`flatsOnFloor${i}`)),
+        //                     availableFlats: parseInt(formData.get(`availableFlats${i}`))
+        //                 });
+        //             }
+        //             data.flatsDetails = flatsDetails;
+
+        //             const response = await fetch(`${BASE_URL}/api/buildings/${buildingId}`, {
+        //                 method: 'PUT',
+        //                 headers: {
+        //                     'Content-Type': 'application/json'
+        //                 },
+        //                 body: JSON.stringify(data)
+        //             });
+
+        //             if (!response.ok) {
+        //                 const errorData = await response.json();
+        //                 throw new Error(errorData.message || 'Failed to update building');
+        //             }
+
+        //             showPopup('Building updated successfully!');
+        //             setTimeout(() => {
+        //                 document.getElementById('BuildingEdit').style.display = 'none';
+        //                 document.getElementById('BuildingsProperties').style.display = 'block';
+        //                 fetchBuildings();
+        //             }, 1500);
+        //         } catch (error) {
+        //             console.error('Error updating building:', error);
+        //             showPopup('Error updating building: ' + error.message);
+        //         }
+        //     });
+
+        document.getElementById('buildingEditForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            try {
+                const buildingId = document.getElementById('edit_buildingId').value;
+                const formData = new FormData(this);
+
+                // Convert FormData to a regular object, excluding galleryList
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    // Skip galleryList
+                    if (key !== 'galleryList') {
+                        // Convert string "true"/"false" to boolean
+                        if (value === 'true') value = true;
+                        if (value === 'false') value = false;
+
+                        // Convert numeric strings to numbers where appropriate
+                        if (['totalProperties', 'allocatedProperties', 'freeProperties',
+                            'numberOfFlatsAvailable', 'totalFloors'].includes(key)) {
+                            value = parseInt(value) || 0;
+                        }
+
+                        data[key] = value;
+                    }
+                }
+
+                // Add location coordinates
+                const lat = document.getElementById('edit_latitude').value;
+                const lng = document.getElementById('edit_longitude').value;
+                if (lat && lng) {
+                    data.location = {
+                        type: 'Point',
+                        coordinates: [parseFloat(lng), parseFloat(lat)]
+                    };
+                }
+
+                // Add flats details
+                const totalFloors = parseInt(data.totalFloors) || 0;
+                if (totalFloors > 0) {
+                    const flatsDetails = [];
+                    for (let i = 1; i <= totalFloors; i++) {
+                        flatsDetails.push({
+                            floorNumber: i,
+                            flatsOnFloor: parseInt(formData.get(`flatsOnFloor${i}`)) || 0,
+                            availableFlats: parseInt(formData.get(`availableFlats${i}`)) || 0
+                        });
+                    }
+                    data.flatsDetails = flatsDetails;
+                }
+
+                // Convert arrays
+                if (formData.get('amenities')) {
+                    data.amenities = formData.get('amenities').split(',').map(item => item.trim());
+                }
+                if (formData.get('nearby')) {
+                    data.nearby = formData.get('nearby').split(',').map(item => item.trim());
+                }
+
+                const response = await fetch(`${BASE_URL}/api/buildings/${buildingId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to update building');
+                }
+
+                showPopup('Building updated successfully!');
+                setTimeout(() => {
+                    document.getElementById('BuildingEdit').style.display = 'none';
+                    document.getElementById('BuildingsProperties').style.display = 'block';
+                    fetchBuildings();
+                }, 1500);
+            } catch (error) {
+                console.error('Error updating building:', error);
+                showPopup('Error updating building: ' + error.message);
+            }
+        });
+
+        function cancelBuildingEdit() {
+            document.getElementById('BuildingEdit').style.display = 'none';
+            document.getElementById('BuildingsProperties').style.display = 'block';
+        }
+        // Add this to handle total floors changes
+        document.getElementById('edit_totalFloors').addEventListener('change', function (e) {
+            const totalFloors = parseInt(e.target.value) || 0;
+            updateFlatsDetailsContainer(totalFloors);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeBuilderMap();
+        });
+
+        // Add this to your existing map initialization code
+        function initializeBuilderMap() {
+            builderMap = new google.maps.Map(document.getElementById('builderMap'), {
+                center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+                zoom: 5
+            });
+
+            builderMarker = new google.maps.Marker({
+                map: builderMap,
+                draggable: true
+            });
+
+            // Add click event for map
+            google.maps.event.addListener(builderMap, 'click', function (event) {
+                placeBuilderMarker(event.latLng);
+            });
+
+            // Add dragend event for marker
+            google.maps.event.addListener(builderMarker, 'dragend', function (event) {
+                updateBuilderLatLng(event.latLng);
+            });
+
+            // Add getCurrentLocation button handler
+            document.getElementById('getCurrentLocationBuilderUpload').addEventListener('click', getCurrentLocationBuilder);
+        }
+
+        // Function to get and set current location
+        function getCurrentLocationBuilder() {
+            if (!navigator.geolocation) {
+                showPopup('Geolocation is not supported by your browser');
+                return;
+            }
+
+            // Show loading state
+            const locationButton = document.getElementById('getCurrentLocationBuilderUpload');
+            locationButton.disabled = true;
+            locationButton.textContent = 'Getting Location...';
+
+            navigator.geolocation.getCurrentPosition(
+                // Success callback
+                function (position) {
+                    const currentLocation = new google.maps.LatLng(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+
+                    // Place marker and center map
+                    placeBuilderMarker(currentLocation);
+                    builderMap.setZoom(15); // Zoom in closer
+
+                    // Reset button
+                    locationButton.disabled = false;
+                    locationButton.textContent = 'Get Current Location';
+                },
+                // Error callback
+                function (error) {
+                    let errorMessage = 'Error getting location: ';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage += 'Permission denied';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage += 'Position unavailable';
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage += 'Request timed out';
+                            break;
+                        default:
+                            errorMessage += 'Unknown error';
+                    }
+                    showPopup(errorMessage);
+
+                    // Reset button
+                    locationButton.disabled = false;
+                    locationButton.textContent = 'Get Current Location';
+                },
+                // Options
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        // If you don't already have a showPopup function, add this:
+        function showPopup(message) {
+            alert(message); // You can replace this with a more sophisticated popup implementation
+        }
+    </script>
 
 </body>
 
