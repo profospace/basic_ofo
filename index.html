@@ -16,11 +16,12 @@
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxLPWJ3If855zICuSdKNWCYrSDhPauVM&libraries=places"></script>
 
-    <script>
+
     </script>
 
     <script>
-        let BASE_URL = "http://localhost:5053"
+       // let BASE_URL = "http://localhost:5053"
+        let BASE_URL = "https://propertify-nw1h.onrender.com"
         // let BASE_URL = 'https://propertify.onrender.com'
     </script>
 </head>
@@ -48,8 +49,90 @@
         <button class="tablinks" onclick="openTab(event, 'BuilderIdConnection')">Builder ID Connection</button>
         <button class="tablinks" onclick="openTab(event, 'GenerateToken')">Generate Token</button>
         <button class="tablinks" onclick="openTab(event, 'BuildingEdit')">Building Edit</button>
+        <button class="tablinks" onclick="openTab(event, 'User')">PROFO Users</button>
 
     </div>
+
+    <div class="user-mgmt-container tabcontent" id="User">
+        <header class="user-mgmt-header">
+            <h1 class="user-mgmt-title">User Management Dashboard</h1>
+            <div class="user-mgmt-search-container">
+                <div class="user-mgmt-search-box">
+                    <input type="text" id="user-mgmt-name-search" class="user-mgmt-search-input"
+                        placeholder="Search by name">
+                    <button class="user-mgmt-search-btn" data-field="name">Search</button>
+                </div>
+                <div class="user-mgmt-search-box">
+                    <input type="text" id="user-mgmt-email-search" class="user-mgmt-search-input"
+                        placeholder="Search by email">
+                    <button class="user-mgmt-search-btn" data-field="email">Search</button>
+                </div>
+                <div class="user-mgmt-search-box">
+                    <input type="text" id="user-mgmt-phone-search" class="user-mgmt-search-input"
+                        placeholder="Search by phone">
+                    <button class="user-mgmt-search-btn" data-field="phone">Search</button>
+                </div>
+            </div>
+            <div class="user-mgmt-filter-container">
+                <select id="user-mgmt-login-type" class="user-mgmt-select">
+                    <option value="">All Login Types</option>
+                    <option value="EMAIL">Email</option>
+                    <option value="GOOGLE">Google</option>
+                    <option value="FACEBOOK">Facebook</option>
+                    <option value="APPLE">Apple</option>
+                    <option value="PHONE">Phone</option>
+                </select>
+                <button id="user-mgmt-reset-filters" class="user-mgmt-btn user-mgmt-reset-btn">Reset Filters</button>
+            </div>
+        </header>
+
+        <div class="user-mgmt-stats">
+            <div class="user-mgmt-stat-box">
+                <h3>Total Users</h3>
+                <p id="user-mgmt-total-count">Loading...</p>
+            </div>
+            <div class="user-mgmt-stat-box">
+                <h3>Verified Users</h3>
+                <p id="user-mgmt-verified-count">Loading...</p>
+            </div>
+        </div>
+
+        <div class="user-mgmt-content">
+            <div class="user-mgmt-loader" id="user-mgmt-loader">
+                <div class="user-mgmt-spinner"></div>
+                <p>Loading users...</p>
+            </div>
+
+            <div class="user-mgmt-user-list" id="user-mgmt-user-list">
+                <!-- User cards will be inserted here by JavaScript -->
+            </div>
+
+            <div class="user-mgmt-pagination">
+                <button id="user-mgmt-prev-page" class="user-mgmt-btn user-mgmt-pagination-btn"
+                    disabled>Previous</button>
+                <span id="user-mgmt-page-info">Page 1 of 1</span>
+                <button id="user-mgmt-next-page" class="user-mgmt-btn user-mgmt-pagination-btn" disabled>Next</button>
+            </div>
+        </div>
+    </div>
+
+    <template id="user-mgmt-user-card-template">
+        <div class="user-mgmt-user-card">
+            <div class="user-mgmt-user-avatar">
+                <img src="" alt="User Avatar" class="user-mgmt-avatar-img">
+            </div>
+            <div class="user-mgmt-user-details">
+                <h3 class="user-mgmt-user-name"></h3>
+                <p class="user-mgmt-user-email"></p>
+                <p class="user-mgmt-user-phone"></p>
+                <div class="user-mgmt-user-badges">
+                    <span class="user-mgmt-login-badge"></span>
+                    <span class="user-mgmt-verification-badge"></span>
+                </div>
+            </div>
+        </div>
+    </template>
+
 
     <div id="BuildingEdit" class="tabcontent">
         <h1>Edit Building</h1>
@@ -7179,7 +7262,7 @@
             try {
                 const formData = new FormData();
                 formData.append('uploadedFileName', file);
-                
+
                 const uploadResponse = await fetch('/imageUpload', {
                     method: 'POST',
                     body: formData
@@ -11322,6 +11405,293 @@ input:checked + .slider:before {
         }
     </script>
 
+    <script>
+        /**
+     * User Management Dashboard JavaScript
+     * - Fetches and displays users with pagination
+     * - Provides search by name, email, and phone
+     * - Filtering by login type
+     * - Updates user statistics
+     */
+
+            // Configuration
+            const USER_MGMT_CONFIG = {
+                apiBaseUrl: BASE_URL,
+                pageSize: 10,
+                defaultAvatar: 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+            };
+
+            // State management
+            const userMgmtState = {
+                currentPage: 1,
+                totalPages: 1,
+                totalUsers: 0,
+                filters: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    loginType: ''
+                }
+            };
+
+            // DOM Elements
+            const userMgmtElements = {
+                loader: document.getElementById('user-mgmt-loader'),
+                userList: document.getElementById('user-mgmt-user-list'),
+                nameSearch: document.getElementById('user-mgmt-name-search'),
+                emailSearch: document.getElementById('user-mgmt-email-search'),
+                phoneSearch: document.getElementById('user-mgmt-phone-search'),
+                loginTypeSelect: document.getElementById('user-mgmt-login-type'),
+                resetFiltersBtn: document.getElementById('user-mgmt-reset-filters'),
+                prevPageBtn: document.getElementById('user-mgmt-prev-page'),
+                nextPageBtn: document.getElementById('user-mgmt-next-page'),
+                pageInfo: document.getElementById('user-mgmt-page-info'),
+                totalCountEl: document.getElementById('user-mgmt-total-count'),
+                verifiedCountEl: document.getElementById('user-mgmt-verified-count'),
+                searchBtns: document.querySelectorAll('.user-mgmt-search-btn'),
+                userCardTemplate: document.getElementById('user-mgmt-user-card-template')
+            };
+
+            // Initialize the dashboard
+            document.addEventListener('DOMContentLoaded', initUserDashboard);
+
+            function initUserDashboard() {
+                // Set up event listeners
+                setupEventListeners();
+
+                // Load initial data
+                fetchUsers();
+            }
+
+            function setupEventListeners() {
+                // Search buttons
+                userMgmtElements.searchBtns.forEach(btn => {
+                    btn.addEventListener('click', handleSearch);
+                });
+
+                // Search input enter key
+                userMgmtElements.nameSearch.addEventListener('keypress', handleSearchEnter('name'));
+                userMgmtElements.emailSearch.addEventListener('keypress', handleSearchEnter('email'));
+                userMgmtElements.phoneSearch.addEventListener('keypress', handleSearchEnter('phone'));
+
+                // Login type filter
+                userMgmtElements.loginTypeSelect.addEventListener('change', () => {
+                    userMgmtState.filters.loginType = userMgmtElements.loginTypeSelect.value;
+                    userMgmtState.currentPage = 1;
+                    fetchUsers();
+                });
+
+                // Reset filters
+                userMgmtElements.resetFiltersBtn.addEventListener('click', resetFilters);
+
+                // Pagination
+                userMgmtElements.prevPageBtn.addEventListener('click', () => {
+                    if (userMgmtState.currentPage > 1) {
+                        userMgmtState.currentPage--;
+                        fetchUsers();
+                    }
+                });
+
+                userMgmtElements.nextPageBtn.addEventListener('click', () => {
+                    if (userMgmtState.currentPage < userMgmtState.totalPages) {
+                        userMgmtState.currentPage++;
+                        fetchUsers();
+                    }
+                });
+            }
+
+            function handleSearch(event) {
+                const field = event.target.dataset.field;
+                const inputElement = document.getElementById(`user-mgmt-${field}-search`);
+
+                userMgmtState.filters[field] = inputElement.value.trim();
+                userMgmtState.currentPage = 1;
+                fetchUsers();
+            }
+
+            function handleSearchEnter(field) {
+                return function (event) {
+                    if (event.key === 'Enter') {
+                        const inputElement = document.getElementById(`user-mgmt-${field}-search`);
+                        userMgmtState.filters[field] = inputElement.value.trim();
+                        userMgmtState.currentPage = 1;
+                        fetchUsers();
+                    }
+                };
+            }
+
+            function resetFilters() {
+                // Reset filter inputs
+                userMgmtElements.nameSearch.value = '';
+                userMgmtElements.emailSearch.value = '';
+                userMgmtElements.phoneSearch.value = '';
+                userMgmtElements.loginTypeSelect.value = '';
+
+                // Reset filter state
+                userMgmtState.filters = {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    loginType: ''
+                };
+
+                userMgmtState.currentPage = 1;
+                fetchUsers();
+            }
+
+            async function fetchUsers() {
+                showLoader();
+
+                try {
+                    // Build query parameters
+                    const params = new URLSearchParams({
+                        page: userMgmtState.currentPage,
+                        limit: USER_MGMT_CONFIG.pageSize
+                    });
+
+                    // Add filters if they exist
+                    if (userMgmtState.filters.name) params.append('name', userMgmtState.filters.name);
+                    if (userMgmtState.filters.email) params.append('email', userMgmtState.filters.email);
+                    if (userMgmtState.filters.phone) params.append('phone', userMgmtState.filters.phone);
+                    if (userMgmtState.filters.loginType) params.append('loginType', userMgmtState.filters.loginType);
+
+                    // Fetch data from API
+                    const response = await fetch(`${USER_MGMT_CONFIG.apiBaseUrl}/paginated?${params}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'x-auth-token': getAuthToken() // Implement this function based on your auth system
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API error: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+
+                    // Update state with new data
+                    userMgmtState.totalUsers = data.pagination.total;
+                    userMgmtState.totalPages = data.pagination.pages;
+
+                    // Render users
+                    renderUsers(data.users);
+
+                    // Update pagination
+                    updatePagination();
+
+                    // Update stats
+                    updateStats(data.users);
+
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                    showError('Failed to load users. Please try again later.');
+                } finally {
+                    hideLoader();
+                }
+            }
+
+            function renderUsers(users) {
+                userMgmtElements.userList.innerHTML = '';
+
+                if (users.length === 0) {
+                    const noUsers = document.createElement('div');
+                    noUsers.className = 'user-mgmt-no-results';
+                    noUsers.textContent = 'No users found matching your criteria.';
+                    userMgmtElements.userList.appendChild(noUsers);
+                    return;
+                }
+
+                users.forEach(user => {
+                    const userCard = userMgmtElements.userCardTemplate.content.cloneNode(true);
+
+                    // Set user avatar
+                    const avatarImg = userCard.querySelector('.user-mgmt-avatar-img');
+                    avatarImg.src = user.profile?.avatar || USER_MGMT_CONFIG.defaultAvatar;
+                    avatarImg.alt = `${user.name || 'User'}'s avatar`;
+
+                    // Set user details
+                    userCard.querySelector('.user-mgmt-user-name').textContent = user.name || 'Unnamed User';
+                    userCard.querySelector('.user-mgmt-user-email').textContent = user.email || 'No email provided';
+                    userCard.querySelector('.user-mgmt-user-phone').textContent = user.phone || 'No phone provided';
+
+                    // Set login badge
+                    const loginBadge = userCard.querySelector('.user-mgmt-login-badge');
+                    loginBadge.textContent = user.loginType || 'Unknown';
+
+                    // Set verification badge
+                    const verificationBadge = userCard.querySelector('.user-mgmt-verification-badge');
+                    if (user.isPhoneVerified) {
+                        verificationBadge.textContent = 'Verified';
+                        verificationBadge.classList.add('verified');
+                    } else {
+                        verificationBadge.textContent = 'Not Verified';
+                        verificationBadge.classList.add('unverified');
+                    }
+
+                    userMgmtElements.userList.appendChild(userCard);
+                });
+            }
+
+            function updatePagination() {
+                // Update page information
+                userMgmtElements.pageInfo.textContent = `Page ${userMgmtState.currentPage} of ${userMgmtState.totalPages}`;
+
+                // Enable/disable pagination buttons
+                userMgmtElements.prevPageBtn.disabled = userMgmtState.currentPage <= 1;
+                userMgmtElements.nextPageBtn.disabled = userMgmtState.currentPage >= userMgmtState.totalPages;
+            }
+
+            function updateStats(users) {
+                // Update total users count
+                userMgmtElements.totalCountEl.textContent = userMgmtState.totalUsers.toLocaleString();
+
+                // Calculate verified users from current page (approximation)
+                const verifiedUsers = users.filter(user => user.isPhoneVerified).length;
+                const verifiedPercentage = users.length > 0
+                    ? Math.round((verifiedUsers / users.length) * 100)
+                    : 0;
+
+                userMgmtElements.verifiedCountEl.textContent = `${verifiedPercentage}%`;
+            }
+
+            function showLoader() {
+                userMgmtElements.loader.style.display = 'flex';
+            }
+
+            function hideLoader() {
+                userMgmtElements.loader.style.display = 'none';
+            }
+
+            function showError(message) {
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'user-mgmt-error';
+                errorDiv.textContent = message;
+
+                // Remove any existing error
+                const existingError = document.querySelector('.user-mgmt-error');
+                if (existingError) {
+                    existingError.remove();
+                }
+
+                // Insert before the user list
+                userMgmtElements.userList.parentNode.insertBefore(errorDiv, userMgmtElements.userList);
+
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    errorDiv.remove();
+                }, 5000);
+            }
+
+            function getAuthToken() {
+                // Implement based on your authentication system
+                // For example, retrieve from localStorage:
+                return localStorage.getItem('authToken') || '';
+
+                // Or if using cookies:
+                // return document.cookie.replace(/(?:(?:^|.*;\s*)authToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            }
+        </script>
 </body>
 
 </html>
